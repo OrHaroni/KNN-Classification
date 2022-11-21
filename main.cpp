@@ -6,7 +6,8 @@ using namespace std;
 
 template <typename T>
 void printVector(vector<T>);
-
+/*The main function that will
+sent the verctors to calculate.*/
 int main()
 {
     vector<double> v1;

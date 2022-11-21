@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 using namespace std;
-
+/*Define the functions that will be in the distance.*/
 void distanceByP(vector<double>, vector<double>, double);
 
 void canberraDistance(vector<double>, vector<double>);

@@ -1,9 +1,9 @@
 #include "distance.h"
 
 
-//Calculating 3 different distances. the Euclidean and Minkowski use the same
-//formula when p = 2 so its the same in this excersice.
-//for p = 1 we have special condition but its almost the same.
+/*Calculating 3 different distances. the Euclidean and Minkowski use the same
+formula when p = 2 so its the same in this excersice.
+for p = 1 we have special condition but its almost the same.*/
 void distanceByP(vector<double> v1, vector<double> v2, double p)
 {
     double distance = 0;
@@ -24,7 +24,7 @@ void distanceByP(vector<double> v1, vector<double> v2, double p)
     }
     cout << distance << endl;
 }
-
+/*Calculating the distance by canbrra furmula. then print the result*/
 void canberraDistance(vector<double> v1, vector<double> v2)
 {
     double distance = 0;
@@ -40,7 +40,7 @@ void canberraDistance(vector<double> v1, vector<double> v2)
     }
     cout << distance << endl;
 }
-
+/*Calculating the distance by canbrra furmula. then print the result*/
 void chebyshevDistance(vector<double> v1, vector<double> v2)
 {
     double distance = 0;
