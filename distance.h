@@ -2,11 +2,14 @@
 #define DIS_H
 
 #include <vector>
-#include<cmath>
+#include <cmath>
 #include <iostream>
 using namespace std;
-namespace distance{
-void distanceByP(vector<float>, vector<float>, int);
-}
-#endif
 
+void distanceByP(vector<float>, vector<float>, float);
+
+void canberraDistance(vector<float>, vector<float>);
+
+void chebyshevDistance(vector<float>, vector<float>);
+
+#endif
