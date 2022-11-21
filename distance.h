@@ -6,10 +6,10 @@
 #include <iostream>
 using namespace std;
 
-void distanceByP(vector<float>, vector<float>, float);
+void distanceByP(vector<double>, vector<double>, double);
 
-void canberraDistance(vector<float>, vector<float>);
+void canberraDistance(vector<double>, vector<double>);
 
-void chebyshevDistance(vector<float>, vector<float>);
+void chebyshevDistance(vector<double>, vector<double>);
 
 #endif

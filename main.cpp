@@ -9,23 +9,23 @@ void printVector(vector<T>);
 
 int main()
 {
-    vector<float> v1;
-    vector<float> v2;
-    //adding 5 digits after the floating point
-    cout.precision(5);
+    vector<double> v1;
+    vector<double> v2;
+    // adding 5 digits after the floating point
+    cout.precision(17);
     try
     {
         // geting v1
         do
         {
-            float input;
+            double input;
             if (std::cin >> input)
             {
                 v1.push_back(input);
             }
         } while (std::cin && std::cin.peek() != '\n');
-        //If we are out of the loop but cin is not empty, we had problem
-        //that means we have char or invalid input in cin
+        // If we are out of the loop but cin is not empty, we had problem
+        // that means we have char or invalid input in cin
         if (cin.peek() != '\n')
         {
             throw invalid_argument("Received invalid input");
@@ -34,14 +34,14 @@ int main()
         // geting v2
         do
         {
-            float input;
+            double input;
             if (std::cin >> input)
             {
                 v2.push_back(input);
             }
         } while (std::cin && std::cin.peek() != '\n');
-        //If we are out of the loop but cin is not empty, we had problem
-        //that means we have char or invalid input in cin
+        // If we are out of the loop but cin is not empty, we had problem
+        // that means we have char or invalid input in cin
         if (cin.peek() != '\n')
         {
             throw invalid_argument("Received invalid input");
@@ -57,7 +57,7 @@ int main()
     catch (invalid_argument e)
     {
         cout << e.what() << endl;
-        return(1);
+        return (1);
     }
     // Euclidean distance
     distanceByP(v1, v2, 2);
@@ -87,4 +87,3 @@ void printVector(vector<T> v1)
     }
     cout << endl;
 }
-

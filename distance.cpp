@@ -4,9 +4,9 @@
 //Calculating 3 different distances. the Euclidean and Minkowski use the same
 //formula when p = 2 so its the same in this excersice.
 //for p = 1 we have special condition but its almost the same.
-void distanceByP(vector<float> v1, vector<float> v2, float p)
+void distanceByP(vector<double> v1, vector<double> v2, double p)
 {
-    float distance = 0;
+    double distance = 0;
     for (int i = 0; i < v1.size(); i++)
     {
         //for Manhattan distance that requires absoulute value.
@@ -25,9 +25,9 @@ void distanceByP(vector<float> v1, vector<float> v2, float p)
     cout << distance << endl;
 }
 
-void canberraDistance(vector<float> v1, vector<float> v2)
+void canberraDistance(vector<double> v1, vector<double> v2)
 {
-    float distance = 0;
+    double distance = 0;
     //Summing up according to the formula at Wikipedia.
     for (int i = 0; i < v1.size(); i++)
     {
@@ -41,9 +41,9 @@ void canberraDistance(vector<float> v1, vector<float> v2)
     cout << distance << endl;
 }
 
-void chebyshevDistance(vector<float> v1, vector<float> v2)
+void chebyshevDistance(vector<double> v1, vector<double> v2)
 {
-    float distance = 0;
+    double distance = 0;
     for (int i = 0; i < v1.size(); i++)
     {
         //Looking for the largest difference between 2 values in the vectors.
