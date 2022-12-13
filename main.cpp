@@ -25,29 +25,29 @@ int main()
     }
     double input;
     vector<double> v1;
-    try {
-        // getting v1
-        do
-        {
-            if (std::cin >> input)
+        try {
+            // getting v1
+            do
             {
-                v1.push_back(input);
+                if (std::cin >> input)
+                {
+                    v1.push_back(input);
+                }
+            } while (std::cin && std::cin.peek() != '\n');
+
+            if (cin.peek() != '\n') {
+                throw invalid_argument("Received invalid input.");
             }
-        } while (std::cin && std::cin.peek() != '\n');
-
-        if (cin.peek() != '\n') {
-            throw invalid_argument("Received invalid input.");
+            if (v1.size() != numValues) {
+                throw invalid_argument("Invalid length of the vector.");
+            }
         }
-        if (v1.size() != numValues) {
-            throw invalid_argument("Invalid length of the vector.");
+        catch (invalid_argument e) {
+            cout << e.what() << endl;
+            return (1);
         }
-    }
-    catch (invalid_argument e) {
-        cout << e.what() << endl;
-        return (1);
-    }
 
-    printVector(v1);
+        printVector(v1);
 
 
     return 0;
