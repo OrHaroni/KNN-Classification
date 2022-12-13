@@ -3,75 +3,40 @@
 #include "distance.h"
 
 using namespace std;
-
+#define FOUR 4
 template <typename T>
 void printVector(vector<T>);
 /*The main function that will
 send the verctors to calculate.*/
 int main()
 {
+
+    double input;
     vector<double> v1;
-    vector<double> v2;
-    // adding 5 digits after the floating point
-    cout.precision(17);
-    try
-    {
-        // getting v1
-        do
-        {
-            double input;
-            if (std::cin >> input)
+        try {
+            // getting v1
+            do
             {
-                v1.push_back(input);
+                if (std::cin >> input)
+                {
+                    v1.push_back(input);
+                }
+            } while (std::cin && std::cin.peek() != '\n');
+
+            if (cin.peek() != '\n') {
+                throw invalid_argument("Received invalid input.");
             }
-        } while (std::cin && std::cin.peek() != '\n');
-        // If we are out of the loop but cin is not empty, we had problem
-        // that means we have char or invalid input in cin
-        if (cin.peek() != '\n')
-        {
-            throw invalid_argument("Received invalid input");
-        }
-        // getting v2
-        do
-        {
-            double input;
-            if (std::cin >> input)
-            {
-                v2.push_back(input);
+            if (v1.size() != FOUR) {
+                throw invalid_argument("Invalid length of the vector.");
             }
-        } while (std::cin && std::cin.peek() != '\n');
-        // If we are out of the loop but cin is not empty, we had problem
-        // that means we have char or invalid input in cin
-        if (cin.peek() != '\n')
-        {
-            throw invalid_argument("Received invalid input");
         }
-        // Exit the program if the lengthes are not equal
-        if (v1.size() != v2.size())
-        {
-            cout << "Invalid length of the vectors. not the same length" << endl;
-            return 0;
+        catch (invalid_argument e) {
+            cout << e.what() << endl;
+            return (1);
         }
-    }
-    catch (invalid_argument e)
-    {
-        cout << e.what() << endl;
-        return (1);
-    }
-    // Euclidean distance
-    distanceByP(v1, v2, 2);
 
-    // Manhattan distance
-    distanceByP(v1, v2, 1);
+        printVector(v1);
 
-    // Chebyshev distance
-    chebyshevDistance(v1, v2);
-
-    // Canberra distance
-    canberraDistance(v1, v2);
-
-    // Minkowski distance
-    distanceByP(v1, v2, 2);
 
     return 0;
 }
