@@ -2,7 +2,7 @@
 
 
 /*Calculating 3 different distances. the Euclidean and Minkowski use the same
-formula when p = 2 so its the same in this excersice.
+formula when p = 2 so it's the same in this excersice.
 for p = 1 we have special condition but its almost the same.*/
 void distanceByP(vector<double> v1, vector<double> v2, double p)
 {

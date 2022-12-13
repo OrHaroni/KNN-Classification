@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "distance.h"
+
 using namespace std;
 
 template <typename T>
