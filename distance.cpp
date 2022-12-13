@@ -4,7 +4,7 @@
 /*Calculating 3 different distances. the Euclidean and Minkowski use the same
 formula when p = 2 so it's the same in this excersice.
 for p = 1 we have special condition but its almost the same.*/
-void distanceByP(vector<double> v1, vector<double> v2, double p)
+double distanceByP(vector<double> v1, vector<double> v2, double p)
 {
     double distance = 0;
     for (int i = 0; i < v1.size(); i++)
@@ -17,15 +17,10 @@ void distanceByP(vector<double> v1, vector<double> v2, double p)
         distance += pow((v1.at(i) - v2.at(i)), p);
     }
     distance = pow(distance, 1 / p);
-    //If its a whole number, print with .0
-    if(distance == (int)distance){
-        cout << distance << ".0" <<endl;
-        return;
-    }
-    cout << distance << endl;
+    return distance;
 }
 /*Calculating the distance by canbrra furmula. then print the result*/
-void canberraDistance(vector<double> v1, vector<double> v2)
+double canberraDistance(vector<double> v1, vector<double> v2)
 {
     double distance = 0;
     //Summing up according to the formula at Wikipedia.
@@ -33,15 +28,10 @@ void canberraDistance(vector<double> v1, vector<double> v2)
     {
         distance += (abs(v1.at(i) - v2.at(i))) / (abs(v1.at(i)) + abs(v2.at(i)));
     }
-    //If its a whole number, print with .0
-    if(distance == (int)distance){
-        cout << distance << ".0" <<endl;
-        return;
-    }
-    cout << distance << endl;
+    return distance;
 }
 /*Calculating the distance by canbrra furmula. then print the result*/
-void chebyshevDistance(vector<double> v1, vector<double> v2)
+double chebyshevDistance(vector<double> v1, vector<double> v2)
 {
     double distance = 0;
     for (int i = 0; i < v1.size(); i++)
@@ -52,10 +42,5 @@ void chebyshevDistance(vector<double> v1, vector<double> v2)
             distance = abs(v1.at(i) - v2.at(i));
         }
     }
-    //If its a whole number, print with .0
-    if(distance == (int)distance){
-        cout << distance << ".0" <<endl;
-        return;
-    }
-    cout << distance << endl;
+    return distance;
 }
