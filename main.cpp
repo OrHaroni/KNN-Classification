@@ -31,7 +31,6 @@ int main()
         {
             throw invalid_argument("Received invalid input");
         }
-        printVector(v1);
         // geting v2
         do
         {
@@ -47,7 +46,6 @@ int main()
         {
             throw invalid_argument("Received invalid input");
         }
-        printVector(v2);
         // Exit the program if the lengthes are not equal
         if (v1.size() != v2.size())
         {
