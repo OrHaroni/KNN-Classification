@@ -12,20 +12,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="321e3cdd-a9cf-4eb4-8c7e-230977ef91c7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/datasets/beans/beans_Classified.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/beans/beans_UnClassified.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/iris/iris_Unclassified.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/iris/iris_classified.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/testing.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/wine/wine_Classified.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasets/wine/wine_UnClassified.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testing" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main" beforeDir="false" afterPath="$PROJECT_DIR$/main" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-    </list>
+    <list default="true" id="321e3cdd-a9cf-4eb4-8c7e-230977ef91c7" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,6 +25,7 @@
     <option name="PREVIOUS_COMMIT_AUTHORS">
       <list>
         <option value="Or Haroni &lt;111184570+orharoni@users.noreply.github.com&gt;" />
+        <option value="OrHaroni &lt;or.haroni@gmail.com&gt;" />
       </list>
     </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -121,7 +109,7 @@
       <workItem from="1670915735868" duration="1692000" />
       <workItem from="1670917443523" duration="29000" />
       <workItem from="1670917479696" duration="122000" />
-      <workItem from="1670917607894" duration="5316000" />
+      <workItem from="1670917607894" duration="5681000" />
     </task>
     <task id="LOCAL-00001" summary="COMMITING TO START THE NEW EX">
       <created>1670916824926</created>
@@ -130,7 +118,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670916824926</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="new code that can extract data from csv file.">
+      <created>1670923107696</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1670923107696</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -139,7 +134,8 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="COMMITING TO START THE NEW EX" />
-    <option name="LAST_COMMIT_MESSAGE" value="COMMITING TO START THE NEW EX" />
+    <MESSAGE value="new code that can extract data from csv file." />
+    <option name="LAST_COMMIT_MESSAGE" value="new code that can extract data from csv file." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
