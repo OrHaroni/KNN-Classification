@@ -1,13 +1,12 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
 #include "distance.h"
 using namespace std;
 
 template <typename T>
 void printVector(vector<T>);
 /*The main function that will
-sent the verctors to calculate.*/
+send the verctors to calculate.*/
 int main()
 {
     vector<double> v1;
@@ -16,7 +15,7 @@ int main()
     cout.precision(17);
     try
     {
-        // geting v1
+        // getting v1
         do
         {
             double input;
@@ -31,7 +30,7 @@ int main()
         {
             throw invalid_argument("Received invalid input");
         }
-        // geting v2
+        // getting v2
         do
         {
             double input;
