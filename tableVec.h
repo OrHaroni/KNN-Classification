@@ -8,6 +8,13 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+enum distanceType{
+    AUC = 1,
+    MAN,
+    CHB,
+    CAN,
+    MIN,
+};
 class tableVec {
 private:
     vector <double>m_vector;
@@ -15,7 +22,7 @@ private:
     string m_type;
 public:
     tableVec(::vector<double> vector, string type);
-    void calcDis(::vector<double> vector, string distanceName);
+    void calcDis(::vector<double> vector, distanceType distanceType);
 };
 
 
