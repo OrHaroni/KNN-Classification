@@ -3,9 +3,9 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="CMakePresetLoader"><![CDATA[{
-  "useNewFormat": true
-}]]></component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
@@ -13,6 +13,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="321e3cdd-a9cf-4eb4-8c7e-230977ef91c7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/datasets/beans/beans_Classified.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datasets/beans/beans_UnClassified.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datasets/iris/iris_Unclassified.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datasets/iris/iris_classified.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datasets/testing.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datasets/wine/wine_Classified.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/datasets/wine/wine_UnClassified.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testing" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main" beforeDir="false" afterPath="$PROJECT_DIR$/main" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,18 +35,23 @@
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Or Haroni &lt;111184570+orharoni@users.noreply.github.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="ex2_Dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -62,21 +78,20 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "last_opened_file_path": "/home/or/CLionProjects/AdvancedProgProject/main.cpp",
+    "last_opened_file_path": "/home/or/CLionProjects/AdvancedProgProject/datasets/testing.cpp",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "vcs.Git",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="C/C++ File.Testing">
     <configuration name="AdvancedProgProject" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="AdvancedProgProject" TARGET_NAME="main.cpp" CONFIG_NAME="AdvancedProgProject">
       <option name="compilerOptions" value="distance.h distance.cpp" />
       <option name="sourceFile" value="$PROJECT_DIR$/main.cpp" />
@@ -84,6 +99,16 @@
         <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Testing" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="AdvancedProgProject" TARGET_NAME="testing.cpp" CONFIG_NAME="Testing">
+      <option name="sourceFile" value="$PROJECT_DIR$/datasets/testing.cpp" />
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="C/C++ File.AdvancedProgProject" />
+      <item itemvalue="C/C++ File.Testing" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -93,8 +118,19 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1670915733663</updated>
-      <workItem from="1670915735868" duration="1042000" />
+      <workItem from="1670915735868" duration="1692000" />
+      <workItem from="1670917443523" duration="29000" />
+      <workItem from="1670917479696" duration="122000" />
+      <workItem from="1670917607894" duration="5316000" />
     </task>
+    <task id="LOCAL-00001" summary="COMMITING TO START THE NEW EX">
+      <created>1670916824926</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1670916824926</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -102,5 +138,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="COMMITING TO START THE NEW EX" />
+    <option name="LAST_COMMIT_MESSAGE" value="COMMITING TO START THE NEW EX" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
