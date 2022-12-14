@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <bits/stdc++.h>
+#include <algorithm>
 #include "distance.h"
 #include "tableVec.h"
 
@@ -22,80 +23,103 @@ distanceType numberOfCalculation(string);
 
 vector<string> turnLineIntoVector(string);
 
+bool compareDistance(tableVec, tableVec);
+
 /*The main function that will
 send the verctors to calculate.*/
-int main() {
-    vector<tableVec> fileVectors;
-    fstream fin;
-    string line, word, temp;
-    vector<string> row;
-    //open the file
-    fin.open("datasets/iris/iris_classified.csv", ios_base::in);
-
-    if (!fin.is_open()) {
-        cout << "Open failed" << endl;
+int main(int argc, char *argv[]) {
+    if (argc != 4){
+        cout << "invalid number of arguments (not 4 as expected)"<< endl;
         return 1;
     }
-    cout << "Open success" << endl;
+    while(true) {
+        vector<tableVec> fileVectors;
+        fstream fin;
+        string line, word, temp;
+        vector<string> row;
+        //open the file
+        fin.open(argv[2], ios_base::in);
 
-    while (fin >> temp) {
-        //initialize empty vector
-        row.clear();
-        //separate the values in temp into row
-        row = turnLineIntoVector(temp);
-        vector<double> doubles;
-        for (int i = 0; i < row.size()-1; ++i) {
-            doubles.push_back(stod(row.at(i)));
+        if (!fin.is_open()) {
+            cout << "The program failed to open the file (invalid path)" << endl;
+            return 1;
         }
-        /**for testing */
-        tableVec tempRow = tableVec(doubles, row.at(row.size()-1));
-        printVector((tempRow.getVector()));
-        fileVectors.push_back(tempRow);
-        /**
-        //initiate tableVec = temp
-         * update the temp distance
-         *vectors.add(temp);
-         */
 
-    }
-
-
-    double input;
-    vector<double> v1;
-    try {
-        int numValues, typeCalc;
-        //Getting the number of values that a vector has in the table for valid checking
-        numValues = numberOfValues(fileVectors);
-
-        //Getting the type of calc
-        typeCalc = numberOfCalculation("AUC");
-
-        // getting v1
-        do {
-            if (std::cin >> input) {
-                v1.push_back(input);
+        while (fin >> temp) {
+            //initialize empty vector
+            row.clear();
+            //separate the values in temp into row
+            row = turnLineIntoVector(temp);
+            vector<double> doubles;
+            for (int i = 0; i < row.size() - 1; ++i) {
+                doubles.push_back(stod(row.at(i)));
             }
-        } while (std::cin && std::cin.peek() != '\n');
 
-        //if the Buffer is not empty (peak not \n) there was invalid char.
-        if (cin.peek() != '\n') {
-            throw invalid_argument("Received invalid input.");
+            tableVec tempRow = tableVec(doubles, row.at(row.size() - 1));
+            fileVectors.push_back(tempRow);
         }
-        //if the size of the vector is not like the ones in the tables its invalid.
-        if (v1.size() != numValues) {
-            throw invalid_argument("Invalid length of the vector.");
+
+        //getting the vector from the user
+        double input;
+        vector<double> v1;
+        int numValues;
+        distanceType typeCalc;
+        try {
+
+            //Getting the number of values that a vector has in the table for valid checking
+            numValues = numberOfValues(fileVectors);
+
+            //Getting the type of calc
+            typeCalc = numberOfCalculation(argv[3]);
+
+            // getting v1
+            do {
+                if (std::cin >> input) {
+                    v1.push_back(input);
+                }
+            } while (std::cin && std::cin.peek() != '\n');
+
+            //if the Buffer is not empty (peak not \n) there was invalid char.
+            if (cin.peek() != '\n') {
+                throw invalid_argument("Received invalid input.");
+            }
+            //if the size of the vector is not like the ones in the tables its invalid.
+            if (v1.size() != numValues) {
+                throw invalid_argument("Invalid length of the vector.");
+            }
+        }
+
+        catch (invalid_argument e) {
+            cout << e.what() << endl;
+            return (1);
+        }
+
+        for (int i = 0; i < fileVectors.size(); ++i) {
+            fileVectors.at(i).calcDis(v1, typeCalc);
+        }
+        //sorting the vector
+        sort(fileVectors.begin(), fileVectors.end(), compareDistance);
+        //printing the K closest, try because of the stoi and invalid inputs
+        try {
+            int k = stoi(argv[1]);
+            if (k < 0) {
+                throw invalid_argument("cant have negative number of neighbours");
+            }
+            //if K is greater than the number of vectors we have,
+            //so, all of the vectors are his neighbours, and we
+            //need to print them.
+            if (k > fileVectors.size()) {
+                k = fileVectors.size();
+            }
+            for (int i = 0; i < k; ++i) {
+                cout << fileVectors.at(i).getDistance() << endl;
+            }
+        } //catches if argv[1] is not integer.
+        catch (invalid_argument e) {
+            cout << e.what() << endl;
+            return (1);
         }
     }
-
-    catch (invalid_argument e) {
-        cout << e.what() << endl;
-        return (1);
-    }
-    printVector(v1);
-    /**end of receiving the vector */
-
-
-    return 0;
 }
 
 
@@ -162,3 +186,8 @@ vector<string> turnLineIntoVector(string line) {
     }
     return row;
 }
+
+bool compareDistance(tableVec t1, tableVec t2){
+    return t1.getDistance() < t2.getDistance();
+}
+

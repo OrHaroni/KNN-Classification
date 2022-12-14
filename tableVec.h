@@ -21,13 +21,13 @@ private:
     vector <double>m_vector;
     double m_distance;
     string m_type;
+    void setDistance(double distance);
 public:
     tableVec(vector<double> vector, string type);
     void calcDis(vector<double> vector, distanceType distanceType);
     vector<double> getVector ();
     string getType();
     double getDistance();
-    void setDistance(double distance);
 };
 
 
