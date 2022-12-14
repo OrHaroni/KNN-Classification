@@ -3,7 +3,6 @@
 #include <fstream>
 #include <sstream>
 #include <bits/stdc++.h>
-#include <list>
 #include "distance.h"
 #include "tableVec.h"
 
@@ -17,7 +16,7 @@ template<typename T>
 
 void printVector(vector<T>);
 
-unsigned long numberOfValues(string);
+int numberOfValues(vector<tableVec>);
 
 distanceType numberOfCalculation(string);
 
@@ -26,6 +25,7 @@ vector<string> turnLineIntoVector(string);
 /*The main function that will
 send the verctors to calculate.*/
 int main() {
+    vector<tableVec> fileVectors;
     fstream fin;
     string line, word, temp;
     vector<string> row;
@@ -48,8 +48,9 @@ int main() {
             doubles.push_back(stod(row.at(i)));
         }
         /**for testing */
-        tableVec obj1 = tableVec(doubles, row.at(row.size()-1));
-        printVector((obj1.getVector()));
+        tableVec tempRow = tableVec(doubles, row.at(row.size()-1));
+        printVector((tempRow.getVector()));
+        fileVectors.push_back(tempRow);
         /**
         //initiate tableVec = temp
          * update the temp distance
@@ -59,13 +60,12 @@ int main() {
     }
 
 
-    list<tableVec> vectors;
     double input;
     vector<double> v1;
     try {
         int numValues, typeCalc;
         //Getting the number of values that a vector has in the table for valid checking
-        numValues = numberOfValues("datasets/iris/iris_classified.csv");
+        numValues = numberOfValues(fileVectors);
 
         //Getting the type of calc
         typeCalc = numberOfCalculation("AUC");
@@ -86,6 +86,7 @@ int main() {
             throw invalid_argument("Invalid length of the vector.");
         }
     }
+
     catch (invalid_argument e) {
         cout << e.what() << endl;
         return (1);
@@ -113,32 +114,17 @@ void printVector(vector<T> v1) {
 }
 
 //Checking the correct number of values of vector
-unsigned long numberOfValues(string path) {
-    fstream fin;
-    fin.open(path, ios_base::in);
-    if (fin.is_open()) {
-        //Every value of the vector is a cell.
-        vector<string> row;
-        string line, word, temp;
-        // read an entire row and
-        // store it in a string variable 'line'
-        getline(fin, line);
-
-        // used for breaking words
-        stringstream s(line);
-
-        // read every column data of a row and
-        // store it in a string variable, 'word'
-        while (getline(s, word, ',')) {
-
-            // add all the column data
-            // of a row to a vector
-            row.push_back(word);
+int numberOfValues(vector<tableVec> fileVectors) {
+    int checkVecSize = fileVectors.at(0).getVector().size();
+    int fileSize = fileVectors.size();
+    for (int i = 1; i < fileSize; i++) {
+        if(checkVecSize!= fileVectors.at(i).getVector().size())
+        {
+            throw invalid_argument("The file is invalid for not all the vectors are not in the same length");
         }
 
-        return row.size() - 1;
     }
-    throw invalid_argument("Could not open the file.");
+    return checkVecSize;
 }
 
 

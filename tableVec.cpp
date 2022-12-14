@@ -18,6 +18,7 @@ double tableVec::getDistance(){
 void tableVec::setDistance(double distance){
     m_distance = distance;
 }
+//Calculate the distance from a vector with a certain distance formula.
 void tableVec::calcDis(vector<double> vector, distanceType distanceType){
     double distance = 0;
     switch (distanceType) {
@@ -39,8 +40,8 @@ void tableVec::calcDis(vector<double> vector, distanceType distanceType){
         default:
             break;
     }
+    //Enter the distance to the vector's data.
     this->setDistance(distance);
-
 }
 
 

@@ -11,8 +11,15 @@ all: $(OBJS) main.o
 	$(CC) $(OBJS) main.o
 %.o: %.cpp %.h
 	$(CC) -c $< -o $@
+
+%.h:
+
+%.cpp:
 main.o: main.cpp
 	$(CC) -c main.cpp
 clean:
 	$(RM) $(OBJS) $(ERROR_IGNORE)
 	$(RM) $(EXE) $(ERROR_IGNORE)
+
+run:all
+	./a.out
