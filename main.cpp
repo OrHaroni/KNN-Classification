@@ -2,16 +2,11 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include <bits/stdc++.h>
 #include <algorithm>
-#include "distance.h"
 #include "tableVec.h"
-
 #define KOMA ','
 
 using namespace std;
-
-
 
 template<typename T>
 
@@ -26,13 +21,16 @@ vector<string> turnLineIntoVector(string);
 bool compareDistance(tableVec, tableVec);
 
 /*The main function that will
-send the verctors to calculate.*/
+send the vectors to calculate.*/
 int main(int argc, char *argv[]) {
+    //Checks if the number of args are different from 4.
     if (argc != 4){
         cout << "invalid number of arguments (not 4 as expected)"<< endl;
         return 1;
     }
+    //Receiving the vectors as long as the user keeps inserting them.
     while(true) {
+        //The vector of all the data.
         vector<tableVec> fileVectors;
         fstream fin;
         string line, word, temp;
@@ -54,7 +52,7 @@ int main(int argc, char *argv[]) {
             for (int i = 0; i < row.size() - 1; ++i) {
                 doubles.push_back(stod(row.at(i)));
             }
-
+            //The vector of the current line.
             tableVec tempRow = tableVec(doubles, row.at(row.size() - 1));
             fileVectors.push_back(tempRow);
         }
@@ -65,13 +63,10 @@ int main(int argc, char *argv[]) {
         int numValues;
         distanceType typeCalc;
         try {
-
             //Getting the number of values that a vector has in the table for valid checking
             numValues = numberOfValues(fileVectors);
-
             //Getting the type of calc
             typeCalc = numberOfCalculation(argv[3]);
-
             // getting v1
             do {
                 if (std::cin >> input) {
@@ -106,7 +101,7 @@ int main(int argc, char *argv[]) {
                 throw invalid_argument("cant have negative number of neighbours");
             }
             //if K is greater than the number of vectors we have,
-            //so, all of the vectors are his neighbours, and we
+            //so, all the vectors are his neighbours, and we
             //need to print them.
             if (k > fileVectors.size()) {
                 k = fileVectors.size();
@@ -122,12 +117,6 @@ int main(int argc, char *argv[]) {
     }
 }
 
-
-
-
-
-
-
 // Func for testing
 template<typename T>
 void printVector(vector<T> v1) {
@@ -139,15 +128,18 @@ void printVector(vector<T> v1) {
 
 //Checking the correct number of values of vector
 int numberOfValues(vector<tableVec> fileVectors) {
+    //Check the size of each vector in the file to check if it's the same.
     int checkVecSize = fileVectors.at(0).getVector().size();
     int fileSize = fileVectors.size();
     for (int i = 1; i < fileSize; i++) {
         if(checkVecSize!= fileVectors.at(i).getVector().size())
         {
+            //If there is even one vectors who is different by size then exit.
             throw invalid_argument("The file is invalid for not all the vectors are not in the same length");
         }
 
     }
+    //Return the size.
     return checkVecSize;
 }
 
@@ -170,7 +162,6 @@ distanceType numberOfCalculation(string distance) {
         return MIN;
     }
     throw invalid_argument("Invalid name of calculation.");
-
 }
 
 
@@ -179,7 +170,6 @@ vector<string> turnLineIntoVector(string line) {
     string word;
     stringstream s(line);
     while (getline(s, word, KOMA)) {
-
         // add all the column data
         // of a row to a vector
         row.push_back(word);

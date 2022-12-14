@@ -3,24 +3,26 @@
 
 
 /*Calculating 3 different distances. the Euclidean and Minkowski use the same
-formula when p = 2 so it's the same in this excersice.
-for p = 1 we have special condition but its almost the same.*/
+formula when p = 2, so it's the same in this excersice.
+for p = 1 we have special condition, but it's almost the same.*/
 double distanceByP(vector<double> v1, vector<double> v2, double p)
 {
     double distance = 0;
     for (int i = 0; i < v1.size(); i++)
     {
-        //for Manhattan distance that requires absoulute value.
+        //for Manhattan distance that requires absolute value.
         if (p == 1)
         {
-            distance = abs(v1.at(i) - v2.at(i));
+            distance += abs(v1.at(i) - v2.at(i));
         }
-        distance += pow((v1.at(i) - v2.at(i)), p);
+        else{
+            distance += pow((v1.at(i) - v2.at(i)), p);
+        }
     }
     distance = pow(distance, 1 / p);
     return distance;
 }
-/*Calculating the distance by canbrra furmula. then print the result*/
+/*Calculating the distance by canbrra formula. then print the result*/
 double canberraDistance(vector<double> v1, vector<double> v2)
 {
     double distance = 0;
@@ -31,7 +33,7 @@ double canberraDistance(vector<double> v1, vector<double> v2)
     }
     return distance;
 }
-/*Calculating the distance by canbrra furmula. then print the result*/
+/*Calculating the distance by chebyshkev formula. then print the result*/
 double chebyshevDistance(vector<double> v1, vector<double> v2)
 {
     double distance = 0;
