@@ -17,7 +17,7 @@ template<typename T>
 
 void printVector(vector<T>);
 
-unsigned long  numberOfValues(string);
+unsigned long numberOfValues(string);
 
 distanceType numberOfCalculation(string);
 
@@ -26,6 +26,39 @@ vector<string> turnLineIntoVector(string);
 /*The main function that will
 send the verctors to calculate.*/
 int main() {
+    fstream fin;
+    string line, word, temp;
+    vector<string> row;
+    //open the file
+    fin.open("datasets/iris/iris_classified.csv", ios_base::in);
+
+    if (!fin.is_open()) {
+        cout << "Open failed" << endl;
+        return 1;
+    }
+    cout << "Open success" << endl;
+
+    while (fin >> temp) {
+        //initialize empty vector
+        row.clear();
+        //separate the values in temp into row
+        row = turnLineIntoVector(temp);
+        vector<double> doubles;
+        for (int i = 0; i < row.size()-1; ++i) {
+            doubles.push_back(stod(row.at(i)));
+        }
+        /**for testing */
+        tableVec obj1 = tableVec(doubles, row.at(row.size()-1));
+        printVector((obj1.getVector()));
+        /**
+        //initiate tableVec = temp
+         * update the temp distance
+         *vectors.add(temp);
+         */
+
+    }
+
+
     list<tableVec> vectors;
     double input;
     vector<double> v1;
@@ -58,38 +91,17 @@ int main() {
         return (1);
     }
     printVector(v1);
-    
-    fstream fin;
-    //Opening the file from the path
-    fin.open("datasets/iris/iris_classified.csv", ios_base::in);
-
-    if (fin.is_open()){
-        cout << "Open success" << endl;
-        //Every value of the vector is a cell.
-        vector<string> row;
-        string line, word, temp;
-        // read an entire row and
-        // store it in a string variable 'line'
-        getline(fin, line);
-
-        row = turnLineIntoVector(line);
-        printVector(row);
-
-        /**
-        //initiate tableVec = temp
-         * update the temp distance
-         *vectors.add(temp);
-         */
-    }
-    else {
-        cout << "Open failed" << endl;
-        return 1;
-    }
-
+    /**end of receiving the vector */
 
 
     return 0;
 }
+
+
+
+
+
+
 
 // Func for testing
 template<typename T>
@@ -156,7 +168,7 @@ vector<string> turnLineIntoVector(string line) {
     vector<string> row;
     string word;
     stringstream s(line);
-    while(getline(s, word, KOMA)) {
+    while (getline(s, word, KOMA)) {
 
         // add all the column data
         // of a row to a vector
