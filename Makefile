@@ -22,4 +22,4 @@ clean:
 	$(RM) $(EXE) $(ERROR_IGNORE)
 
 run:all
-	./a.out
+	./a.out 3.3 datasets/iris/iris_classified.csv AUC
