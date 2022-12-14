@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
             return 1;
         }
 
-        while (fin >> temp) {
+        while (getline(fin, temp)) {
             //initialize empty vector
             row.clear();
             //separate the values in temp into row
@@ -52,8 +52,8 @@ int main(int argc, char *argv[]) {
             for (int i = 0; i < row.size() - 1; ++i) {
                 doubles.push_back(stod(row.at(i)));
             }
-
-            tableVec tempRow = tableVec(doubles, row.at(row.size() - 1));
+            string typeOfVec;
+            tableVec tempRow = tableVec(doubles, row.at(row.size() -1));
             fileVectors.push_back(tempRow);
         }
 
@@ -111,7 +111,6 @@ int main(int argc, char *argv[]) {
             }
             map<string, int> neighbours;
             for (int i = 0; i < k; ++i) {
-                cout << fileVectors.at(i).getDistance() << endl;
                 addToMap(neighbours, fileVectors.at(i));
             }
             int maxType = 0;
@@ -183,11 +182,14 @@ vector<string> turnLineIntoVector(string line) {
     string word;
     stringstream s(line);
     while (getline(s, word, COMMA)) {
-
+        if(s.eof()){
+            break;
+        }
         // add all the column data
         // of a row to a vector
         row.push_back(word);
     }
+    row.push_back(word);
     return row;
 }
 
