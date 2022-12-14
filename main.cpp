@@ -37,12 +37,12 @@ int main(int argc, char *argv[]) {
         vector<string> row;
         //open the file
         fin.open(argv[2], ios_base::in);
-
+        //Exiting if the file cant open.
         if (!fin.is_open()) {
             cout << "The program failed to open the file (invalid path)" << endl;
             return 1;
         }
-
+        //Reading the file.
         while (getline(fin, temp)) {
             //initialize empty vector
             row.clear();
@@ -81,22 +81,26 @@ int main(int argc, char *argv[]) {
             if (cin.peek() != '\n') {
                 throw invalid_argument("Received invalid input.");
             }
+
             //if the size of the vector is not like the ones in the tables its invalid.
             if (v1.size() != numValues) {
                 throw invalid_argument("Invalid length of the vector.");
             }
         }
-
+        //Throws if get a letter in the input or too much values
         catch (invalid_argument e) {
             cout << e.what() << endl;
             return (1);
         }
 
+        //Calculating all the distances from v1 for all the vectors in fileVectors
         for (int i = 0; i < fileVectors.size(); ++i) {
             fileVectors.at(i).calcDis(v1, typeCalc);
         }
+
         //sorting the vector
         sort(fileVectors.begin(), fileVectors.end(), compareDistance);
+
         //printing the K closest, try because of the stoi and invalid inputs
         try {
             int k = stoi(argv[1]);
@@ -109,10 +113,16 @@ int main(int argc, char *argv[]) {
             if (k > fileVectors.size()) {
                 k = fileVectors.size();
             }
+            //Creating map that the key is the type
+            //and the value is the times this type
+            //appears in the file
             map<string, int> neighbours;
             for (int i = 0; i < k; ++i) {
                 addToMap(neighbours, fileVectors.at(i));
             }
+
+            //Checking the largest value of the map.
+            //Its the repeated type.
             int maxType = 0;
             string maxTypeName = fileVectors.at(0).getType();
             for (int i = 0; i < neighbours.size(); ++i) {
@@ -121,7 +131,7 @@ int main(int argc, char *argv[]) {
                     maxTypeName = fileVectors.at(i).getType();
                 }
             }
-            cout << "The type is:" << maxTypeName << endl;
+            cout << maxTypeName << endl;
         } //catches if argv[1] is not integer.
         catch (invalid_argument e) {
             cout << e.what() << endl;
@@ -144,7 +154,9 @@ void printVector(vector<T> v1) {
 int numberOfValues(vector<tableVec> fileVectors) {
     int checkVecSize = fileVectors.at(0).getVector().size();
     int fileSize = fileVectors.size();
+
     for (int i = 1; i < fileSize - 1; i++) {
+        //If we found empty vector, the file is invalid
         if (checkVecSize != fileVectors.at(i).getVector().size() && fileVectors.at(i).getVector().size() != 0) {
 
             throw invalid_argument("The file is invalid for not all the vectors are not in the same length");
@@ -172,15 +184,19 @@ distanceType numberOfCalculation(string distance) {
     if (distance == "MIN") {
         return MIN;
     }
+    //throws if the name of the type invalid
     throw invalid_argument("Invalid name of calculation.");
 
 }
 
-
+//Getting a line and return Vector that every value
+//is a word\number of the line
 vector<string> turnLineIntoVector(string line) {
     vector<string> row;
     string word;
     stringstream s(line);
+    //keep on separating the line with Comma's
+    //until its empty
     while (getline(s, word, COMMA)) {
         if(s.eof()){
             break;
@@ -189,19 +205,23 @@ vector<string> turnLineIntoVector(string line) {
         // of a row to a vector
         row.push_back(word);
     }
+    //pushing the last one.
     row.push_back(word);
     return row;
 }
 
+//Compare for the sort of the vectors
 bool compareDistance(tableVec t1, tableVec t2) {
     return t1.getDistance() < t2.getDistance();
 }
 
-
+//Adding the map.
+//If the type is not in the map, add it with 1 appearance.
+//else, add 1 to the value (add 1 appearance)
 void addToMap(map<string, int> neighbours, tableVec v1) {
     //first one with this type
     if (neighbours.find(v1.getType()) == neighbours.end()) {
-        neighbours.insert({v1.getType(), 0});
+        neighbours.insert({v1.getType(), 1});
     } else {
         neighbours.at(v1.getType())++;
     }
