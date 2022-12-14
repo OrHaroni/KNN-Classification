@@ -2,11 +2,12 @@
 // Created by adar on 12/13/22.
 //
 
-#ifndef ADVANCEDPROGPROJECT_TABLEVEC_H
-#define ADVANCEDPROGPROJECT_TABLEVEC_H
-#include "distance.h"
+#ifndef _ADVANCEDPROGPROJECT_TABLEVEC_H
+#define _ADVANCEDPROGPROJECT_TABLEVEC_H
+
 #include <iostream>
 #include <vector>
+
 using namespace std;
 enum distanceType{
     AUC = 1,
@@ -18,11 +19,15 @@ enum distanceType{
 class tableVec {
 private:
     vector <double>m_vector;
-    int m_distance;
+    double m_distance;
     string m_type;
 public:
     tableVec(::vector<double> vector, string type);
     void calcDis(::vector<double> vector, distanceType distanceType);
+    vector<double> getVector ();
+    string getType();
+    double getDistance();
+    void setDistance(double distance);
 };
 
 
