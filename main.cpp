@@ -151,7 +151,7 @@ distanceType numberOfCalculation(string distance) {
 
 }
 
-//
+
 vector<string> turnLineIntoVector(string line) {
     vector<string> row;
     string word;
@@ -162,4 +162,5 @@ vector<string> turnLineIntoVector(string line) {
         // of a row to a vector
         row.push_back(word);
     }
+    return row;
 }

@@ -2,11 +2,12 @@
 // Created by adar on 12/13/22.
 //
 
-#ifndef ADVANCEDPROGPROJECT_TABLEVEC_H
-#define ADVANCEDPROGPROJECT_TABLEVEC_H
-#include "distance.h"
+#ifndef _ADVANCEDPROGPROJECT_TABLEVEC_H
+#define _ADVANCEDPROGPROJECT_TABLEVEC_H
+
 #include <iostream>
 #include <vector>
+
 using namespace std;
 enum distanceType{
     AUC = 1,
