@@ -145,11 +145,12 @@ void printVector(vector<T> v1) {
 int numberOfValues(vector<tableVec> fileVectors) {
     int checkVecSize = fileVectors.at(0).getVector().size();
     int fileSize = fileVectors.size();
-    for (int i = 1; i < fileSize; i++) {
-        if (checkVecSize != fileVectors.at(i).getVector().size()) {
-            throw invalid_argument("The file is invalid for not all the vectors are not in the same length");
-        }
+    for (int i = 1; i < fileSize - 1; i++) {
+        if (checkVecSize != fileVectors.at(i).getVector().size() && fileVectors.at(i).getVector().size() != 0) {
 
+            throw invalid_argument("The file is invalid for not all the vectors are not in the same length");
+
+        }
     }
     return checkVecSize;
 }
