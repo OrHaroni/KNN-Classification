@@ -1,12 +1,13 @@
 #include <iostream>
 #include <vector>
-#include <fstream>
-#include <sstream>
+#include <bits/stdc++.h>
 #include <algorithm>
 #include "tableVec.h"
-#define KOMA ','
+
+#define COMMA ','
 
 using namespace std;
+
 
 template<typename T>
 
@@ -20,17 +21,16 @@ vector<string> turnLineIntoVector(string);
 
 bool compareDistance(tableVec, tableVec);
 
+void addToMap(map<string, int>, tableVec);
+
 /*The main function that will
-send the vectors to calculate.*/
+send the verctors to calculate.*/
 int main(int argc, char *argv[]) {
-    //Checks if the number of args are different from 4.
-    if (argc != 4){
-        cout << "invalid number of arguments (not 4 as expected)"<< endl;
+    if (argc != 4) {
+        cout << "invalid number of arguments (not 4 as expected)" << endl;
         return 1;
     }
-    //Receiving the vectors as long as the user keeps inserting them.
-    while(true) {
-        //The vector of all the data.
+    while (true) {
         vector<tableVec> fileVectors;
         fstream fin;
         string line, word, temp;
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
             for (int i = 0; i < row.size() - 1; ++i) {
                 doubles.push_back(stod(row.at(i)));
             }
-            //The vector of the current line.
+
             tableVec tempRow = tableVec(doubles, row.at(row.size() - 1));
             fileVectors.push_back(tempRow);
         }
@@ -63,10 +63,13 @@ int main(int argc, char *argv[]) {
         int numValues;
         distanceType typeCalc;
         try {
+
             //Getting the number of values that a vector has in the table for valid checking
             numValues = numberOfValues(fileVectors);
+
             //Getting the type of calc
             typeCalc = numberOfCalculation(argv[3]);
+
             // getting v1
             do {
                 if (std::cin >> input) {
@@ -101,14 +104,25 @@ int main(int argc, char *argv[]) {
                 throw invalid_argument("cant have negative number of neighbours");
             }
             //if K is greater than the number of vectors we have,
-            //so, all the vectors are his neighbours, and we
+            //so, all of the vectors are his neighbours, and we
             //need to print them.
             if (k > fileVectors.size()) {
                 k = fileVectors.size();
             }
+            map<string, int> neighbours;
             for (int i = 0; i < k; ++i) {
                 cout << fileVectors.at(i).getDistance() << endl;
+                addToMap(neighbours, fileVectors.at(i));
             }
+            int maxType = 0;
+            string maxTypeName = fileVectors.at(0).getType();
+            for (int i = 0; i < neighbours.size(); ++i) {
+                if (maxType < neighbours.at(fileVectors.at(i).getType())) {
+                    maxType = neighbours.at(fileVectors.at(i).getType());
+                    maxTypeName = fileVectors.at(i).getType();
+                }
+            }
+            cout << "The type is:" << maxTypeName << endl;
         } //catches if argv[1] is not integer.
         catch (invalid_argument e) {
             cout << e.what() << endl;
@@ -116,6 +130,7 @@ int main(int argc, char *argv[]) {
         }
     }
 }
+
 
 // Func for testing
 template<typename T>
@@ -128,18 +143,14 @@ void printVector(vector<T> v1) {
 
 //Checking the correct number of values of vector
 int numberOfValues(vector<tableVec> fileVectors) {
-    //Check the size of each vector in the file to check if it's the same.
     int checkVecSize = fileVectors.at(0).getVector().size();
     int fileSize = fileVectors.size();
     for (int i = 1; i < fileSize; i++) {
-        if(checkVecSize!= fileVectors.at(i).getVector().size())
-        {
-            //If there is even one vectors who is different by size then exit.
+        if (checkVecSize != fileVectors.at(i).getVector().size()) {
             throw invalid_argument("The file is invalid for not all the vectors are not in the same length");
         }
 
     }
-    //Return the size.
     return checkVecSize;
 }
 
@@ -162,6 +173,7 @@ distanceType numberOfCalculation(string distance) {
         return MIN;
     }
     throw invalid_argument("Invalid name of calculation.");
+
 }
 
 
@@ -169,7 +181,8 @@ vector<string> turnLineIntoVector(string line) {
     vector<string> row;
     string word;
     stringstream s(line);
-    while (getline(s, word, KOMA)) {
+    while (getline(s, word, COMMA)) {
+
         // add all the column data
         // of a row to a vector
         row.push_back(word);
@@ -177,7 +190,17 @@ vector<string> turnLineIntoVector(string line) {
     return row;
 }
 
-bool compareDistance(tableVec t1, tableVec t2){
+bool compareDistance(tableVec t1, tableVec t2) {
     return t1.getDistance() < t2.getDistance();
+}
+
+
+void addToMap(map<string, int> neighbours, tableVec v1) {
+    //first one with this type
+    if (neighbours.find(v1.getType()) == neighbours.end()) {
+        neighbours.insert({v1.getType(), 0});
+    } else {
+        neighbours.at(v1.getType())++;
+    }
 }
 
