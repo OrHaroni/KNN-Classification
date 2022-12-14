@@ -215,7 +215,7 @@ bool compareDistance(tableVec t1, tableVec t2) {
     return t1.getDistance() < t2.getDistance();
 }
 
-//Adding the map.
+//Adding to the map. (Iterator template)
 //If the type is not in the map, add it with 1 appearance.
 //else, add 1 to the value (add 1 appearance)
 void addToMap(map<string, int> neighbours, tableVec v1) {
