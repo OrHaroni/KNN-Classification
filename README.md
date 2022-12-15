@@ -34,7 +34,7 @@ To run this project, you will need to add the following environment variables to
 
 Enter ./a.out and then the 3 Environment variables listed above to the command line.
 
-#### What did you learned from this projact?
+#### What did you learned from this project?
 
 We learned more about mechine lerning and c++ OOP.
 
