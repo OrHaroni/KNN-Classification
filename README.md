@@ -47,3 +47,4 @@ We used the Iterator template method.
 We worked with vectors, map and we did the "KNN" algorithm.
 
 
+![istockphoto-1142790620-1024x1024](https://user-images.githubusercontent.com/110082803/207814972-ad2f2cb6-211b-40f5-8404-9ce25cf5e7c1.jpg)
