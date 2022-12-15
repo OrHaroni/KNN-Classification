@@ -31,6 +31,9 @@ To run this project, you will need to add the following environment variables to
 ## FAQ
 
 #### How to run the program?
+Enter via terminal to the folder where the project in saved.
+
+Write make
 
 Enter ./a.out and then the 3 Environment variables listed above to the command line.
 
