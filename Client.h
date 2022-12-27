@@ -26,9 +26,10 @@ public:
     void setSocket(int);
     void startSin();
     int clientConnect();
-    int sendVector(vector<double>);
+    int sendVector();
     string receive();
     int disconnect();
+    void closeClient() throw();
 
 };
 

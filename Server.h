@@ -10,6 +10,7 @@
 #include <string.h>
 #include "tableVec.h"
 
+
 using namespace std;
 class Server {
 private:
@@ -20,13 +21,14 @@ private:
     int m_client_socket;
 
 public:
-    Server(int, int);
-    void getSocket() throw();
-    void bind() throw();
-    void listen() throw();
-    void accept() throw();
-    vector<double> receive() throw();
-    void send() throw();
+    Server(int);
+    int getSocket() throw();
+    void bindServer() throw();
+    void listenServer() throw();
+    void acceptServer() throw();
+    void receive() throw();
+    void sendServer() throw();
+    void closeServer() throw();
 };
 
 

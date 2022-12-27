@@ -20,7 +20,7 @@ int Client::clientConnect() {
     return connect(m_socket, (struct sockaddr *) &m_sin, sizeof(m_sin));
 }
 
-int Client::sendVector(vector<double> vector){
+int Client::sendVector(){
     char data_addr[] = "Im a message";
     return send(m_socket, data_addr, strlen(data_addr), 0);
 }
@@ -37,6 +37,10 @@ string Client::receive(){
     else {
         cout << buffer;
     }
+}
+
+void Client::closeClient() throw() {
+    close(m_socket);
 }
 
 
