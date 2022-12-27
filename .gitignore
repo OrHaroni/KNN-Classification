@@ -2,6 +2,5 @@
 a.out
 *.o
 *.gch
-*.idea
-workspace.xml
-
+.idea/
+.idea/workspace.xml
