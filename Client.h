@@ -22,13 +22,12 @@ private:
 
 public:
     Client(const char*, int);
-    int getNewSocket();
-    void setSocket(int);
+    void setSocket() throw();
     void startSin();
-    int clientConnect();
-    int sendVector(vector<double>);
-    string receive();
-    int disconnect();
+    void clientConnect() throw();
+    void sendVector() throw();
+    string receive() throw();
+    void disconnect();
 
 };
 

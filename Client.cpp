@@ -2,12 +2,13 @@
 Client::Client(const char * ip_address,int port_no):m_ip_address(ip_address),m_port_no(port_no) {}
 
 int Client::getNewSocket() {
-    return socket(AF_INET, SOCK_STREAM, 0);
+    m_socket = socket(AF_INET, SOCK_STREAM, 0);
+    if(m_socket < 0){
+        throw invalid_argument("error creating socket");
+    }
 }
 
-void Client::setSocket(int socket) {
-    m_socket = socket;
-}
+
 
 void Client::startSin(){
     memset(&m_sin,0,sizeof(m_sin));
@@ -16,26 +17,33 @@ void Client::startSin(){
     m_sin.sin_port = htons(m_port_no);
 }
 
-int Client::clientConnect() {
-    return connect(m_socket, (struct sockaddr *) &m_sin, sizeof(m_sin));
+void Client::clientConnect() {
+    int connect_num = connect(m_socket, (struct sockaddr *) &m_sin, sizeof(m_sin));
+    if(connect_num < 0){
+        throw invalid_argument("error in connect procces");
+    }
+
 }
 
-int Client::sendVector(vector<double> vector){
+void Client::sendVector(){
     char data_addr[] = "Im a message";
-    return send(m_socket, data_addr, strlen(data_addr), 0);
+    int sent_num = send(m_socket, data_addr, strlen(data_addr), 0);
+    if(sent_num < 0){
+        throw invalid_argument("error in sending");
+    }
 }
 string Client::receive(){
     char buffer[4096];
     int expected_data_len = sizeof(buffer);
     int read_bytes = recv(m_socket, buffer, expected_data_len, 0);
     if (read_bytes == 0) {
-// connection is closed
+        throw invalid_argument("close");
     }
-    else if (read_bytes < 0) {
-// error
+    else if (read_bytes < 0){
+        throw invalid_argument("error in receive");
     }
-    else {
-        cout << buffer;
+    else{
+        return buffer;
     }
 }
 
