@@ -4,16 +4,7 @@
 AFTER MAILING YOAV, WE ARE ADDING LINK TO THE LAST COMMIT OF EX2: https://github.com/OrHaroni/AdvancedProgProject/tree/c58898bf8e87ee46adc9995c00df9fef47cd807c
 THANK YOU FOR YOUR CONSIDERATION***
 
-The program expects the user to input a vector on standard input. The input should be a sequence of numbers separated by whitespace, with no leading or trailing whitespace.
-
-The program includes several functions and templates to support its functionality:
-
-printVector: a template function that takes in a vector of any type and outputs the elements in the vector, separated by whitespace
-numberOfValues: a function that takes in a vector of tableVec objects and returns the number of values each tableVec object has
-numberOfCalculation: a function that takes in a string and returns an enum value representing the type of distance calculation to perform
-turnLineIntoVector: a function that takes in a string and returns a vector of strings, with each element of the vector being a substring of the input string separated by the comma (,) character
-compareDistance: a function that takes in two tableVec objects and returns a boolean value indicating whether the distance of the first tableVec is less than the distance of the second tableVec. This function is used as a comparison function for the sort function.
-main: the main function of the program, which reads in the vectors from the file, receives the vector from the user, calculates the distances between the two sets of vectors, sorts the vectors by distance, and outputs the smallest k distances.
+The program expects from the user to insert vector with valid length (4,8,12 by the majority of the file the program has been opened).
 
 
 ## Authors
