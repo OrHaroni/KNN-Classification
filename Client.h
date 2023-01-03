@@ -22,7 +22,7 @@ private:
 
 public:
     Client(const char*, int);
-    void setSocket() throw();
+    void setNewSocket() throw();
     void startSin();
     void clientConnect() throw();
     void sendVector() throw();
