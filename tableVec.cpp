@@ -2,7 +2,7 @@
  * from the exel file, it has the vector, its distance from the input and its type.
  */
 #include "tableVec.h"
-#include "distance.h"
+
 //Constructor to the tableVec
 tableVec::tableVec(vector<double> vector, string type):m_vector(vector),m_type(type),m_distance(0) {}
 
@@ -43,5 +43,3 @@ void tableVec::calcDis(vector<double> vector, distanceType distanceType){
     //Enter the distance to the vector's data.
     this->setDistance(distance);
 }
-
-

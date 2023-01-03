@@ -9,9 +9,11 @@
 #include <unistd.h>
 #include <string.h>
 #include "tableVec.h"
-
+#include "ExtraFunc.cpp"
 
 using namespace std;
+
+
 class Server {
 private:
     int m_server_port;
@@ -19,6 +21,7 @@ private:
     int m_socket;
     struct sockaddr_in m_client_sin;
     int m_client_socket;
+    char msg[4096];
 
 public:
     Server(int);
@@ -26,9 +29,12 @@ public:
     void bindServer() throw();
     void listenServer() throw();
     void acceptServer() throw();
-    void receive() throw();
-    void sendServer() throw();
+    void receive();
+    void sendServer(char*) throw();
     void closeServer() throw();
+    vector<double> manipulateMSG() throw();
+    distanceType getDisType() ;
+    int getNumNeighbours() throw();
 };
 
 
