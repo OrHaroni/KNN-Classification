@@ -20,11 +20,10 @@ private:
 
 public:
     Client(const char*, int);
-
     void getNewSocket() throw();
     void startSin();
     void clientConnect() throw();
-    void sendVector() throw();
+    void sendVector(char*) throw();
     string receive() throw();
     void disconnect();
 

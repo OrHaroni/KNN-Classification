@@ -22,11 +22,10 @@ void Client::clientConnect() throw(){
     if(connect_num < 0){
         throw invalid_argument("error in connect procces");
     }
-
 }
 
-void Client::sendVector() throw(){
-    char data_addr[] = "Im a message";
+void Client::sendVector(char* msg) throw(){
+    char *data_addr = msg;
     int sent_num = send(m_socket, data_addr, strlen(data_addr), 0);
     if(sent_num < 0){
         throw invalid_argument("error in sending");
@@ -45,4 +44,7 @@ string Client::receive() throw(){
     else{
         return buffer;
     }
+}
+void Client::disconnect(){
+    close(m_socket);
 }
