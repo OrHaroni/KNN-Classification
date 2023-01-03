@@ -20,6 +20,7 @@ private:
 
 public:
     Client(const char*, int);
+
     void getNewSocket() throw();
     void startSin();
     void clientConnect() throw();
