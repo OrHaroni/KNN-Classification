@@ -82,7 +82,6 @@ void Server::receive() {
         throw invalid_argument("error with the receiving");
     }
     strcpy(msg, buffer);
-    cout << "Adar send me this: " << msg << endl;
     if(!strcmp(msg, "-1")){
         throw invalid_argument("client exiting");
     }
