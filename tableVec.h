@@ -16,15 +16,14 @@ class tableVec {
 private:
     vector <double>m_vector;
     double m_distance;
-    distanceType m_type;
+    string m_type;
     void setDistance(double distance);
 public:
-    tableVec(vector<double> vector, distanceType type);
+    tableVec(vector<double> vector, string type);
     void calcDis(vector<double> vector, distanceType distanceType);
     vector<double> getVector ();
-    distanceType getType();
+    string getType();
     double getDistance();
-    string getTypeString() throw();
 };
 
 

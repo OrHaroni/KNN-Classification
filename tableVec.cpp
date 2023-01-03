@@ -4,12 +4,12 @@
 #include "tableVec.h"
 
 //Constructor to the tableVec
-tableVec::tableVec(vector<double> vector, distanceType type):m_vector(vector),m_type(type),m_distance(0) {}
+tableVec::tableVec(vector<double> vector, string type):m_vector(vector),m_type(type),m_distance(0) {}
 
 vector<double> tableVec:: getVector (){
     return m_vector;
 }
-distanceType tableVec::getType(){
+string tableVec::getType(){
     return m_type;
 }
 double tableVec::getDistance(){
@@ -44,19 +44,3 @@ void tableVec::calcDis(vector<double> vector, distanceType distanceType){
     this->setDistance(distance);
 }
 
-string tableVec::getTypeString() throw(){
-    switch (m_type) {
-        case AUC:
-            return "AUC";
-        case MAN:
-            return "MAN";
-        case CHB:
-            return "CHB";
-        case CAN:
-            return "CAN";
-        case MIN:
-            return "MIN";
-        default:
-            throw invalid_argument("No type found");
-    }
-}
