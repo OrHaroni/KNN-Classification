@@ -1,5 +1,3 @@
-
-
 #ifndef ADVANCEDPROGPROJECT_CLIENT_H
 #define ADVANCEDPROGPROJECT_CLIENT_H
 #include <iostream>
@@ -22,14 +20,12 @@ private:
 
 public:
     Client(const char*, int);
-    int getNewSocket();
-    void setSocket(int);
+    void getNewSocket() throw();
     void startSin();
-    int clientConnect();
-    int sendVector();
-    string receive();
-    int disconnect();
-    void closeClient() throw();
+    void clientConnect() throw();
+    void sendVector() throw();
+    string receive() throw();
+    void disconnect();
 
 };
 
