@@ -1,9 +1,9 @@
 #include "Server.h"
 
 //Constructor
-Server::Server(int serverPort,int socket): m_client_socket(0) {
+Server::Server(int serverPort): m_client_socket(0) {
     m_server_port = serverPort;
-    m_socket = socket;
+    m_socket = getSocket();
     //Initializing the struct and adding values.
     memset(&m_sin, 0, sizeof(m_sin));
     m_sin.sin_family = AF_INET;
@@ -13,54 +13,57 @@ Server::Server(int serverPort,int socket): m_client_socket(0) {
     memset(&m_client_sin, 0, sizeof(m_client_sin));
 }
 //Creating and getting a socket.
-void Server::getSocket() throw() {
+int Server::getSocket() throw() {
     //Creating new socket
-    int socket = socket(AF_INET, SOCK_STREAM, 0);
+    int s = socket(AF_INET, SOCK_STREAM, 0);
 
     //Checking if the socket is not valid
-    if(socket < 0){
+    if(s < 0){
         throw invalid_argument("error creating socket");
     }
-    return socket;
+    return s;
 }
 //Binding the socket
-void Server::bind() throw() {
+void Server::bindServer() throw() {
     if(bind(m_socket, (struct sockaddr *) &m_sin, sizeof(m_sin)) < 0){
         throw invalid_argument("error binding socket");
     }
 }
 //Listen to a socket
-void Server::listen() throw() {
+void Server::listenServer() throw() {
     if(listen(m_socket, 5) < 0){
         throw invalid_argument("error listening to a socket");
     }
 }
 //Accepting a client and saving the client's socket id
-void Server::accept() throw() {
+void Server::acceptServer() throw() {
     //Saving and accepting the clients socket
-    m_client_socket = accept(m_socket,(struct sockaddr *) &m_client_sin, sizeof(m_client_sin));
+    unsigned int addr_len = sizeof(m_client_sin);
+    m_client_socket = accept(m_socket,(struct sockaddr *) &m_client_sin, &addr_len);
     if(m_client_socket < 0){
         throw invalid_argument("error accepting client");
     }
 }
 
-vector<double> Server::receive() throw() {
-    vector<double> my_vector;
+void Server::receive() throw() {
     char buffer[4096];
-    int read_bytes = recv(m_client_socket, buffer, sizeof(buffer), 0);
+    unsigned int buffer_length = strlen(buffer);
+    int read_bytes = recv(m_client_socket, buffer, buffer_length, 0);
     if(read_bytes == 0){
         throw invalid_argument("need to close the connection because read_bytes = 0");
     }
     else if(read_bytes < 0){
         throw invalid_argument("error with the receiving");
     }
-    for (int i = 0; i < sizeof(buffer); ++i) {
-        my_vector.at[i] = buffer[i];  //Not supposed to work
-    }
-    return my_vector;
+    cout << "This is the message:" << buffer << endl;
 }
 
-void Server::send() throw() {
-    string buffer = "This message has been sent.";
-    int send_bytes = send(m_client_socket, buffer, sizeof(buffer), 0);
+void Server::sendServer() throw() {
+    char buffer[] = "This message has been sent.";
+    unsigned int addr_len = strlen(buffer);
+    int send_bytes = send(m_client_socket, (void* ) buffer, addr_len, 0);
+}
+
+void Server::closeServer() throw() {
+    close(m_socket);
 }

@@ -3,6 +3,8 @@
 #include <bits/stdc++.h>
 #include <algorithm>
 #include "tableVec.h"
+#include "Server.h"
+#include "Client.h"
 
 #define COMMA ','
 
@@ -26,7 +28,7 @@ void addToMap(map<string, int>, tableVec);
 /*The main function that will
 send the verctors to calculate.*/
 int main(int argc, char *argv[]) {
-    if (argc != 4) {
+  /**  if (argc != 4) {
         cout << "invalid number of arguments (not 4 as expected)" << endl;
         return 1;
     }
@@ -97,9 +99,42 @@ int main(int argc, char *argv[]) {
         for (int i = 0; i < fileVectors.size(); ++i) {
             fileVectors.at(i).calcDis(v1, typeCalc);
         }
+**/
 
+
+        Server server = Server(123456);
+        server.getSocket();
+        server.bindServer();
+        server.listenServer();
+
+        Client client = Client("127.0.0.1", 123456);
+        int client_socket = client.getNewSocket();
+        if(client_socket < 0)
+        {
+            throw invalid_argument("client cant create socket");
+        }
+        client.setSocket(client_socket);
+        client.startSin();
+        if(client.clientConnect() < 0)
+        {
+            throw invalid_argument("client cant connect");
+        }
+
+        server.acceptServer();
+
+        client.sendVector();
+
+        server.receive();
+
+        //Close the sockets
+        server.closeServer();
+        client.closeClient();
+
+
+/**
         //sorting the vector
         sort(fileVectors.begin(), fileVectors.end(), compareDistance);
+
 
         //printing the K closest, try because of the stoi and invalid inputs
         try {
@@ -138,6 +173,7 @@ int main(int argc, char *argv[]) {
             return (1);
         }
     }
+    **/
 }
 
 

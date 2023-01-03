@@ -1,6 +1,6 @@
 CC = g++ -std=c++11
 
-OBJS = tableVec.o distance.o
+OBJS = tableVec.o distance.o Client.o Server.o
 
 
 	RM = rm -rf
@@ -22,4 +22,4 @@ clean:
 	$(RM) $(EXE) $(ERROR_IGNORE)
 
 run:all
-	./a.out 3.3 datasets/iris/iris_classified.csv AUC
+	./a.out

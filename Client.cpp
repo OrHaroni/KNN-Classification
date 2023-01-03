@@ -25,14 +25,14 @@ void Client::clientConnect() throw(){
 
 }
 
-void Client::sendVector()throw(){
+void Client::sendVector() throw(){
     char data_addr[] = "Im a message";
     int sent_num = send(m_socket, data_addr, strlen(data_addr), 0);
     if(sent_num < 0){
         throw invalid_argument("error in sending");
     }
 }
-string Client::receive()throw(){
+string Client::receive() throw(){
     char buffer[4096];
     int expected_data_len = sizeof(buffer);
     int read_bytes = recv(m_socket, buffer, expected_data_len, 0);
@@ -46,6 +46,3 @@ string Client::receive()throw(){
         return buffer;
     }
 }
-
-
-
