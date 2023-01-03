@@ -1,10 +1,6 @@
-//
-// Created by adar on 12/13/22.
-//
-
 #ifndef _ADVANCEDPROGPROJECT_TABLEVEC_H
 #define _ADVANCEDPROGPROJECT_TABLEVEC_H
-
+#include "distance.h"
 #include <iostream>
 #include <vector>
 
