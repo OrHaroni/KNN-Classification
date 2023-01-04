@@ -1,11 +1,12 @@
 #include "Client.h"
-#include <limits>
 using namespace std;
 
 int main(int argc, char *argv[]){
+    //The number of args is 3.
     if(argc != 3){
         return 1;
     }
+    //Split the ip to numbers to check it.
     string port = argv[1];
     char seps[] = ".";
     char *token;
@@ -14,6 +15,7 @@ int main(int argc, char *argv[]){
     {
         int number = 0;
         try{
+            //Make it a number.
             number = stoi(token);
         }
         catch(invalid_argument e) {
@@ -29,8 +31,9 @@ int main(int argc, char *argv[]){
             return 1;
         }
         token = strtok( NULL, seps );
-        cout << "after token" << endl;
+
     }
+    //Get the port number.
     int port_number = 0;
     try{
         port_number = stoi(argv[2]);
@@ -42,25 +45,20 @@ int main(int argc, char *argv[]){
         cout << "invalid size of port" << endl;
         return 1;
     }
-    cout << "after port val" << endl;
-
-    cout << argv[1] << endl;
-    cout << port_number << endl;
-
+    //Start the client with the port and ip.
     Client c = Client(argv[1],port_number);
     c.getNewSocket();
-    cout << "got soc" << endl;
     c.startSin();
-    cout << "got sin" << endl;
     c.clientConnect();
-    cout << "connected" << endl;
-    while (true){
 
+    while (true){
+        //Get the vector from the user.
         string input;
         getline(cin,input);
         const int len = input.length();
         char *temp = new char[len+1];
         strcpy(temp,input.c_str());
+        //If the string is -1 we exit.
         if(!strcmp(temp,"-1")){
             char* str = new char[2];
             strcpy(str,temp);
@@ -68,10 +66,12 @@ int main(int argc, char *argv[]){
             c.disconnect();
             return 1;
         }
+        //Sent the vector.
         c.sendVector(temp);
-        cout<< "sent" << temp << endl;
+        //Print the type.
         string toPrint = c.receive();
         cout << toPrint << endl;
+        //Clear the buffer.
         cin.clear();
         cin.clear();
     }
