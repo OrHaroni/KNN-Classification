@@ -52,6 +52,7 @@ void Server::acceptServer() throw() {
         this->closeServer();
         throw invalid_argument("error accepting client");
     }
+    cout << "Accepted" << endl;
 }
 
 void Server::sendServer(char* answer) throw() {
@@ -60,6 +61,7 @@ void Server::sendServer(char* answer) throw() {
         this->closeServer();
         throw invalid_argument("Could not send msg");
     }
+    cout << "I send to Adar: " << answer << endl;
 }
 
 void Server::closeServer() throw() {
@@ -68,6 +70,7 @@ void Server::closeServer() throw() {
 
 void Server::receive() {
     char buffer[4096];
+    ::memset(buffer,4096,1);
     unsigned int buffer_length = 4096;
     int read_bytes = recv(m_client_socket, buffer, buffer_length, 0);
     //get rid of unnecessary char in the last place.
@@ -82,9 +85,10 @@ void Server::receive() {
         throw invalid_argument("error with the receiving");
     }
     strcpy(msg, buffer);
-    if(!strcmp(msg, "-1")){
+    if(strlen(msg) == 5 && msg[0] == '-' && msg[1] == '1'){
         throw invalid_argument("client exiting");
     }
+    cout << "received: " << msg << endl;
 }
 
 vector<double> Server::manipulateMSG() throw() {
