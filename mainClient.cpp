@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
         }
         catch(invalid_argument e) {
             cout << "Invalid ip" << endl;
-            return 1;
+            return 0;
         }
         if (number < 0){
             cout << "Invalid ip" << endl;
@@ -62,7 +62,7 @@ int main(int argc, char *argv[]){
             strcpy(str,temp);
             c.sendVector(str);
             c.disconnect();
-            return 0;
+            return 1;
         }
         c.sendVector(temp);
         string toPrint = c.receive();
