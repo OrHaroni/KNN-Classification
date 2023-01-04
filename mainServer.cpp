@@ -161,7 +161,13 @@ int main(int argc, char *argv[]) {
             const int len = invalid.length();
             char *temp = new char[len + 1];
             strcpy(temp, invalid.c_str());
-            server.sendServer(temp);
+            try {
+                server.sendServer(temp);
+            }
+            catch(invalid_argument e){
+                server.listenServer();
+                server.acceptServer();
+            }
         }
     }
 }

@@ -83,7 +83,7 @@ void Server::receive() {
         throw invalid_argument("error with the receiving");
     }
     strcpy(msg, buffer);
-    if(strlen(msg) == 5 && msg[0] == '-' && msg[1] == '1'){
+    if(msg[0] == '-' && msg[1] == '1'){
         throw invalid_argument("client exiting");
     }
 }
