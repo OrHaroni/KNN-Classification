@@ -55,7 +55,6 @@ int main(int argc, char *argv[]){
     c.clientConnect();
     cout << "connected" << endl;
     while (true){
-
         string input;
         getline(cin,input);
         const int len = input.length();
