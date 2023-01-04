@@ -52,7 +52,6 @@ void Server::acceptServer() throw() {
         this->closeServer();
         throw invalid_argument("error accepting client");
     }
-    cout << "Accepted" << endl;
 }
 
 void Server::sendServer(char* answer) throw() {
@@ -61,7 +60,6 @@ void Server::sendServer(char* answer) throw() {
         this->closeServer();
         throw invalid_argument("Could not send msg");
     }
-    cout << "I send to Adar: " << answer << endl;
 }
 
 void Server::closeServer() throw() {
@@ -88,7 +86,6 @@ void Server::receive() {
     if(strlen(msg) == 5 && msg[0] == '-' && msg[1] == '1'){
         throw invalid_argument("client exiting");
     }
-    cout << "received: " << msg << endl;
 }
 
 vector<double> Server::manipulateMSG() throw() {
