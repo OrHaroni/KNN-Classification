@@ -22,4 +22,4 @@ clean:
 	$(RM) $(EXE) $(ERROR_IGNORE)
 
 run:all
-	./a.out
+	./a.out datasets/iris/iris_classified.csv 12345
