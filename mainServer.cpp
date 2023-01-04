@@ -15,7 +15,8 @@ int main(int argc, char *argv[]) {
     int portNumber = 0;
     try{
     //Validation of the port
-    portNumber = stoi(argv[2]);}
+    portNumber = stoi(argv[2]);
+    }
     catch(invalid_argument e)
     {
         cout << "invalid number of port" << endl;

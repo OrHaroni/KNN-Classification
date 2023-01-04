@@ -37,7 +37,7 @@ void Server::bindServer() throw() {
 
 //Listen to a socket
 void Server::listenServer() throw() {
-    if (listen(m_socket, 5) < 0) {
+    if (listen(m_socket, 1) < 0) {
         this->closeServer();
         throw invalid_argument("error listening to a socket");
     }
