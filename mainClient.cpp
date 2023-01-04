@@ -31,6 +31,7 @@ int main(int argc, char *argv[]){
             return 1;
         }
         token = strtok( NULL, seps );
+        cout << "after token" << endl;
     }
     int port_number = 0;
     try{
@@ -43,13 +44,18 @@ int main(int argc, char *argv[]){
         cout << "invalid size of port" << endl;
         return 1;
     }
+    cout << "after port val" << endl;
 
+    cout << argv[1] << endl;
+    cout << port_number << endl;
 
     Client c = Client(argv[1],port_number);
     c.getNewSocket();
+    cout << "got soc" << endl;
     c.startSin();
+    cout << "got sin" << endl;
     c.clientConnect();
-
+    cout << "connected" << endl;
     while (true){
 
         string input;
@@ -65,6 +71,7 @@ int main(int argc, char *argv[]){
             return 1;
         }
         c.sendVector(temp);
+        cout<< "sent" << temp << endl;
         string toPrint = c.receive();
         cout << toPrint << endl;
         cin.clear();
