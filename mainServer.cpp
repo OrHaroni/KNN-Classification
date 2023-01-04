@@ -12,7 +12,17 @@ int main(int argc, char *argv[]) {
         cout << "invalid number of arguments" << endl;
         return 1;
     }
-    if(atoi(argv[2]) < 1024 || atoi(argv[2]) > 65535){
+    int portNumber = 0;
+    try{
+    //Validation of the port
+    portNumber = stoi(argv[2]);}
+    catch(invalid_argument e)
+    {
+        cout << "invalid number of port" << endl;
+        return 1;
+    }
+    //If we got here stoi worked and portNumber != 0
+    if(portNumber < 1024 || portNumber > 65535){
         cout << "invalid size of port" << endl;
         return 1;
     }
@@ -21,7 +31,6 @@ int main(int argc, char *argv[]) {
     fstream fin;
     string line, word, temp;
     vector<string> row;
-    int portNumber = 12335;
     Server server = Server(portNumber);
     //open the file
     fin.open(argv[1], ios_base::in);
@@ -42,6 +51,7 @@ int main(int argc, char *argv[]) {
                 doubles.push_back(stod(row.at(i)));
             }
 
+            //Adding temp vector from row to fileVectors
             string typeOfVec;
             tableVec tempRow = tableVec(doubles, row.at(row.size() - 1));
             fileVectors.push_back(tempRow);
@@ -61,6 +71,8 @@ int main(int argc, char *argv[]) {
             try {
                 server.receive();
             } catch (invalid_argument e){
+                //Not receiving so client disconnected
+                //so listen to the next client
                 server.listenServer();
                 server.acceptServer();
                 server.receive();
@@ -129,7 +141,7 @@ int main(int argc, char *argv[]) {
             strcpy(temp, maxTypeName.c_str());
             server.sendServer(temp);
 
-            //catches if argv[1] is not integer.
+            //catches if getting invalid input.
         } catch (invalid_argument e) {
             string invalid = "Invalid input";
             const int len = invalid.length();
