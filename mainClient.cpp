@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
         }
         catch(invalid_argument e) {
             cout << "Invalid ip" << endl;
-            return 1;
+            return 0;
         }
         if (number < 0){
             cout << "Invalid ip" << endl;
@@ -32,15 +32,20 @@ int main(int argc, char *argv[]){
         }
         token = strtok( NULL, seps );
     }
-
-
-    if(atoi(argv[2]) < 1024 || atoi(argv[2]) > 65535){
+    int port_number = 0;
+    try{
+        port_number = stoi(argv[2]);
+    }catch(invalid_argument e){
+        cout << "invalid size of port" << endl;
+    }
+    //If we got here it's a number.
+    if(port_number < 1024 || port_number > 65535){
         cout << "invalid size of port" << endl;
         return 1;
     }
 
 
-    Client c = Client("172.18.48.181",12335);
+    Client c = Client(argv[1],port_number);
     c.getNewSocket();
     c.startSin();
     c.clientConnect();
@@ -57,7 +62,7 @@ int main(int argc, char *argv[]){
             strcpy(str,temp);
             c.sendVector(str);
             c.disconnect();
-            return 0;
+            return 1;
         }
         c.sendVector(temp);
         string toPrint = c.receive();
