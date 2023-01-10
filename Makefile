@@ -1,6 +1,8 @@
 CC = g++ -std=c++11
 
-OBJS = ExtraFunc.o tableVec.o distance.o Client.o Server.o ActiveClient.o 
+
+OBJS = ExtraFunc.o tableVec.o distance.o Client.o Server.o ActiveClient.o  Command.o first_command.o second_command.o third_command.o fourth_command.o fifth_command.o
+
 
 
 	RM = rm -rf
@@ -21,7 +23,7 @@ mainServer.o: mainServer.cpp
 	$(CC) -c -o server.o mainServer.cpp
 mainClient.o: mainClient.cpp
 	$(CC) -c -o client.o mainClient.cpp
-clean:
+clean:`
 	$(RM) $(OBJS) $(ERROR_IGNORE)
 	$(RM) $(EXE) $(ERROR_IGNORE)
 
