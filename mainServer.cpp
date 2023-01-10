@@ -140,7 +140,8 @@ int main(int argc, char *argv[]) {
             const int len = maxTypeName.length();
             char *temp = new char[len + 1];
             strcpy(temp, maxTypeName.c_str());
-            server.sendServer(temp);
+            //server.sendServer(temp);
+            server.sendMenu();
 
             //catches if getting invalid input.
         } catch (invalid_argument e) {

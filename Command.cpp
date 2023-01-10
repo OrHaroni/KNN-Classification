@@ -1,5 +1,8 @@
 #include "Command.h"
 
-string Command::get_desc() {
+Command::Command(string desc) : m_description(desc) { }
+
+
+string Command::get_desc() const {
     return m_description;
 }
