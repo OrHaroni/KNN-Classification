@@ -1,6 +1,6 @@
 CC = g++ -std=c++11
 
-OBJS = ExtraFunc.o tableVec.o distance.o Client.o Server.o
+OBJS = ExtraFunc.o tableVec.o distance.o Client.o Server.o ActiveClient.o 
 
 
 	RM = rm -rf
