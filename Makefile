@@ -21,7 +21,7 @@ mainServer.o: mainServer.cpp
 	$(CC) -c -o server.o mainServer.cpp
 mainClient.o: mainClient.cpp
 	$(CC) -c -o client.o mainClient.cpp
-clean:
+clean:`
 	$(RM) $(OBJS) $(ERROR_IGNORE)
 	$(RM) $(EXE) $(ERROR_IGNORE)
 
