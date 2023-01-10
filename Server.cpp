@@ -12,6 +12,8 @@ Server::Server(int serverPort) : m_client_socket(0) {
     m_sin.sin_port = htons(serverPort);
     //Initializing the client's struct without values.
     memset(&m_client_sin, 0, sizeof(m_client_sin));
+    this->lastIndexInMap = 0;
+    this->currentThreadIndex = 0;
 }
 
 //Creating and getting a socket.
@@ -37,7 +39,7 @@ void Server::bindServer() throw() {
 
 //Listen to a socket
 void Server::listenServer() throw() {
-    if (listen(m_socket, 1) < 0) {
+    if (listen(m_socket, 5) < 0) {
         this->closeServer();
         throw invalid_argument("error listening to a socket");
     }
@@ -45,17 +47,25 @@ void Server::listenServer() throw() {
 
 //Accepting a client and saving the client's socket id
 void Server::acceptServer() throw() {
+    //Adding new active client and adding 1 to the last index
+    //Giving the client the same index to know how to reach him.
+    ActiveClient temp_client = ActiveClient(this->m_server_port, this->lastIndexInMap);
+
     //Saving and accepting the clients socket
-    unsigned int addr_len = sizeof(m_client_sin);
-    m_client_socket = accept(m_socket, (struct sockaddr *) &m_client_sin, &addr_len);
-    if (m_client_socket < 0) {
+    unsigned int addr_len = sizeof(temp_client.getSockStruct());
+    sockaddr_in temp = temp_client.getSockStruct();
+    int client_socket = accept(m_socket, (struct sockaddr *) &temp, &addr_len);
+    if (client_socket < 0) {
         this->closeServer();
         throw invalid_argument("error accepting client");
     }
+    temp_client.setClientSocket(client_socket);
+    this->clients.insert({this->currentThreadIndex, temp_client});
 }
 
 void Server::sendServer(char* answer) throw() {
-    int send_bytes = send(m_client_socket, (void *) answer, 4096, 0);
+    ActiveClient temp_client = this->clients.at(this->currentThreadIndex);
+    int send_bytes = send(temp_client.getClientSocket(), (void *) msg, 4096, 0);
     if (send_bytes < 0) {
         this->closeServer();
         throw invalid_argument("Could not send msg");
@@ -67,10 +77,11 @@ void Server::closeServer() throw() {
 }
 
 void Server::receive() {
+    ActiveClient temp_client = this->clients.at(this->currentThreadIndex);
     char buffer[4096];
     ::memset(buffer,4096,1);
     unsigned int buffer_length = 4096;
-    int read_bytes = recv(m_client_socket, buffer, buffer_length, 0);
+    int read_bytes = recv(temp_client.getClientSocket(), buffer, buffer_length, 0);
     //get rid of unnecessary char in the last place.
     if (buffer[strlen(buffer) - 1] > '9' || buffer[strlen(buffer) - 1] <= '0') {
         buffer[strlen(buffer) - 1] = 0; // get rid of unnecessary char.
@@ -135,7 +146,7 @@ distanceType Server::getDisType() {
     try {
         return numberOfCalculation(token);
     }catch (invalid_argument e){
-        throw invalid_argument("invalid input dssadasd");
+        throw invalid_argument("invalid input");
     }
 }
 
@@ -160,4 +171,10 @@ int Server::getNumNeighbours() throw() {
     }
     return atoi(token);
 
+}
+
+void Server::closeClient(){
+    //Do some stuff
+    this->clients.erase(this->currentThreadIndex);
+    //Delete and Exit this thread
 }

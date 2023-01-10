@@ -2,14 +2,15 @@
 #define CLIONPROJECTS_SERVER_H
 
 #include <iostream>
-#include <sys/socket.h>
 #include <stdio.h>
+#include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
 #include "tableVec.h"
 #include "ExtraFunc.cpp"
+#include "ActiveClient.h"
 
 using namespace std;
 
@@ -22,6 +23,10 @@ private:
     struct sockaddr_in m_client_sin;
     int m_client_socket;
     char msg[4096];
+    int lastIndexInMap;
+    map<int, ActiveClient> clients;
+    int currentThreadIndex;
+
 
 public:
     Server(int);
@@ -35,6 +40,7 @@ public:
     vector<double> manipulateMSG() throw();
     distanceType getDisType() ;
     int getNumNeighbours() throw();
+    void closeClient();
 };
 
 
