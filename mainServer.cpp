@@ -29,37 +29,13 @@ int main(int argc, char *argv[]) {
     }
     //Creating a vector of table vectors for future compares.
     FileVector fileVectors = FileVector();
-    fstream fin;
-    string line, word, temp;
-    vector<string> row;
     Server server = Server(portNumber);
-    //open the file
-    fin.open(argv[1], ios_base::in);
-    //Exiting if the file cant open.
-    if (!fin.is_open()) {
-        cout << "The program failed to open the file (invalid path)" << endl;
-        return 1;
-    }
-    //Reading the file.
     try {
-        while (getline(fin, temp)) {
-            //initialize empty vector
-            row.clear();
-            //separate the values in temp into row
-            row = turnLineIntoVector(temp);
-            vector<double> doubles;
-            for (int i = 0; i < row.size() - 1; ++i) {
-                doubles.push_back(stod(row.at(i)));
-            }
-
-            //Adding temp vector from row to fileVectors
-            string typeOfVec;
-            tableVec tempRow = tableVec(doubles, row.at(row.size() - 1));
-            fileVectors.Add(tempRow);
-        }
+        fileVectors.InitializeByReadingFile(argv[1]);
         server.bindServer();
         server.listenServer();
         server.acceptServer();
+        server.sendMenu();
     } catch (invalid_argument e) {
         string invalid = "Invalid input";
         const int len = invalid.length();
