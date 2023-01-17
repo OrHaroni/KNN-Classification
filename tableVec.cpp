@@ -43,4 +43,12 @@ void tableVec::calcDis(vector<double> vector, distanceType distanceType){
     //Enter the distance to the vector's data.
     this->setDistance(distance);
 }
+string tableVec::to_string(){
+    //int size = m_vector.size();
+    string name_of_vec;
+    for (double number:m_vector) {
+        name_of_vec += std::to_string(number);
+    }
+    return name_of_vec;
+}
 

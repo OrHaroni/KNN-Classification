@@ -6,6 +6,7 @@
 #include "Commands.h"
 #include <iostream>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -28,6 +29,7 @@ public:
     vector<double> getVector ();
     string getType();
     double getDistance();
+    string to_string();
 };
 
 

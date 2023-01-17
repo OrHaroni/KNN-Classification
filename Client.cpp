@@ -27,9 +27,12 @@ void Client::clientConnect() throw(){
     }
 }
 
-void Client::sendVector(char* msg) throw(){
+void Client::sendVector(string string1) throw(){
     //Sending the vector to the server.
-    char *data_addr = msg;
+    const int len = string1.length();
+    char *temp = new char[len+1];
+    strcpy(temp,string1.c_str());
+    char *data_addr = temp;
     int sent_num = send(m_socket, data_addr, strlen(data_addr), 0);
     if(sent_num < 0){
         throw invalid_argument("error in sending");
@@ -38,8 +41,9 @@ void Client::sendVector(char* msg) throw(){
 string Client::receive() throw(){
     //Receive the type of the vecton in 4096 chars.
     char buffer[4096];
-    int expected_data_len = sizeof(buffer);
-    int read_bytes = recv(m_socket, buffer, expected_data_len, 0);
+    ::memset(buffer,0,4096);
+    unsigned int buffer_len = 4096;
+    int read_bytes = recv(m_socket, buffer, buffer_len, 0);
     //If the size is zero we need to close.
     if (read_bytes == 0) {
         throw invalid_argument("close");
