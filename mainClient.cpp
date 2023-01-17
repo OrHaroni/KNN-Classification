@@ -68,7 +68,7 @@ int main(int argc, char *argv[]){
         }
         //Sent the vector.
         c.sendVector(temp);
-        //Print the type.
+        //Print the type.;
         string toPrint = c.receive();
         cout << toPrint << endl;
         //Clear the buffer.

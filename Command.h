@@ -6,13 +6,11 @@ using namespace std;
 class Command {
 private:
     const string m_description;
-
 public:
     Command(string);
     virtual string get_desc() const;
     virtual void Execute() = 0;
     virtual ~Command() { };
-
 };
 
 
