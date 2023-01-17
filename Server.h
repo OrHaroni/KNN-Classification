@@ -2,15 +2,20 @@
 #define CLIONPROJECTS_SERVER_H
 
 #include <iostream>
-#include <stdio.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include <string.h>
 #include "tableVec.h"
 #include "ExtraFunc.cpp"
 #include "ActiveClient.h"
+#include "Command.h"
+#include "first_command.h"
+#include "second_command.h"
+#include "third_command.h"
+#include "fourth_command.h"
+#include "fifth_command.h"
+
 
 using namespace std;
 
@@ -26,6 +31,7 @@ private:
     int lastIndexInMap;
     map<int, ActiveClient> clients;
     int currentThreadIndex;
+    Command* commands[5];
 
 
 public:
@@ -41,6 +47,8 @@ public:
     distanceType getDisType() ;
     int getNumNeighbours() throw();
     void closeClient();
+    void setCommands();
+    void sendMenu();
 };
 
 

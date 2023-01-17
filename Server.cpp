@@ -16,6 +16,15 @@ Server::Server(int serverPort) : m_client_socket(0) {
     this->currentThreadIndex = 0;
 }
 
+void Server::setCommands() {
+    this->commands[0] = new first_command("one");
+//    this->commands[1] = new second_command("two");
+//    this->commands[2] = new third_command("three");
+//    this->commands[3] = new fourth_command("four");
+//    this->commands[4] = new fifth_command("five");
+
+}
+
 //Creating and getting a socket.
 int Server::getSocket() throw() {
     //Creating new socket
@@ -61,15 +70,17 @@ void Server::acceptServer() throw() {
     }
     temp_client.setClientSocket(client_socket);
     this->clients.insert({this->currentThreadIndex, temp_client});
+    cout << "Accepted the client" << endl;
 }
 
-void Server::sendServer(char* answer) throw() {
+void Server::sendServer(char *answer) throw() {
     ActiveClient temp_client = this->clients.at(this->currentThreadIndex);
-    int send_bytes = send(temp_client.getClientSocket(), (void *) msg, 4096, 0);
+    int send_bytes = send(temp_client.getClientSocket(), (void *) answer, 4096, 0);
     if (send_bytes < 0) {
         this->closeServer();
         throw invalid_argument("Could not send msg");
     }
+    cout << "We sent this message: " << answer << endl;
 }
 
 void Server::closeServer() throw() {
@@ -79,7 +90,7 @@ void Server::closeServer() throw() {
 void Server::receive() {
     ActiveClient temp_client = this->clients.at(this->currentThreadIndex);
     char buffer[4096];
-    ::memset(buffer,4096,1);
+    ::memset(buffer, 4096, 1);
     unsigned int buffer_length = 4096;
     int read_bytes = recv(temp_client.getClientSocket(), buffer, buffer_length, 0);
     //get rid of unnecessary char in the last place.
@@ -94,7 +105,7 @@ void Server::receive() {
         throw invalid_argument("error with the receiving");
     }
     strcpy(msg, buffer);
-    if(msg[0] == '-' && msg[1] == '1'){
+    if (msg[0] == '-' && msg[1] == '1') {
         throw invalid_argument("client exiting");
     }
 }
@@ -145,7 +156,7 @@ distanceType Server::getDisType() {
     }
     try {
         return numberOfCalculation(token);
-    }catch (invalid_argument e){
+    } catch (invalid_argument e) {
         throw invalid_argument("invalid input");
     }
 }
@@ -173,8 +184,32 @@ int Server::getNumNeighbours() throw() {
 
 }
 
-void Server::closeClient(){
+void Server::closeClient() {
     //Do some stuff
     this->clients.erase(this->currentThreadIndex);
     //Delete and Exit this thread
+}
+
+void Server::sendMenu() {
+    cout << "Begining of the func" << endl;
+    string menu = "";
+    cout << "before looping" << endl;
+    /*Supposed to add up all the command.desc to 1 string and send it to the client via
+     * sendServer func*/
+    int i = 0;
+    for (i = 0; i < 5; i++) {
+        cout << "before to string" << endl;
+        menu += to_string(i);
+        cout << "before reaching command" << endl;
+        Command* temp2 = this->commands[i];
+        cout << "this is get desc" << temp2->get_desc() << endl;
+        cout << "before useing get_desc" << endl;
+        string temp = temp2->get_desc();
+        menu += ") " + temp;
+        menu += "\n";
+
+    }
+    char *buffer = new char[menu.length() + 1];
+    strcpy(buffer, menu.c_str());
+    sendServer(buffer);
 }
