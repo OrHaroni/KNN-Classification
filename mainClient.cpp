@@ -52,7 +52,13 @@ int main(int argc, char *argv[]){
     c.clientConnect();
 
     while (true){
-        //Get the vector from the user.
+        string toPrint = c.receive();
+        cout << toPrint << endl;
+        //int option = 0;
+        //cin >> option;
+        //char* str_option = new char[2];
+
+        //c.sendVector(option));
         string input;
         getline(cin,input);
         const int len = input.length();
@@ -69,8 +75,6 @@ int main(int argc, char *argv[]){
         //Sent the vector.
         c.sendVector(temp);
         //Print the type.;
-        string toPrint = c.receive();
-        cout << toPrint << endl;
         //Clear the buffer.
         cin.clear();
         cin.clear();
