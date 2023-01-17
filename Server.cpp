@@ -16,15 +16,6 @@ Server::Server(int serverPort) : m_client_socket(0) {
     this->currentThreadIndex = 0;
 }
 
-void Server::setCommands() {
-    this->commands[0] = new first_command("one");
-//    this->commands[1] = new second_command("two");
-//    this->commands[2] = new third_command("three");
-//    this->commands[3] = new fourth_command("four");
-//    this->commands[4] = new fifth_command("five");
-
-}
-
 //Creating and getting a socket.
 int Server::getSocket() throw() {
     //Creating new socket
@@ -191,23 +182,16 @@ void Server::closeClient() {
 }
 
 void Server::sendMenu() {
-    cout << "Begining of the func" << endl;
+    first_command c1 = first_command();
+    second_command c2 = second_command();
+    third_command c3 = third_command();
+    fourth_command c4 = fourth_command();
+    fifth_command c5 = fifth_command();
+    Command *arr[5] = {&c1, &c2, &c3, &c4,&c5};
     string menu = "";
-    cout << "before looping" << endl;
-    /*Supposed to add up all the command.desc to 1 string and send it to the client via
-     * sendServer func*/
-    int i = 0;
-    for (i = 0; i < 5; i++) {
-        cout << "before to string" << endl;
-        menu += to_string(i);
-        cout << "before reaching command" << endl;
-        Command* temp2 = this->commands[i];
-        cout << "this is get desc" << temp2->get_desc() << endl;
-        cout << "before useing get_desc" << endl;
-        string temp = temp2->get_desc();
-        menu += ") " + temp;
-        menu += "\n";
-
+    for (int i = 0; i < 5; ++i) {
+        menu += to_string(i + 1) + ") " + arr[i]->get_desc() + "\n";
+        cout << menu << endl;
     }
     char *buffer = new char[menu.length() + 1];
     strcpy(buffer, menu.c_str());

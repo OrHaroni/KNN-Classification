@@ -14,11 +14,11 @@ void FileVector::Add(tableVec tableVector) {
 }
 
 string FileVector::CalcTypeName(int k, vector<double> vec, distanceType disType) {
-    if(k < 1){
+    if (k < 1) {
         throw invalid_argument("k cannot be lower than 1");
     }
     //cant be with k greater than the number of the vectors.
-    if(k > this->vectors.size()){
+    if (k > this->vectors.size()) {
         k = this->vectors.size();
     }
     FileVector *temp = this;
@@ -36,7 +36,7 @@ string FileVector::CalcTypeName(int k, vector<double> vec, distanceType disType)
     }
 
     //Checking the largest value of the map.
-    //Its the repeated type.
+    //It's the repeated type.
     int maxType = 0;
     string maxTypeName = temp->vectors.at(0).getType();
     for (int i = 0; i < neighbours.size(); ++i) {
@@ -53,12 +53,44 @@ vector<tableVec> FileVector::getVectors() {
 }
 
 int FileVector::SizeOfVectors() {
-    int size  = this->vectors.at(0).getVector().size();
+    int size = this->vectors.at(0).getVector().size();
     for (int i = 1; i < this->vectors.size(); ++i) {
-        if(size != this->vectors.at(0).getVector().size())
-        {//so the file is not valid
+        if (size != this->vectors.at(0).getVector().size()) {//so the file is not valid
             throw invalid_argument("The file has vectors with different lengths");
         }
     }
     return size;
+}
+
+void FileVector::InitializeByReadingFile(string path) {
+    fstream fin;
+    string line, word, temp;
+    vector<string> row;
+
+    //open the file
+    fin.open(path, ios_base::in);
+    //Exiting if the file cant open.
+    if (!fin.is_open()) {
+        cout << "The program failed to open the file (invalid path)" << endl;
+        throw invalid_argument("could not open the file");
+    }
+    //Reading the file.
+    try {
+        while (getline(fin, temp)) {
+            //initialize empty vector
+            row.clear();
+            //separate the values in temp into row
+            row = turnLineIntoVector(temp);
+            vector<double> doubles;
+            for (int i = 0; i < row.size() - 1; ++i) {
+                doubles.push_back(stod(row.at(i)));
+            }
+
+            //Adding temp vector from row to fileVectors
+            string typeOfVec;
+            tableVec tempRow = tableVec(doubles, row.at(row.size() - 1));
+            this->Add(tempRow);
+        }
+    }catch (invalid_argument e){
+    throw invalid_argument("");}
 }

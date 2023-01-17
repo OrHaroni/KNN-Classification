@@ -10,11 +10,7 @@
 #include "ExtraFunc.cpp"
 #include "ActiveClient.h"
 #include "Command.h"
-#include "first_command.h"
-#include "second_command.h"
-#include "third_command.h"
-#include "fourth_command.h"
-#include "fifth_command.h"
+#include "Commands.h"
 
 
 using namespace std;
@@ -47,7 +43,6 @@ public:
     distanceType getDisType() ;
     int getNumNeighbours() throw();
     void closeClient();
-    void setCommands();
     void sendMenu();
 };
 

@@ -16,6 +16,7 @@ public:
     string CalcTypeName(int k, vector<double> vec, distanceType disType);
     vector<tableVec> getVectors();
     int SizeOfVectors();
+    void InitializeByReadingFile(string path);
 
 };
 
