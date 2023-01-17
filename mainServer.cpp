@@ -2,33 +2,33 @@
 #include <algorithm>
 #include "Server.h"
 #include "tableVec.h"
+#include "FileVector.h"
 
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
     //Validation of number of arguments
-    if(argc != 3){
+    if (argc != 3) {
         cout << "invalid number of arguments" << endl;
         return 1;
     }
     int portNumber = 0;
-    try{
-    //Validation of the port
-    portNumber = stoi(argv[2]);
+    try {
+        //Validation of the port
+        portNumber = stoi(argv[2]);
     }
-    catch(invalid_argument e)
-    {
+    catch (invalid_argument e) {
         cout << "invalid number of port" << endl;
         return 1;
     }
     //If we got here stoi worked and portNumber != 0
-    if(portNumber < 1024 || portNumber > 65535){
+    if (portNumber < 1024 || portNumber > 65535) {
         cout << "invalid size of port" << endl;
         return 1;
     }
     //Creating a vector of table vectors for future compares.
-    vector<tableVec> fileVectors;
+    FileVector fileVectors = FileVector();
     fstream fin;
     string line, word, temp;
     vector<string> row;
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
             //Adding temp vector from row to fileVectors
             string typeOfVec;
             tableVec tempRow = tableVec(doubles, row.at(row.size() - 1));
-            fileVectors.push_back(tempRow);
+            fileVectors.Add(tempRow);
         }
         server.bindServer();
         server.listenServer();
@@ -67,11 +67,12 @@ int main(int argc, char *argv[]) {
         strcpy(temp, invalid.c_str());
         server.sendServer(temp);
     }
+
     while (true) {
         try {
             try {
                 server.receive();
-            } catch (invalid_argument e){
+            } catch (invalid_argument e) {
                 //Not receiving so client disconnected
                 //so listen to the next client
                 server.listenServer();
@@ -86,86 +87,52 @@ int main(int argc, char *argv[]) {
             //Checking if all the vectors have the same length
             //If not, the table is not valid so exit
             try {
-                int sizeOfVectors = numberOfValues(fileVectors);
-                if(vec.size() != sizeOfVectors){
+                int sizeOfVectors = fileVectors.SizeOfVectors();
+                cout << "this is vec.size: " << vec.size() << " And this is size: " << sizeOfVectors << endl;
+                if (vec.size() != sizeOfVectors) {
                     throw out_of_range("Invalid input");
                 }
-            }catch (invalid_argument e){
+                cout << "We got to line 95" << endl;
+            } catch (invalid_argument e) {
                 cout << "not all the vectors in the file are in the same length so exiting" << endl;
                 return 1;
-            } catch(out_of_range e){
+            } catch (out_of_range e) {
                 throw invalid_argument("invalid input");
             }
-
 
             //getting the number of neighbours
             int k = server.getNumNeighbours();
 
-            //Calculating all the distances from v1 for all the vectors in fileVectors
-            for (int i = 0; i < fileVectors.size(); ++i) {
-                fileVectors.at(i).calcDis(vec, distanceType);
-            }
-
-            //sorting the vector
-            sort(fileVectors.begin(), fileVectors.end(), compareDistance);
-
-
-            if (k < 0) {
-                throw invalid_argument("cant have negative number of neighbours");
-            }
-            //if K is greater than the number of vectors we have,
-            //so, all of the vectors are his neighbours, and we
-            //need to print them.
-            if (k > fileVectors.size()) {
-                k = fileVectors.size();
-            }
-            //Creating map that the key is the type
-            //and the value is the times this type
-            //appears in the file
-            map<string, int> neighbours;
-            for (int i = 0; i < k; ++i) {
-                addToMap(neighbours, fileVectors.at(i));
-            }
-
-            //Checking the largest value of the map.
-            //Its the repeated type.
-            int maxType = 0;
-            string maxTypeName = fileVectors.at(0).getType();
-            for (int i = 0; i < neighbours.size(); ++i) {
-                if (maxType < neighbours.at(fileVectors.at(i).getType())) {
-                    maxType = neighbours.at(fileVectors.at(i).getType());
-                    maxTypeName = fileVectors.at(i).getType();
-                }
-            }
-            const int len = maxTypeName.length();
-            char *temp = new char[len + 1];
-            strcpy(temp, maxTypeName.c_str());
-            //server.sendServer(temp);
-            server.sendMenu();
+            string s = fileVectors.CalcTypeName(k, vec, distanceType);
+            char *temp = new char[s.length() + 1];
+            ::strcpy(temp, s.c_str());
+            cout << "this is temp, what we are sending" << temp << endl;
+            server.sendServer(temp);
 
             //catches if getting invalid input.
         } catch (invalid_argument e) {
-            string invalid = "Invalid input";
+            cout << "This is what throwing us: " << e.what() << endl;
+            string invalid = "Invalid input 1";
             const int len = invalid.length();
             char *temp = new char[len + 1];
             strcpy(temp, invalid.c_str());
             server.sendServer(temp);
         } catch (out_of_range e1) {
-            string invalid = "Invalid input";
+            string invalid = "Invalid input 2";
             const int len = invalid.length();
             char *temp = new char[len + 1];
             strcpy(temp, invalid.c_str());
             server.sendServer(temp);
         }
-        catch(logic_error e) {
-            string invalid = "Invalid input";
+        catch (logic_error e) {
+            string invalid = "Invalid input 3";
             const int len = invalid.length();
             char *temp = new char[len + 1];
             strcpy(temp, invalid.c_str());
             try {
                 server.sendServer(temp);
             }
-            catch(invalid_argument e){
+            catch (invalid_argument e) {
                 server.listenServer();
                 server.acceptServer();
             }

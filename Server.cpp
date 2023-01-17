@@ -70,6 +70,7 @@ void Server::acceptServer() throw() {
     }
     temp_client.setClientSocket(client_socket);
     this->clients.insert({this->currentThreadIndex, temp_client});
+    cout << "Accepted the client" << endl;
 }
 
 void Server::sendServer(char *answer) throw() {
@@ -79,6 +80,7 @@ void Server::sendServer(char *answer) throw() {
         this->closeServer();
         throw invalid_argument("Could not send msg");
     }
+    cout << "We sent this message: " << answer << endl;
 }
 
 void Server::closeServer() throw() {
