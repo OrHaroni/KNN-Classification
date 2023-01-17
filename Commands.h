@@ -12,31 +12,31 @@ class Server;
 class first_command : public Command{
 public:
     first_command();
-    void Execute(Server, FileVector);
+    void Execute(Server, FileVector, FileVector);
 };
 
 class second_command : public Command{
 public:
     second_command();
-    void Execute(Server, FileVector);
+    void Execute(Server, FileVector, FileVector);
 };
 
 class third_command : public Command{
 public:
     third_command();
-    void Execute(Server, FileVector);
+    void Execute(Server, FileVector, FileVector);
 };
 
 class fourth_command : public Command{
 public:
     fourth_command();
-    void Execute(Server, FileVector);
+    void Execute(Server, FileVector, FileVector);
 };
 
 class fifth_command : public Command{
 public:
     fifth_command();
-    void Execute(Server, FileVector);
+    void Execute(Server, FileVector, FileVector);
 };
 
 #endif //ADVANCEDPROGPROJECT_COMMANDS_H

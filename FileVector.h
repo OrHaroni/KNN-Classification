@@ -8,6 +8,7 @@ private:
     vector<tableVec> vectors;
     enum distanceType distanceType;
     int k;
+    bool isEmpty;
 
 public:
     //C'tor
@@ -22,6 +23,9 @@ public:
     vector<double> manipulateMSG(char*) throw();
     enum distanceType getDistanceType();
     int getK();
+    void setK(int k);
+    void setDistanceType(enum distanceType);
+    bool isFileEmpty();
 };
 
 
