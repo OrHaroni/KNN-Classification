@@ -47,6 +47,7 @@ void Server::listenServer() throw() {
 
 //Accepting a client and saving the client's socket id
 void Server::acceptServer() throw() {
+    cout << "Entered accept func" << endl;
     //Adding new active client and adding 1 to the last index
     //Giving the client the same index to know how to reach him.
     ActiveClient temp_client = ActiveClient(this->m_server_port, this->lastIndexInMap);
@@ -71,23 +72,18 @@ void Server::sendServer(char *answer) throw() {
         this->closeServer();
         throw invalid_argument("Could not send msg");
     }
-    cout << "We sent this message: " << answer << endl;
 }
 
 void Server::closeServer() throw() {
     close(m_socket);
 }
 
-void Server::receive() {
+string Server::receive() {
     ActiveClient temp_client = this->clients.at(this->currentThreadIndex);
     char buffer[4096];
-    ::memset(buffer, 4096, 1);
+    ::memset(buffer, 0, 4096);
     unsigned int buffer_length = 4096;
-    int read_bytes = recv(temp_client.getClientSocket(), buffer, buffer_length, 0);
-    //get rid of unnecessary char in the last place.
-    if (buffer[strlen(buffer) - 1] > '9' || buffer[strlen(buffer) - 1] <= '0') {
-        buffer[strlen(buffer) - 1] = 0; // get rid of unnecessary char.
-    }
+    int read_bytes = recv(temp_client.getClientSocket(),buffer, buffer_length, 0);
     if (read_bytes == 0) {
         this->closeServer();
         exit(1);
@@ -96,12 +92,10 @@ void Server::receive() {
         throw invalid_argument("error with the receiving");
     }
     strcpy(msg, buffer);
-    if (msg[0] == '-' && msg[1] == '1') {
-        throw invalid_argument("client exiting");
-    }
+    return buffer;
 }
 
-vector<double> Server::manipulateMSG() throw() {
+vector<double> Server::manipulateMSG(char* msg) throw() {
     char temp[strlen(msg)];
     strcpy(temp, msg);
     vector<double> row;
@@ -126,7 +120,7 @@ vector<double> Server::manipulateMSG() throw() {
 }
 
 //Returning the type of distance
-distanceType Server::getDisType() {
+distanceType Server::getDisType(char* msg) {
     char temp[4096];
     strcpy(temp, msg);
     //getting the number of words in the message.
@@ -150,6 +144,10 @@ distanceType Server::getDisType() {
     } catch (invalid_argument e) {
         throw invalid_argument("invalid input");
     }
+}
+
+string Server::getDisTypeString(distanceType d) {
+
 }
 
 //Returning the number of neighbours
@@ -191,7 +189,6 @@ void Server::sendMenu() {
     string menu = "";
     for (int i = 0; i < 5; ++i) {
         menu += to_string(i + 1) + ") " + arr[i]->get_desc() + "\n";
-        cout << menu << endl;
     }
     char *buffer = new char[menu.length() + 1];
     strcpy(buffer, menu.c_str());
