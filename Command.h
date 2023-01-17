@@ -1,15 +1,20 @@
 #ifndef ADVANCEDPROGPROJECT_COMMAND_H
 #define ADVANCEDPROGPROJECT_COMMAND_H
+
 #include <stdio.h>
 #include <string>
+
 using namespace std;
+class Server;
+class FileVector;
+
 class Command {
 private:
     const string m_description;
 public:
     Command(string);
     virtual string get_desc() const;
-    virtual void Execute() = 0;
+    virtual void Execute(Server, FileVector) = 0;
     virtual ~Command() { };
 };
 

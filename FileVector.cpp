@@ -1,7 +1,7 @@
 #include "FileVector.h"
 
 
-FileVector::FileVector() {}
+FileVector::FileVector() : distanceType(AUC), k(5) {}
 
 FileVector::FileVector(const vector<tableVec> *cpy) {
     for (int i = 0; i < cpy->size(); ++i) {
@@ -11,9 +11,11 @@ FileVector::FileVector(const vector<tableVec> *cpy) {
 
 void FileVector::Add(tableVec tableVector) {
     this->vectors.push_back(tableVector);
+    this->distanceType = AUC;
+    this->k = 5;
 }
 
-string FileVector::CalcTypeName(int k, vector<double> vec, distanceType disType) {
+string FileVector::CalcTypeName(int k, vector<double> vec, enum distanceType disType) {
     if (k < 1) {
         throw invalid_argument("k cannot be lower than 1");
     }
@@ -93,4 +95,36 @@ void FileVector::InitializeByReadingFile(string path) {
         }
     }catch (invalid_argument e){
     throw invalid_argument("");}
+}
+
+vector<double> FileVector::manipulateMSG(char* msg) throw() {
+    char temp[strlen(msg)];
+    strcpy(temp, msg);
+    vector<double> row;
+    string word;
+    stringstream s(temp);
+    //keep on separating the line with Comma's
+    //until its empty
+    while (getline(s, word, ' ')) {
+        if (s.eof()) {
+            break;
+        }
+        try {
+            // add all the column data
+            // of a row to a vector
+            row.push_back(stod(word));
+        } catch (invalid_argument e) {
+            //we got to letter
+            return row; //might be invalid, will crash in numberOfCalculation.
+        }
+    }
+    return row;
+}
+
+enum distanceType FileVector::getDistanceType() {
+    return this->distanceType;
+}
+
+int FileVector::getK() {
+    return this->k;
 }

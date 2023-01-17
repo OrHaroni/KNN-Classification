@@ -1,10 +1,14 @@
 #ifndef _ADVANCEDPROGPROJECT_TABLEVEC_H
 #define _ADVANCEDPROGPROJECT_TABLEVEC_H
+
 #include "distance.h"
+#include "Command.h"
+#include "Commands.h"
 #include <iostream>
 #include <vector>
 
 using namespace std;
+
 enum distanceType{
     AUC = 1,
     MAN,

@@ -7,26 +7,12 @@
 
 using namespace std;
 
+int mainValidation(int, string);
+
 int main(int argc, char *argv[]) {
-    //Validation of number of arguments
-    if (argc != 3) {
-        cout << "invalid number of arguments" << endl;
-        return 1;
-    }
     int portNumber = 0;
-    try {
-        //Validation of the port
-        portNumber = stoi(argv[2]);
-    }
-    catch (invalid_argument e) {
-        cout << "invalid number of port" << endl;
-        return 1;
-    }
-    //If we got here stoi worked and portNumber != 0
-    if (portNumber < 1024 || portNumber > 65535) {
-        cout << "invalid size of port" << endl;
-        return 1;
-    }
+    //Checking validation of the arguments.
+    portNumber = mainValidation(argc, argv[2]);
     //Creating a vector of table vectors for future compares.
     FileVector fileVectors = FileVector();
     Server server = Server(portNumber);
@@ -43,11 +29,12 @@ int main(int argc, char *argv[]) {
         strcpy(temp, invalid.c_str());
         server.sendServer(temp);
     }
-
+    string answer;
     while (true) {
         try {
             try {
-                server.receive();
+                answer = server.receive();
+                cout << "This is what the server received: " << answer << endl;
             } catch (invalid_argument e) {
                 //Not receiving so client disconnected
                 //so listen to the next client
@@ -55,8 +42,9 @@ int main(int argc, char *argv[]) {
                 server.acceptServer();
                 server.receive();
             }
+            char* temp_answer = new char[answer.length() + 1];
             //getting the vector
-            vector<double> vec = server.manipulateMSG();
+            vector<double> vec = server.manipulateMSG(temp_answer);
 
             //getting the type
             distanceType distanceType = server.getDisType();
@@ -64,11 +52,9 @@ int main(int argc, char *argv[]) {
             //If not, the table is not valid so exit
             try {
                 int sizeOfVectors = fileVectors.SizeOfVectors();
-                cout << "this is vec.size: " << vec.size() << " And this is size: " << sizeOfVectors << endl;
                 if (vec.size() != sizeOfVectors) {
                     throw out_of_range("Invalid input");
                 }
-                cout << "We got to line 95" << endl;
             } catch (invalid_argument e) {
                 cout << "not all the vectors in the file are in the same length so exiting" << endl;
                 return 1;
@@ -82,7 +68,6 @@ int main(int argc, char *argv[]) {
             string s = fileVectors.CalcTypeName(k, vec, distanceType);
             char *temp = new char[s.length() + 1];
             ::strcpy(temp, s.c_str());
-            cout << "this is temp, what we are sending" << temp << endl;
             server.sendServer(temp);
 
             //catches if getting invalid input.
@@ -114,5 +99,28 @@ int main(int argc, char *argv[]) {
             }
         }
     }
+}
+
+int mainValidation(int numArguments, string s_Port){
+    int numPort = 0;
+    //Validation of number of arguments
+    if (numArguments != 3) {
+        cout << "invalid number of arguments" << endl;
+        throw invalid_argument("Got invalid number of arguments");
+    }
+    try {
+        //Validation of the port
+        numPort = stoi(s_Port);
+    }
+    catch (invalid_argument e) {
+        cout << "invalid number of port" << endl;
+        throw invalid_argument("invalid number of port");
+    }
+    //If we got here stoi worked and portNumber != 0
+    if (numPort < 1024 || numPort > 65535) {
+        cout << "invalid size of port" << endl;
+        throw invalid_argument("invalid number of port");
+    }
+    return numPort;
 }
 

@@ -9,8 +9,7 @@
 #include "tableVec.h"
 #include "ExtraFunc.cpp"
 #include "ActiveClient.h"
-#include "Command.h"
-#include "Commands.h"
+#include <string.h>
 
 
 using namespace std;
@@ -36,10 +35,10 @@ public:
     void bindServer() throw();
     void listenServer() throw();
     void acceptServer() throw();
-    void receive();
+    string receive();
     void sendServer(char*) throw();
     void closeServer() throw();
-    vector<double> manipulateMSG() throw();
+    vector<double> manipulateMSG(char*) throw();
     distanceType getDisType() ;
     int getNumNeighbours() throw();
     void closeClient();
