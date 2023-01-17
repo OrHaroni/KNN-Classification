@@ -39,7 +39,8 @@ public:
     void sendServer(char*) throw();
     void closeServer() throw();
     vector<double> manipulateMSG(char*) throw();
-    distanceType getDisType() ;
+    distanceType getDisType(char*) ;
+    string getDisTypeString(distanceType);
     int getNumNeighbours() throw();
     void closeClient();
     void sendMenu();

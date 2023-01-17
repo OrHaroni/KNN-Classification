@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
             vector<double> vec = server.manipulateMSG(temp_answer);
 
             //getting the type
-            distanceType distanceType = server.getDisType();
+            distanceType distanceType = server.getDisType(temp_answer);
             //Checking if all the vectors have the same length
             //If not, the table is not valid so exit
             try {

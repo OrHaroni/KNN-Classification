@@ -120,7 +120,7 @@ vector<double> Server::manipulateMSG(char* msg) throw() {
 }
 
 //Returning the type of distance
-distanceType Server::getDisType() {
+distanceType Server::getDisType(char* msg) {
     char temp[4096];
     strcpy(temp, msg);
     //getting the number of words in the message.
@@ -144,6 +144,10 @@ distanceType Server::getDisType() {
     } catch (invalid_argument e) {
         throw invalid_argument("invalid input");
     }
+}
+
+string Server::getDisTypeString(distanceType d) {
+
 }
 
 //Returning the number of neighbours

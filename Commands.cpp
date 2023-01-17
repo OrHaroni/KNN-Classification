@@ -28,8 +28,7 @@ void first_command::Execute(Server s, FileVector vectors) {
 second_command::second_command() : Command("algorithm settings") {}
 
 void second_command::Execute(Server s, FileVector vectors) {
-
-    string send_s = "The current KNN paramaters: K = " + to_string(vectors.getK()) + ", distance metric = " + to_string(vectors.getDistanceType()) + "\n";
+    string send_s = "The current KNN paramaters: K = " + to_string(vectors.getK()) + ", distance metric = " + s.getDisTypeString(vectors.getDistanceType()) + "\n";
 }
 
 third_command::third_command() : Command("classify data") {}
