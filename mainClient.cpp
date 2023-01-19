@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     char *token;
     token = strtok(&port[0], seps);
     while (token != NULL) {
-        int number = 0;
+        int number;
         try {
             //Make it a number.
             number = stoi(token);
@@ -56,9 +56,10 @@ int main(int argc, char *argv[]) {
     c.clientConnect();
     cout << "connected" << endl;
     while (true) {
-        string toPrint = c.receive();
+        string toPrint = c.receive(); //Get the menu.
         cout << toPrint << endl;
         string input_option;
+        cin.clear();
         cin >> input_option;
         c.sendVector(input_option);
         switch (stoi(input_option)) {
@@ -128,23 +129,16 @@ void secondOption(Client c){
     cout << "begin of 2" << endl;
     cout << c.receive() << endl;
     string input;
-    cin >> input;
-    //If the string is empty we exit.
-    if(input.compare(" ")){
-        string str = "-1";
-        c.sendVector(str);
-        return;
-    }
-    char seps[] = " ";
-    char *token;
-    token = strtok(&input[0], seps);
-    c.sendVector(token);
-    token = strtok(NULL, seps);
-    c.sendVector(token);
+    cin.ignore();
+    getline(cin,input);
+    cout << "input 1:" << input << endl;
+    c.sendVector(input);
     string ans_from_ser = c.receive();
-    while(!ans_from_ser.compare("0")){
+    while(ans_from_ser.compare("0")){
         cout << ans_from_ser << endl;
+        ans_from_ser = c.receive();
     }
+    cout << "end of func" << endl;
 }
 void thirdOption(Client c){
     cout << c.receive() << endl;
@@ -156,24 +150,3 @@ void fifthOption(Client c){
 
 }
 
-//void getVector(Client c){
-//    string input;
-//    getline(cin,input);
-//    const int len = input.length();
-//    char *temp = new char[len+1];
-//    strcpy(temp,input.c_str());
-//    //If the string is -1 we exit.
-//    if(!strcmp(temp,"-1")){
-//        char* str = new char[2];
-//        strcpy(str,temp);
-//        c.sendVector(str);
-//        c.disconnect();
-//        return;
-//    }
-//    //Sent the vector.
-//    c.sendVector(temp);
-//    //        Print the type.
-//    //        Clear the buffer.
-//    cin.clear();
-//    cin.clear();
-//}

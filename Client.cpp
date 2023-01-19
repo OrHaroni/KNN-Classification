@@ -32,8 +32,8 @@ void Client::sendVector(string string1) throw(){
     const int len = string1.length();
     char *temp = new char[len+1];
     strcpy(temp,string1.c_str());
-    char *data_addr = temp;
-    int sent_num = send(m_socket, data_addr, strlen(data_addr), 0);
+    cout << "I sent " << temp << " and len is " << strlen(temp) << endl;
+    int sent_num = send(m_socket, (void *)temp , strlen(temp), 0);
     if(sent_num < 0){
         throw invalid_argument("error in sending");
     }
