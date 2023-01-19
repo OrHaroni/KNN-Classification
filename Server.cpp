@@ -86,9 +86,7 @@ string Server::receive() {
     char buffer[4096];
     ::memset(buffer, 0, 4096);
     unsigned int buffer_length = 4096;
-    cout << "Before read bytes" << endl;
     int read_bytes = recv(temp_client.getClientSocket(), buffer, buffer_length, 0);
-    cout << "After read btyes I got: " << buffer << endl;
     if (read_bytes == 0) {
         this->closeServer();
         exit(1);

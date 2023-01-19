@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
     string choice;
     while (true) {
         try {
+            cout << "Before receive the option" << endl;
             choice = server.receive(); //Getting the number of choice from menu from the user.
         } catch (invalid_argument e) {
             //Not receiving so client disconnected
@@ -45,11 +46,11 @@ int main(int argc, char *argv[]) {
         }
         int choice_number = stoi(choice);
         if (choice_number == 3) {
-            commands[2]->Execute(server, classified_db, unclassified_db);
+            commands[2]->Execute(&server, &classified_db, &unclassified_db);
 
         }else if(0 < choice_number && choice_number < 6){
-            commands[choice_number - 1]->Execute(server, classified_db, unclassified_db);
-            commands[choice_number - 1]->Execute(server, unclassified_db, classified_db);
+            commands[choice_number - 1]->Execute(&server, &classified_db, &unclassified_db);
+           // commands[choice_number - 1]->Execute(&server, &classified_db, &unclassified_db);
             if(choice_number == 1){
                 server.sendServer("Upload complete.");
             }

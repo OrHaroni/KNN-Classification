@@ -14,7 +14,7 @@ private:
 public:
     Command(string);
     virtual string get_desc() const;
-    virtual void Execute(Server, FileVector, FileVector) = 0;
+    virtual void Execute(Server*, FileVector*, FileVector*) = 0;
     virtual ~Command() { };
 };
 
