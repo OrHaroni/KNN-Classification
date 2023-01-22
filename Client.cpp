@@ -27,23 +27,32 @@ void Client::clientConnect() throw(){
     }
 }
 
-void Client::sendVector(string string1) throw(){
+void Client::sendString(string string1) throw() {
     //Sending the vector to the server.
     const int len = string1.length();
-    char *temp = new char[len+1];
-    strcpy(temp,string1.c_str());
-    cout << "I sent " << temp << " and len is " << strlen(temp) << endl;
-    int sent_num = send(m_socket, (void *)temp , strlen(temp), 0);
-    if(sent_num < 0){
+    char *temp = new char[len + 1];
+    strcpy(temp, string1.c_str());
+    //cout << "I sent " << temp << " and len is " << strlen(temp) << endl;
+    int sent_num = send(m_socket, (void *) temp, strlen(temp), 0);
+    if (sent_num < 0) {
         throw invalid_argument("error in sending");
     }
+    if (sent_num == 0) {
+        cout << "i send empy" << endl;
+    }
 }
+
 string Client::receive() throw(){
-    //Receive the type of the vecton in 4096 chars.
     char buffer[4096];
     ::memset(buffer,0,4096);
     unsigned int buffer_len = 4096;
     int read_bytes = recv(m_socket, buffer, buffer_len, 0);
+    if (strlen(buffer) == 0){
+        read_bytes = recv(m_socket, buffer, buffer_len, 0);
+    }
+    if (strlen(buffer) == 0){
+        read_bytes = recv(m_socket, buffer, buffer_len, 0);
+    }
     //If the size is zero we need to close.
     if (read_bytes == 0) {
         throw invalid_argument("close");
@@ -53,6 +62,7 @@ string Client::receive() throw(){
         throw invalid_argument("error in receive");
     }
     else{
+        //cout << "I received:" << buffer << "end of receive" << endl;
         return buffer;
     }
 }

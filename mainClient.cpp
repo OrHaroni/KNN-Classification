@@ -1,13 +1,17 @@
 #include "Client.h"
 #include "FileVector.h"
 using namespace std;
-void firstOption(Client);
-void secondOption(Client);
-void thirdOption(Client);
-void fourthOption(Client);
-void fifthOption(Client);
-void getVector(Client c);
+void test();
+void firstOption(Client&);
+void secondOption(Client&);
+void thirdOption(Client&);
+void fourthOption(Client&);
+void fifthOption(Client&);
+void getVector(Client&);
+void sendVectorsFromFile(Client&, string);
+void sendVectorsFromFileAndType(Client&, string);
 int main(int argc, char *argv[]) {
+    //test();
     //The number of args is 3.
     if (argc != 3) {
         return 1;
@@ -51,18 +55,33 @@ int main(int argc, char *argv[]) {
     }
     //Start the client with the port and ip.
     Client c = Client(argv[1], port_number);
+    //Getting the socket and Sin and connect to the server.
+    cout << "socket " << endl;
     c.getNewSocket();
+    cout << "sin " << endl;
     c.startSin();
+    cout << "connect " << endl;
     c.clientConnect();
-    cout << "connected" << endl;
+    cout << "connected " << endl;
     while (true) {
-        string toPrint = c.receive(); //Get the menu.
+        //Get the menu.
+        string toPrint = c.receive();
         cout << toPrint << endl;
         string input_option;
+        //Clear the buffer.
         cin.clear();
         cin >> input_option;
-        c.sendVector(input_option);
-        switch (stoi(input_option)) {
+        //Send the selected option.
+        c.sendString(input_option);
+        int optionNun;
+        try{
+            //Make the reception to number.
+            optionNun = stoi(input_option);
+        }
+        catch (invalid_argument e){
+            optionNun = 0;
+        }
+        switch (optionNun) {
             case 1:
                 firstOption(c);
                 break;
@@ -77,76 +96,143 @@ int main(int argc, char *argv[]) {
                 break;
             case 5:
                 fifthOption(c);
-                break;
-            case 8:
-                c.disconnect();
                 return 0;
             default:
+                //The option is a number but not from the options.
                 cout << "Invalid option please try again.";
                 break;
         }
     }
 }
-void firstOption(Client c){
+void firstOption(Client& c){
+    cout << "begin of 1" << endl;
+    //Get the classifieds file from the user.
     string local_file_train;
     cout << "Please upload your local train CSV file." << endl;
     cin >> local_file_train;
-    FileVector fileVector_train = FileVector();
-    fileVector_train.InitializeByReadingFile(local_file_train);
-    int vecSize_train  = fileVector_train.SizeOfVectors();
-    for (int i = 0; i < vecSize_train; ++i) {
-        string vec_to_send;
-        vec_to_send = fileVector_train.getVectors().at(i).to_string();
-        c.sendVector(vec_to_send);
-        cout  << " i sent " << vec_to_send << endl;
-        string vec_to_send_type;
-        vec_to_send_type = fileVector_train.getVectors().at(i).getType();
-        c.sendVector(vec_to_send_type);
-        cout  << " i sent " << vec_to_send_type << endl;
-    }
-    c.sendVector("-1");
+    sendVectorsFromFileAndType(c, local_file_train);
+    //Doing the same process for the unclassified.
     string local_file;
     cout << "Please upload your local test CSV file." << endl;
     cin >> local_file;
-    FileVector fileVector = FileVector();
-    fileVector.InitializeByReadingFile(local_file);
-    int vecSize  = fileVector.SizeOfVectors();
-    for (int i = 0; i < vecSize; ++i) {
-        string vec_to_send;
-        vec_to_send = fileVector.getVectors().at(i).to_string();
-        c.sendVector(vec_to_send);
-        cout  << " i sent " << vec_to_send << endl;
-        string vec_to_send_type;
-        vec_to_send_type = fileVector.getVectors().at(i).getType();
-        c.sendVector(vec_to_send_type);
-        cout  << " i sent " << vec_to_send_type << endl;
-    }
-    c.sendVector("-1");
+    sendVectorsFromFile(c, local_file);
     cout << c.receive() << endl;
 }
 
-void secondOption(Client c){
+void secondOption(Client& c){
     cout << "begin of 2" << endl;
+    //Receive The k and type of distance.
     cout << c.receive() << endl;
     string input;
     cin.ignore();
     getline(cin,input);
-    cout << "input 1:" << input << endl;
-    c.sendVector(input);
+    //cout << "input 1:" << input << endl;
+    //Send the k and / or  / not the distance type.
+    c.sendString(input);
     string ans_from_ser = c.receive();
-    while(ans_from_ser.compare("0")){
+    //0 mean the server done sending.
+    if(!ans_from_ser.compare("0")){
+        return;
+    }
+    do
+    {
         cout << ans_from_ser << endl;
         ans_from_ser = c.receive();
-    }
-    cout << "end of func" << endl;
+    }while(!ans_from_ser.compare("0"));
 }
-void thirdOption(Client c){
+void thirdOption(Client& c){
+    cout << "begin of 3" << endl;
     cout << c.receive() << endl;
 }
-void fourthOption(Client c){
-
+void fourthOption(Client& c){
+    cout << "begin of 4" << endl;
+    //Print the info from the server.
+string input;
+    do {
+        input = c.receive();
+        if (input.compare("-1")){
+            cout << input << endl;
+        }
+    } while (!input.compare("-1"));
 }
-void fifthOption(Client c){
+void fifthOption(Client& c){
+    cout << "begin of 5" << endl;
+    string local_file_train;
+    cout << "Please upload your path to the file." << endl;
+    cin >> local_file_train;
+    // Create and open a text file
+    try {
+        ofstream MyFile(local_file_train);
+        cout << c.receive() << endl;
+        string input;
+        do {
+            input = c.receive();
+            // Write to the file
+            if (input.compare("-1")){
+                MyFile << input << endl;
+            }
+        } while (!input.compare("-1"));
+        // Close the file
+        MyFile.close();
+    }
+    catch(exception const& e){
+        cout << "Problem opening and writhing the file." << endl;
+    }
+}
+
+void sendVectorsFromFile(Client& c, string path){
+    FileVector fileVector_train = FileVector();
+    fileVector_train.InitializeByReadingFile(path);
+    int size = fileVector_train.getVectors().size();
+    //Sending the vectors to the server.
+    cout << "size is " << size << endl;
+    for (int i = 0; i < size; ++i) {
+        string vec_to_send;
+        vec_to_send = fileVector_train.getVectors().at(i).to_string();
+        c.sendString(vec_to_send);
+        sleep(1);
+        string str1 = c.receive();
+        cout  << " i sent " << vec_to_send << endl;
+    }
+    //Sending -1 to say rhe server we're done uploading.
+    c.sendString("adarkatz");
+}
+void sendVectorsFromFileAndType(Client& c , string path){
+    FileVector fileVector_train = FileVector();
+    fileVector_train.InitializeByReadingFile(path);
+    int size = fileVector_train.getVectors().size();
+    cout << "size is " << size << endl;
+    for (int i = 0; i < size; ++i) {
+        string vec_to_send;
+        vec_to_send = fileVector_train.getVectors().at(i).to_string();
+        c.sendString(vec_to_send);
+        string str1 = c.receive();
+        cout  << " i sent " << vec_to_send << endl;
+        string vec_to_send_type;
+        vec_to_send_type = fileVector_train.getVectors().at(i).getType();
+        c.sendString(vec_to_send_type);
+        string str2 = c.receive();
+
+        cout  << " i sent " << vec_to_send_type << endl;
+    }
+    //Sending -1 to say rhe server we're done uploading.
+    c.sendString("adarkatz");
+}
+void test(){
+    FileVector fileVector_train = FileVector();
+    fileVector_train.InitializeByReadingFile("datasets/iris/iris_classified.csv");
+    int size = fileVector_train.getVectors().size();
+    for (int i = 0; i < size; ++i) {
+        string vec_to_send;
+        vec_to_send = fileVector_train.getVectors().at(i).to_string();
+
+        cout  << " i sent " << vec_to_send << endl;
+        string vec_to_send_type;
+        vec_to_send_type = fileVector_train.getVectors().at(i).getType();
+
+        cout  << " i sent " << vec_to_send_type << endl;
+    }
+    //Sending -1 to say rhe server we're done uploading.
 
 }
 

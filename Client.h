@@ -23,7 +23,7 @@ public:
     void getNewSocket() throw();
     void startSin();
     void clientConnect() throw();
-    void sendVector(string) throw();
+    void sendString(string) throw();
     string receive() throw();
     void disconnect();
 
