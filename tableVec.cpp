@@ -6,6 +6,7 @@
 //Constructor to the tableVec
 tableVec::tableVec(vector<double> vector, string type):m_vector(vector),m_type(type),m_distance(0) {}
 
+
 vector<double> tableVec:: getVector (){
     return m_vector;
 }
@@ -43,6 +44,7 @@ void tableVec::calcDis(vector<double> vector, distanceType distanceType){
     //Enter the distance to the vector's data.
     this->setDistance(distance);
 }
+
 string tableVec::to_string(){
     //int size = m_vector.size();
     string name_of_vec;

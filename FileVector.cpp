@@ -3,9 +3,9 @@
 
 FileVector::FileVector() : distanceType(AUC), k(5), isEmpty(true) {}
 
-FileVector::FileVector(const vector<tableVec> *cpy) {
-    for (int i = 0; i < cpy->size(); ++i) {
-        this->vectors.push_back(cpy->at(i));
+FileVector::FileVector(const FileVector&  cpy) {
+    for (int i = 0; i < cpy.vectors.size(); ++i) {
+        this->vectors.push_back(cpy.vectors.at(i));
     }
 }
 
