@@ -46,8 +46,8 @@ void tableVec::calcDis(vector<double> vector, distanceType distanceType){
 string tableVec::to_string(){
     //int size = m_vector.size();
     string name_of_vec;
-    for (double number:m_vector) {
-        name_of_vec += std::to_string(number);
+    for (int  j = 0; j < this->m_vector.size();j++) {
+        name_of_vec += " " + std::to_string(this->m_vector.at(j));
     }
     return name_of_vec;
 }

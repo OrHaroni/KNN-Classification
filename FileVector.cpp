@@ -143,3 +143,37 @@ bool FileVector::isFileEmpty(){
 void FileVector::upload_complete(){
     this->isEmpty = false;
 }
+
+void FileVector::InitializeByReadingFileNoType(string path) {
+    fstream fin;
+    string line, word, temp;
+    vector<string> row;
+
+    //open the file
+    fin.open(path, ios_base::in);
+    //Exiting if the file cant open.
+    if (!fin.is_open()) {
+        cout << "The program failed to open the file (invalid path)" << endl;
+        throw invalid_argument("could not open the file");
+    }
+    //Reading the file.
+    try {
+        while (getline(fin, temp)) {
+            //initialize empty vector
+            row.clear();
+            //separate the values in temp into row
+            row = turnLineIntoVector(temp);
+            vector<double> doubles;
+            for (int i = 0; i < row.size(); ++i) {
+                doubles.push_back(stod(row.at(i)));
+            }
+
+            //Adding temp vector from row to fileVectors
+            string typeOfVec;
+            tableVec tempRow = tableVec(doubles, row.at(row.size() - 1));
+            this->Add(tempRow);
+        }
+    }catch (invalid_argument e){
+        throw invalid_argument("");}
+    this->isEmpty = false;
+}

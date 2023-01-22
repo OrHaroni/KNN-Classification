@@ -20,6 +20,7 @@ public:
     vector<tableVec> getVectors();
     int SizeOfVectors();
     void InitializeByReadingFile(string path);
+    void InitializeByReadingFileNoType(string path);
     vector<double> manipulateMSG(char*) throw();
     enum distanceType getDistanceType();
     int getK();
@@ -27,6 +28,7 @@ public:
     void setDistanceType(enum distanceType);
     bool isFileEmpty();
     void upload_complete();
+
 };
 
 

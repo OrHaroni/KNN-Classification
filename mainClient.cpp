@@ -65,8 +65,7 @@ int main(int argc, char *argv[]) {
     cout << "connected " << endl;
     while (true) {
         //Get the menu.
-        string toPrint = c.receive();
-        cout << toPrint << endl;
+        cout << c.receive() << endl;
         string input_option;
         //Clear the buffer.
         cin.clear();
@@ -117,6 +116,9 @@ void firstOption(Client& c){
     cin >> local_file;
     sendVectorsFromFile(c, local_file);
     cout << c.receive() << endl;
+    cout << c.receive() << endl;
+
+
 }
 
 void secondOption(Client& c){
@@ -182,7 +184,7 @@ void fifthOption(Client& c){
 
 void sendVectorsFromFile(Client& c, string path){
     FileVector fileVector_train = FileVector();
-    fileVector_train.InitializeByReadingFile(path);
+    fileVector_train.InitializeByReadingFileNoType(path);
     int size = fileVector_train.getVectors().size();
     //Sending the vectors to the server.
     cout << "size is " << size << endl;
@@ -190,6 +192,7 @@ void sendVectorsFromFile(Client& c, string path){
         string vec_to_send;
         vec_to_send = fileVector_train.getVectors().at(i).to_string();
         c.sendString(vec_to_send);
+        usleep(200000);
         string str1 = c.receive();
         cout  << " i sent " << vec_to_send << endl;
     }
@@ -205,11 +208,13 @@ void sendVectorsFromFileAndType(Client& c , string path){
         string vec_to_send;
         vec_to_send = fileVector_train.getVectors().at(i).to_string();
         c.sendString(vec_to_send);
+        usleep(200000);
         string str1 = c.receive();
         cout  << " i sent " << vec_to_send << endl;
         string vec_to_send_type;
         vec_to_send_type = fileVector_train.getVectors().at(i).getType();
         c.sendString(vec_to_send_type);
+        usleep(200000);
         string str2 = c.receive();
 
         cout  << " i sent " << vec_to_send_type << endl;

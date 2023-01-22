@@ -46,11 +46,14 @@ string Client::receive() throw(){
     char buffer[4096];
     ::memset(buffer,0,4096);
     unsigned int buffer_len = 4096;
+    usleep(30000);
     int read_bytes = recv(m_socket, buffer, buffer_len, 0);
     if (strlen(buffer) == 0){
+        usleep(30000);
         read_bytes = recv(m_socket, buffer, buffer_len, 0);
     }
     if (strlen(buffer) == 0){
+        usleep(30000);
         read_bytes = recv(m_socket, buffer, buffer_len, 0);
     }
     //If the size is zero we need to close.
