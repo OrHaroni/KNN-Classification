@@ -19,14 +19,14 @@ int main(int argc, char *argv[]) {
     //Checking validation of the arguments.
     try {
         portNumber = mainValidation(argc, argv[1]);
-    }catch (invalid_argument e){
+    } catch (invalid_argument e) {
         cout << e.what() << endl;
         return 1;
     }
     //Creating a vector of table vectors for future compares.
     FileVector classified_db = FileVector();
     FileVector unclassified_db = FileVector();
-    ActiveClient client = ActiveClient(&classified_db, &unclassified_db, portNumber ,1);
+    ActiveClient client = ActiveClient(&classified_db, &unclassified_db, portNumber, 1);
     Server server = Server(portNumber);
     try {
         server.bindServer();
@@ -48,13 +48,10 @@ int main(int argc, char *argv[]) {
             server.receive(client);
         }
         int choice_number = stoi(choice);
-        if (choice_number == 3) {
-            commands[2]->Execute(server, client);
 
-        }else if(0 < choice_number && choice_number < 6){
+        if (0 < choice_number && choice_number < 6) {
             commands[choice_number - 1]->Execute(server, client);
-        }
-        else {
+        } else {
             server.sendServer("Invalid choice", client);
         }
         server.sendMenu(client);
