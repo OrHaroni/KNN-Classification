@@ -4,9 +4,11 @@
 #include <stdio.h>
 #include <string>
 
+
 using namespace std;
 class Server;
 class FileVector;
+class ActiveClient;
 
 class Command {
 private:
@@ -14,7 +16,7 @@ private:
 public:
     Command(string);
     virtual string get_desc() const;
-    virtual void Execute(Server, FileVector, FileVector) = 0;
+    virtual void Execute(Server& , ActiveClient&) = 0;
     virtual ~Command() { };
 };
 

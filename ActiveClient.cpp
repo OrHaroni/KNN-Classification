@@ -3,12 +3,12 @@
 //
 #include "ActiveClient.h"
 /*C'tor*/
-ActiveClient::ActiveClient(int serverPorts, int indexInServerMap) : serverPort(serverPorts), indexInServerMap(indexInServerMap) {
+ActiveClient::ActiveClient(FileVector* classified, FileVector* unClassified, int serverPorts, int indexInServerMap) : serverPort(serverPorts), indexInServerMap(indexInServerMap) {
     this->choiceNum = -1; //Initialize with invalid.
     this->k = 5; //Initialize with the value from the instructions.
     this->typeOfCalc = AUC; //Initialize with the value from the instructions.
-    this->classifiedPath = nullptr; //Initialize with null so we know whether the client inserted a path or not
-    this->unclassifiedPath = nullptr; //Initialize with null so we know whether the client inserted a path or not
+    this->setClassifiedPath(classified);
+    this->setUnClassifiedPath(unClassified);
     this->socket = 0;
     this->sockStruct.sin_family = AF_INET;
     this->sockStruct.sin_addr.s_addr = INADDR_ANY;
@@ -25,17 +25,21 @@ int ActiveClient::getChoiceNumber(){
 int ActiveClient::getKNumber(){
     return this->k;
 }
-char* ActiveClient::getClassifiedPath(){
-    return this->classifiedPath;
+FileVector* ActiveClient::getClassified(){
+    return this->classified;
 }
-char* ActiveClient::getUnClassifiedPath(){
-    return this->unclassifiedPath;
+FileVector* ActiveClient::getUnClassified(){
+    return this->unclassified;
 }
 int ActiveClient::getClientSocket() {
     return this->socket;
 }
 struct sockaddr_in ActiveClient::getSockStruct() {
     return this->sockStruct;
+}
+
+distanceType ActiveClient::getDisType() {
+    return this->typeOfCalc;
 }
 
 
@@ -46,15 +50,19 @@ void ActiveClient::setChoiceNumber(int num) {
 void ActiveClient::setKNumber(int newK) {
     this->k = newK;
 }
-void ActiveClient::setClassifiedPath(char* path) {
-    this->classifiedPath = path;
+void ActiveClient::setClassifiedPath(FileVector* path) {
+    this->classified = path;
 }
-void ActiveClient::setUnClassifiedPath(char* path) {
-    this->unclassifiedPath = path;
+void ActiveClient::setUnClassifiedPath(FileVector* path) {
+    this->unclassified = path;
 }
 void ActiveClient::setClientSocket(int sock) {
     this->socket = sock;
 }
 void ActiveClient::setSockStruct(sockaddr_in structSock) {
     this->sockStruct = structSock;
+}
+
+void ActiveClient::setDisType(distanceType type) {
+    this->typeOfCalc = type;
 }

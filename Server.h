@@ -13,6 +13,7 @@
 
 
 using namespace std;
+class ActiveClient;
 
 
 class Server {
@@ -34,16 +35,16 @@ public:
     int getSocket() throw();
     void bindServer() throw();
     void listenServer() throw();
-    void acceptServer() throw();
-    string receive();
-    void sendServer(string) throw();
+    void acceptServer(ActiveClient&) throw();
+    string receive(ActiveClient&);
+    void sendServer(string, ActiveClient&) throw();
     void closeServer() throw();
     vector<double> manipulateMSG(string) throw();
     distanceType getDisType(string) ;
     string getDisTypeString(distanceType);
     int getNumNeighbours() throw();
     void closeClient();
-    void sendMenu();
+    void sendMenu(ActiveClient&);
 };
 
 

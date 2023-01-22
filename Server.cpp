@@ -46,49 +46,43 @@ void Server::listenServer() throw() {
 }
 
 //Accepting a client and saving the client's socket id
-void Server::acceptServer() throw() {
+void Server::acceptServer(ActiveClient &client) throw() {
     cout << "Entered accept func" << endl;
     //Adding new active client and adding 1 to the last index
     //Giving the client the same index to know how to reach him.
-    ActiveClient temp_client = ActiveClient(this->m_server_port, this->lastIndexInMap);
 
     //Saving and accepting the clients socket
-    unsigned int addr_len = sizeof(temp_client.getSockStruct());
-    sockaddr_in temp = temp_client.getSockStruct();
+    unsigned int addr_len = sizeof(client.getSockStruct());
+    sockaddr_in temp = client.getSockStruct();
     int client_socket = accept(m_socket, (struct sockaddr *) &temp, &addr_len);
     if (client_socket < 0) {
         this->closeServer();
         throw invalid_argument("error accepting client");
     }
-    temp_client.setClientSocket(client_socket);
-    this->clients.insert({this->currentThreadIndex, temp_client});
+    client.setClientSocket(client_socket);
     cout << "Accepted the client" << endl;
 }
 
-void Server::sendServer(string answer) throw() {
+void Server::sendServer(string answer, ActiveClient &C) throw() {
     char *send_text = new char[answer.length() + 1];
     ::strcpy(send_text, answer.c_str());
-    ActiveClient temp_client = this->clients.at(this->currentThreadIndex);
-    int send_bytes = send(temp_client.getClientSocket(), (void *) send_text, 4096, 0);
+    int send_bytes = send(C.getClientSocket(), (void *) send_text, 4096, 0);
     if (send_bytes < 0) {
         this->closeServer();
         throw invalid_argument("Could not send msg");
     }
-    cout << "Server sent: " << send_text << endl;
+    cout << "Server sent: \n" << send_text << endl;
 }
 
 void Server::closeServer() throw() {
     close(m_socket);
 }
 
-string Server::receive() {
-    ActiveClient temp_client = this->clients.at(this->currentThreadIndex);
+string Server::receive(ActiveClient &client) {
     char buffer[4096];
     ::memset(buffer, 0, 4096);
     unsigned int buffer_length = 4096;
-    cout << "Before read bytes" << endl;
-    int read_bytes = recv(temp_client.getClientSocket(), buffer, buffer_length, 0);
-    cout << "After read btyes I got: " << buffer << endl;
+    int read_bytes = recv(client.getClientSocket(), buffer, buffer_length, 0);
     if (read_bytes == 0) {
         this->closeServer();
         exit(1);
@@ -96,7 +90,7 @@ string Server::receive() {
         this->closeServer();
         throw invalid_argument("error with the receiving");
     }
-    strcpy(msg, buffer);
+    cout << "I receive: " << buffer << endl;
     return buffer;
 }
 
@@ -201,7 +195,7 @@ void Server::closeClient() {
     //Delete and Exit this thread
 }
 
-void Server::sendMenu() {
+void Server::sendMenu(ActiveClient &client) {
     first_command c1 = first_command();
     second_command c2 = second_command();
     third_command c3 = third_command();
@@ -214,5 +208,5 @@ void Server::sendMenu() {
     }
     char *buffer = new char[menu.length() + 1];
     strcpy(buffer, menu.c_str());
-    sendServer(buffer);
+    sendServer(buffer, client);
 }

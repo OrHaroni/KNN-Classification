@@ -52,3 +52,6 @@ string tableVec::to_string(){
     return name_of_vec;
 }
 
+void tableVec::setStringType(string name) {
+    this->m_type = name;
+}
