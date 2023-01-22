@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 #include "Server.h"
 #include "tableVec.h"
 #include "FileVector.h"
@@ -18,55 +17,59 @@ int main(int argc, char *argv[]) {
     Command *commands[5] = {&c1, &c2, &c3, &c4, &c5};
     int portNumber = 0;
     //Checking validation of the arguments.
-    portNumber = mainValidation(argc, argv[2]);
+    try {
+        portNumber = mainValidation(argc, argv[1]);
+    }catch (invalid_argument e){
+        cout << e.what() << endl;
+        return 1;
+    }
     //Creating a vector of table vectors for future compares.
     FileVector classified_db = FileVector();
     FileVector unclassified_db = FileVector();
+    ActiveClient client = ActiveClient(&classified_db, &unclassified_db, portNumber ,1);
     Server server = Server(portNumber);
     try {
-        classified_db.InitializeByReadingFile(argv[1]);
         server.bindServer();
         server.listenServer();
-        server.acceptServer();
-        server.sendMenu();
+        server.acceptServer(client);
+        server.sendMenu(client);
     } catch (invalid_argument e) {
-        server.sendServer("Invalid input");
+        server.sendServer("Invalid input", client);
     }
     string choice;
     while (true) {
         try {
-            cout << "Before receive the option" << endl;
-            choice = server.receive(); //Getting the number of choice from menu from the user.
+            choice = server.receive(client); //Getting the number of choice from menu from the user.
         } catch (invalid_argument e) {
             //Not receiving so client disconnected
             //so listen to the next client
             server.listenServer();
-            server.acceptServer();
-            server.receive();
+            server.acceptServer(client);
+            server.receive(client);
         }
         int choice_number = stoi(choice);
         if (choice_number == 3) {
-            commands[2]->Execute(&server, &classified_db, &unclassified_db);
+            commands[2]->Execute(server, client);
 
         }else if(0 < choice_number && choice_number < 6){
-            commands[choice_number - 1]->Execute(&server, &classified_db, &unclassified_db);
+            commands[choice_number - 1]->Execute(server, client);
            // commands[choice_number - 1]->Execute(&server, &classified_db, &unclassified_db);
             if(choice_number == 1){
-                server.sendServer("Upload complete.");
+                server.sendServer("Upload complete.", client);
             }
         }
         else {
-            server.sendServer("Invalid choice");
+            server.sendServer("Invalid choice", client);
         }
-        server.sendMenu();
+        server.sendMenu(client);
     }
+    return 0;
 }
 
 int mainValidation(int numArguments, string s_Port) {
     int numPort = 0;
     //Validation of number of arguments
-    if (numArguments != 3) {
-        cout << "invalid number of arguments" << endl;
+    if (numArguments != 2) {
         throw invalid_argument("Got invalid number of arguments");
     }
     try {

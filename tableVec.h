@@ -30,6 +30,7 @@ public:
     string getType();
     double getDistance();
     string to_string();
+    void setStringType(string name);
 };
 
 
