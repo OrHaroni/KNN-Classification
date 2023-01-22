@@ -53,17 +53,12 @@ int main(int argc, char *argv[]) {
 
         }else if(0 < choice_number && choice_number < 6){
             commands[choice_number - 1]->Execute(server, client);
-           // commands[choice_number - 1]->Execute(&server, &classified_db, &unclassified_db);
-            if(choice_number == 1){
-                server.sendServer("Upload complete.", client);
-            }
         }
         else {
             server.sendServer("Invalid choice", client);
         }
         server.sendMenu(client);
     }
-    return 0;
 }
 
 int mainValidation(int numArguments, string s_Port) {

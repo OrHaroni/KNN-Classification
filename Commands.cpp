@@ -26,21 +26,21 @@ void first_command::Execute(Server &s, ActiveClient &client) {
         type_name = s.receive(client);
         s.sendServer(type_name, client);
     }
+    client.getClassified()->upload_complete();
     cout << "end of func" << endl;
-//    cout << "First command end upload first classified" << endl;
-//    s_vector = s.receive(client);
-//    s.sendServer(s_vector,client);
-//    strcpy(temp, s_vector.c_str());
-//    cout << "This is vector before the loop" << temp << endl;
-//    while (::strcmp(temp, "-1")) {
-//        vector<double> temp_vec = s.manipulateMSG(temp);
-//        client.getUnClassified()->Add(tableVec(temp_vec, " "));
-//        s_vector = s.receive(client);
-//        s.sendServer(s_vector,client);
-//        ::memset(temp, 0, 4096);
-//        strcpy(temp, s_vector.c_str());
-//        cout << "This is temp" << temp << endl;
-//    }
+    cout << "First command end upload first classified" << endl;
+    s_vector = s.receive(client);
+    s.sendServer(s_vector,client);
+    strcpy(temp, s_vector.c_str());
+    cout << "This is vector before the loop" << temp << endl;
+    while (s_vector.compare("adarkatz")) {
+        vector<double> temp_vec = s.manipulateMSG(temp);
+        client.getUnClassified()->Add(tableVec(temp_vec, " "));
+        s_vector = s.receive(client);
+        s.sendServer(s_vector,client);
+    }
+    client.getUnClassified()->upload_complete();
+    s.sendServer("Upload complete.", client);
 }
 
 second_command::second_command() : Command("algorithm settings") {}

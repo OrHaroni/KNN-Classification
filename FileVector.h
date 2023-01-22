@@ -26,6 +26,7 @@ public:
     void setK(int k);
     void setDistanceType(enum distanceType);
     bool isFileEmpty();
+    void upload_complete();
 };
 
 

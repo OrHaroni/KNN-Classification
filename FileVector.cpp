@@ -139,3 +139,7 @@ void FileVector::setDistanceType(enum distanceType disType){
 bool FileVector::isFileEmpty(){
     return this->isEmpty;
 }
+
+void FileVector::upload_complete(){
+    this->isEmpty = false;
+}

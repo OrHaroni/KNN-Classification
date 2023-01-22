@@ -190,7 +190,6 @@ void sendVectorsFromFile(Client& c, string path){
         string vec_to_send;
         vec_to_send = fileVector_train.getVectors().at(i).to_string();
         c.sendString(vec_to_send);
-        sleep(1);
         string str1 = c.receive();
         cout  << " i sent " << vec_to_send << endl;
     }
