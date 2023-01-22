@@ -36,10 +36,10 @@ public:
     void listenServer() throw();
     void acceptServer() throw();
     string receive();
-    void sendServer(char*) throw();
+    void sendServer(string) throw();
     void closeServer() throw();
-    vector<double> manipulateMSG(char*) throw();
-    distanceType getDisType(char*) ;
+    vector<double> manipulateMSG(string) throw();
+    distanceType getDisType(string) ;
     string getDisTypeString(distanceType);
     int getNumNeighbours() throw();
     void closeClient();

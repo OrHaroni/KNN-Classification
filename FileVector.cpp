@@ -1,7 +1,7 @@
 #include "FileVector.h"
 
 
-FileVector::FileVector() : distanceType(AUC), k(5) {}
+FileVector::FileVector() : distanceType(AUC), k(5), isEmpty(true) {}
 
 FileVector::FileVector(const vector<tableVec> *cpy) {
     for (int i = 0; i < cpy->size(); ++i) {
@@ -13,6 +13,7 @@ void FileVector::Add(tableVec tableVector) {
     this->vectors.push_back(tableVector);
     this->distanceType = AUC;
     this->k = 5;
+    this->isEmpty = true;
 }
 
 string FileVector::CalcTypeName(int k, vector<double> vec, enum distanceType disType) {
@@ -95,6 +96,7 @@ void FileVector::InitializeByReadingFile(string path) {
         }
     }catch (invalid_argument e){
     throw invalid_argument("");}
+    this->isEmpty = false;
 }
 
 vector<double> FileVector::manipulateMSG(char* msg) throw() {
@@ -127,4 +129,13 @@ enum distanceType FileVector::getDistanceType() {
 
 int FileVector::getK() {
     return this->k;
+}
+void FileVector::setK(int k){
+    this->k = k;
+}
+void FileVector::setDistanceType(enum distanceType disType){
+    this->distanceType = disType;
+}
+bool FileVector::isFileEmpty(){
+    return this->isEmpty;
 }
