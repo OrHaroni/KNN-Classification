@@ -6,7 +6,7 @@ class Server;
 
 class FileVector;
 
-void sendVectorsFromFileAndType(Server&, ActiveClient&);
+void sendVectorsFromFileAndType(Server &, ActiveClient &);
 
 first_command::first_command() : Command("upload an unclassified csv data file") {}
 
@@ -20,12 +20,13 @@ void first_command::Execute(Server &s, ActiveClient &client) {
     char *temp = new char[s_vector.length() + 1];
     strcpy(temp, s_vector.c_str());
     while (s_vector.compare("adarkatz")) {
-        temp_vec = s.manipulateMSG(temp);
+        temp_vec = s.manipulateMSGWIthType(temp);
         client.getClassified()->Add(tableVec(temp_vec, type_name));
         s_vector = s.receive(client);
         s.sendServer(s_vector, client);
         type_name = s.receive(client);
         s.sendServer(type_name, client);
+        strcpy(temp, s_vector.c_str());
     }
     client.getClassified()->upload_complete();
     cout << "end of func" << endl;
@@ -35,15 +36,24 @@ void first_command::Execute(Server &s, ActiveClient &client) {
     strcpy(temp, s_vector.c_str());
     cout << "This is vector before the loop" << temp << endl;
     while (s_vector.compare("adarkatz")) {
-        vector<double> temp_vec = s.manipulateMSG(temp);
-        client.getUnClassified()->Add(tableVec(temp_vec, " "));
+        temp_vec = s.manipulateMSGWithoutType(temp);
+        cout << "This is the vector in command func";
+        printVector(temp_vec);
+        tableVec temp_tablevec = tableVec(temp_vec, " ");
+        client.getUnClassified()->Add(tableVec(temp_tablevec));
         s_vector = s.receive(client);
+        strcpy(temp, s_vector.c_str());
         if (s_vector.compare("adarkatz")) {
             s.sendServer(s_vector, client);
         }
     }
     client.getUnClassified()->upload_complete();
     s.sendServer("Upload complete.", client);
+
+    cout << "Now printing all the vectors we got" << endl;
+    for (int i = 0; i < client.getUnClassified()->getVectors().size(); ++i) {
+        printVector(client.getUnClassified()->getVectors().at(i).getVector());
+    }
 }
 
 second_command::second_command() : Command("algorithm settings") {}
@@ -142,11 +152,12 @@ void third_command::Execute(Server &s, ActiveClient &client) {
 
 fourth_command::fourth_command() : Command("display result") {}
 
-void fourth_command::Execute(Server &s, ActiveClient &client) {
+void fourth_command::Execute(Server & s, ActiveClient &client) {
     int size = client.getUnClassified()->getVectors().size();
     string temp_output;
     for (int i = 0; i < size; ++i) {
-        temp_output += to_string(i) + "\t" + s.getDisTypeString(client.getUnClassified()->getDistanceType());
+        temp_output = to_string(i) + "\t" + client.getUnClassified()->getVectors().at(i).getType();
+        cout << "need to see here a type: " <<  client.getUnClassified()->getVectors().at(i).getType();
         s.sendServer(temp_output, client);
     }
     s.sendServer("Done", client);
@@ -154,7 +165,7 @@ void fourth_command::Execute(Server &s, ActiveClient &client) {
 
 fifth_command::fifth_command() : Command("download results") {}
 
-void fifth_command::Execute(Server &s , ActiveClient &client) {
+void fifth_command::Execute(Server &s, ActiveClient &client) {
     sendVectorsFromFileAndType(s, client);
 }
 

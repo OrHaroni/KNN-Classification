@@ -48,7 +48,6 @@ int main(int argc, char *argv[]) {
             server.receive(client);
         }
         int choice_number = stoi(choice);
-
         if (0 < choice_number && choice_number < 6) {
             commands[choice_number - 1]->Execute(server, client);
         } else {

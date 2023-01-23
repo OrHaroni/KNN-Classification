@@ -94,7 +94,7 @@ string Server::receive(ActiveClient &client) {
     return buffer;
 }
 
-vector<double> Server::manipulateMSG(string msg) throw() {
+vector<double> Server::manipulateMSGWIthType(string msg) throw() {
     char temp[msg.length() + 1];
     strcpy(temp, msg.c_str());
     vector<double> row;
@@ -107,6 +107,29 @@ vector<double> Server::manipulateMSG(string msg) throw() {
             break;
         }
         try {
+            cout << "This is word in manipulate func" << word << endl;
+            // add all the column data
+            // of a row to a vector
+            row.push_back(stod(word));
+        } catch (invalid_argument e) {
+            //we got to letter
+            return row; //might be invalid, will crash in numberOfCalculation.
+        }
+    }
+    return row;
+}
+
+vector<double> Server::manipulateMSGWithoutType(string msg) throw() {
+    char temp[msg.length() + 1];
+    strcpy(temp, msg.c_str());
+    vector<double> row;
+    string word;
+    stringstream s(temp);
+    //keep on separating the line with Comma's
+    //until its empty
+    while (getline(s, word, ' ')) {
+        try {
+            cout << "This is word in manipulate func" << word << endl;
             // add all the column data
             // of a row to a vector
             row.push_back(stod(word));

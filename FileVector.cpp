@@ -11,8 +11,8 @@ FileVector::FileVector(const FileVector&  cpy) {
 
 void FileVector::Add(tableVec tableVector) {
     this->vectors.push_back(tableVector);
-    this->distanceType = AUC;
-    this->k = 5;
+    cout << "Added this table vec: ";
+    printVector(tableVector.getVector());
     this->isEmpty = true;
 }
 
