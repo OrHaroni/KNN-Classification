@@ -119,6 +119,7 @@ void firstOption(Client& c){
     cout << c.receive() << endl;
 
 
+
 }
 
 void secondOption(Client& c){
