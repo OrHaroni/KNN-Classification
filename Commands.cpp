@@ -30,6 +30,7 @@ void first_command::Execute(Server &s, ActiveClient &client) {
     }
     client.getClassified()->upload_complete();
     s_vector = s.receive(client);
+    s.sendServer(s_vector, client);
     strcpy(temp, s_vector.c_str());
     while (s_vector.compare("adarkatz")) {
         temp_vec = s.manipulateMSGWithoutType(temp);
@@ -149,6 +150,7 @@ void fourth_command::Execute(Server &s, ActiveClient &client) {
 fifth_command::fifth_command() : Command("download results") {}
 
 void fifth_command::Execute(Server &s, ActiveClient &client) {
+    string StartUpload = s.receive(client);
     sendVectorsFromFileAndType(s, client);
 }
 
