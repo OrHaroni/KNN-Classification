@@ -7,15 +7,17 @@
 
 using namespace std;
 
-struct server_struct{
+struct server_struct {
     Server s;
+    CLI client;
 };
 
 int mainValidation(int, string);
 
-void* handleClient(void *);
+void *handleClient(void *);
 
 int main(int argc, char *argv[]) {
+    pthread_t threads_arr[5];
     int portNumber = 0;
     //Checking validation of the arguments.
     try {
@@ -29,12 +31,15 @@ int main(int argc, char *argv[]) {
     server.bindServer();
     server.listenServer();
     while (true) {
-        server_struct serverStruct = {server};
-        pthread_t ptid;
-        pthread_create(&ptid, NULL , handleClient, &serverStruct);
-        handleClient(&server);
+        FileVector classified_db = FileVector();
+        FileVector unclassified_db = FileVector();
+        CLI client = CLI(&classified_db, &unclassified_db, server.getPortNumber(), 1);
+        server_struct serverStruct = {server, client};
+        for (int i = 0; i < 5; ++i) {
+            server.acceptServer(client);
+            pthread_create(&threads_arr[i], NULL, handleClient, &serverStruct);
+        }
     }
-
 }
 
 int mainValidation(int numArguments, string s_Port) {
@@ -59,29 +64,27 @@ int mainValidation(int numArguments, string s_Port) {
     return numPort;
 }
 
-void* handleClient(void* s) {
-    Server* server = (Server *) s;
+void *handleClient(void *serverStruct) {
+    server_struct *args = (server_struct *) serverStruct;
+    Server server = args->s;
+    CLI client = args->client;
     //Creating a vector of table vectors for future compares.
-    FileVector classified_db = FileVector();
-    FileVector unclassified_db = FileVector();
-    CLI client = CLI(&classified_db, &unclassified_db, server->getPortNumber(), 1);
-    first_command c1 = first_command(*server, client);
-    second_command c2 = second_command(*server, client);
-    third_command c3 = third_command(*server, client);
-    fourth_command c4 = fourth_command(*server, client);
-    fifth_command c5 = fifth_command(*server, client);
+    first_command c1 = first_command(server, client);
+    second_command c2 = second_command(server, client);
+    third_command c3 = third_command(server, client);
+    fourth_command c4 = fourth_command(server, client);
+    fifth_command c5 = fifth_command(server, client);
     Command *commands[5] = {&c1, &c2, &c3, &c4, &c5};
     try {
-        server->acceptServer(client);
-        server->sendMenu(client);
+        server.sendMenu(client);
     } catch (invalid_argument e) {
-        server->sendServer("Invalid input", client);
+        server.sendServer("Invalid input", client);
     }
     string choice;
     int choice_number;
     while (true) {
         try {
-            choice = server->receive(client); //Getting the number of choice from menu from the user.
+            choice = server.receive(client); //Getting the number of choice from menu from the user.
             choice_number = stoi(choice);
         } catch (invalid_argument e) {
             choice_number = -1;
@@ -91,9 +94,9 @@ void* handleClient(void* s) {
         } else if (0 < choice_number && choice_number < 6) {
             commands[choice_number - 1]->Execute();
 
-        } else if(choice_number != -1){
-            server->sendServer("Invalid choice, please try again", client);
+        } else if (choice_number != -1) {
+            server.sendServer("Invalid choice, please try again", client);
         }
-        server->sendMenu(client);
+        server.sendMenu(client);
     }
 }
