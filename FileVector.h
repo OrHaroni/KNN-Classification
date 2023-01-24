@@ -15,7 +15,7 @@ public:
     FileVector();
     //Copy C'tor
     FileVector(const FileVector &cpy);
-    void Add(tableVec tableVector);
+    void Add(tableVec& tableVector);
     string CalcTypeName(int k, vector<double> vec, enum distanceType disType);
     vector<tableVec> getVectors();
     int SizeOfVectors();

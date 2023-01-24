@@ -64,14 +64,16 @@ void Server::acceptServer(ActiveClient &client) throw() {
 }
 
 void Server::sendServer(string answer, ActiveClient &C) throw() {
+    for (int i = 0; i < 200 - answer.length(); ++i) {
+        answer += "$";
+    }
     char *send_text = new char[answer.length() + 1];
     ::strcpy(send_text, answer.c_str());
-    int send_bytes = send(C.getClientSocket(), (void *) send_text, 4096, 0);
+    int send_bytes = send(C.getClientSocket(), (void *) send_text, 200, 0);
     if (send_bytes < 0) {
         this->closeServer();
         throw invalid_argument("Could not send msg");
     }
-    cout << "Server sent: \n" << send_text << endl;
 }
 
 void Server::closeServer() throw() {
@@ -79,9 +81,9 @@ void Server::closeServer() throw() {
 }
 
 string Server::receive(ActiveClient &client) {
-    char buffer[4096];
-    ::memset(buffer, 0, 4096);
-    unsigned int buffer_length = 4096;
+    char buffer[200];
+    ::memset(buffer, 0, 200);
+    unsigned int buffer_length = 200;
     int read_bytes = recv(client.getClientSocket(), buffer, buffer_length, 0);
     if (read_bytes == 0) {
         this->closeServer();
@@ -90,11 +92,13 @@ string Server::receive(ActiveClient &client) {
         this->closeServer();
         throw invalid_argument("error with the receiving");
     }
-    cout << "I receive: " << buffer << endl;
+    while(!strcmp(&buffer[strlen(buffer) - 1],"$")){
+        buffer[strlen(buffer) - 1] = 0;
+    }
     return buffer;
 }
 
-vector<double> Server::manipulateMSG(string msg) throw() {
+vector<double> Server::manipulateMSGWIthType(string msg) throw() {
     char temp[msg.length() + 1];
     strcpy(temp, msg.c_str());
     vector<double> row;
@@ -106,6 +110,27 @@ vector<double> Server::manipulateMSG(string msg) throw() {
         if (s.eof()) {
             break;
         }
+        try {
+            // add all the column data
+            // of a row to a vector
+            row.push_back(stod(word));
+        } catch (invalid_argument e) {
+            //we got to letter
+            return row; //might be invalid, will crash in numberOfCalculation.
+        }
+    }
+    return row;
+}
+
+vector<double> Server::manipulateMSGWithoutType(string msg) throw() {
+    char temp[msg.length() + 1];
+    strcpy(temp, msg.c_str());
+    vector<double> row;
+    string word;
+    stringstream s(temp);
+    //keep on separating the line with Comma's
+    //until its empty
+    while (getline(s, word, ' ')) {
         try {
             // add all the column data
             // of a row to a vector
