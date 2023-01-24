@@ -36,7 +36,6 @@ void first_command::Execute(Server &s, ActiveClient &client) {
         tableVec temp_tablevec = tableVec(temp_vec, " ");
         client.getUnClassified()->Add(temp_tablevec);
         s_vector = s.receive(client);
-        s.sendServer(s_vector,client);
         strcpy(temp, s_vector.c_str());
         if (s_vector.compare("adarkatz")) {
             s.sendServer(s_vector, client);
@@ -141,8 +140,10 @@ void fourth_command::Execute(Server &s, ActiveClient &client) {
     for (int i = 0; i < size; ++i) {
         temp_output = to_string(i + 1) + "\t" + client.getUnClassified()->getVectors().at(i).getType();
         s.sendServer(temp_output, client);
+        s.receive(client);
     }
-    s.sendServer("Done", client);
+    s.sendServer("Done.", client);
+    s.receive(client);
 }
 
 fifth_command::fifth_command() : Command("download results") {}
@@ -158,10 +159,12 @@ void sendVectorsFromFileAndType(Server &s, ActiveClient &client) {
         string vec_to_send;
         vec_to_send = client.getUnClassified()->getVectors().at(i).to_string();
         s.sendServer(vec_to_send, client);
+        s.receive(client);
         string str1 = s.receive(client);
         string vec_to_send_type;
         vec_to_send_type = client.getUnClassified()->getVectors().at(i).getType();
         s.sendServer(vec_to_send_type, client);
+        s.receive(client);
         string str2 = s.receive(client);
     }
     //Sending -1 to say rhe server we're done uploading.
