@@ -64,9 +64,6 @@ void Server::acceptServer(ActiveClient &client) throw() {
 }
 
 void Server::sendServer(string answer, ActiveClient &C) throw() {
-    for (int i = 0; i < 200 - answer.length(); ++i) {
-        answer += "$";
-    }
     char *send_text = new char[answer.length() + 1];
     ::strcpy(send_text, answer.c_str());
     int send_bytes = send(C.getClientSocket(), (void *) send_text, 200, 0);
@@ -74,6 +71,7 @@ void Server::sendServer(string answer, ActiveClient &C) throw() {
         this->closeServer();
         throw invalid_argument("Could not send msg");
     }
+    cout << "This is what i sent: " << send_text << endl;
 }
 
 void Server::closeServer() throw() {
@@ -92,9 +90,8 @@ string Server::receive(ActiveClient &client) {
         this->closeServer();
         throw invalid_argument("error with the receiving");
     }
-    while(!strcmp(&buffer[strlen(buffer) - 1],"$")){
-        buffer[strlen(buffer) - 1] = 0;
-    }
+
+    cout << "i got: " << buffer << endl;
     return buffer;
 }
 

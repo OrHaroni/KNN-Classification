@@ -13,9 +13,9 @@ first_command::first_command() : Command("upload an unclassified csv data file")
 void first_command::Execute(Server &s, ActiveClient &client) {
     vector<double> temp_vec;
     string s_vector = s.receive(client);
-    s.sendServer(s_vector, client);
+    s.sendServer(s_vector,client);
     string type_name = s.receive(client);
-    s.sendServer(type_name, client);
+    s.sendServer(type_name,client);
     char *temp = new char[s_vector.length() + 1];
     strcpy(temp, s_vector.c_str());
     while (s_vector.compare("adarkatz")) {
@@ -23,21 +23,20 @@ void first_command::Execute(Server &s, ActiveClient &client) {
         tableVec temp_tablevec = tableVec(temp_vec, type_name);
         client.getClassified()->Add(temp_tablevec);
         s_vector = s.receive(client);
-        s.sendServer(s_vector, client);
+        s.sendServer(s_vector,client);
         type_name = s.receive(client);
-        s.sendServer(type_name, client);
+        s.sendServer(type_name,client);
         strcpy(temp, s_vector.c_str());
     }
     client.getClassified()->upload_complete();
     s_vector = s.receive(client);
-    s.sendServer(s_vector, client);
     strcpy(temp, s_vector.c_str());
     while (s_vector.compare("adarkatz")) {
         temp_vec = s.manipulateMSGWithoutType(temp);
-        printVector(temp_vec);
         tableVec temp_tablevec = tableVec(temp_vec, " ");
         client.getUnClassified()->Add(temp_tablevec);
         s_vector = s.receive(client);
+        s.sendServer(s_vector,client);
         strcpy(temp, s_vector.c_str());
         if (s_vector.compare("adarkatz")) {
             s.sendServer(s_vector, client);
@@ -97,7 +96,6 @@ void second_command::Execute(Server &s, ActiveClient &client) {
 third_command::third_command() : Command("classify data") {}
 
 void third_command::Execute(Server &s, ActiveClient &client) {
-    cout << "Got into the command 3" << endl;
     if (client.getClassified()->isFileEmpty() || client.getUnClassified()->isFileEmpty()) {
         s.sendServer("please upload data", client);
         return;
@@ -128,31 +126,20 @@ void third_command::Execute(Server &s, ActiveClient &client) {
                 maxTypeName = sorter.at(j).getType();
             }
         }
-        client.getUnClassified()->getVectors().at(i).setStringTypeSign(maxTypeName);
-        cout << "This is max type name" << client.getUnClassified()->getVectors().at(i).m_type << endl;
+        client.getUnClassified()->setName(maxTypeName,i);
     }
     s.sendServer("classifying data complete", client);
 
-//    cout << "In 3 command, this unclassified after the func: " << endl;
-//    for (int i = 0; i < client.getUnClassified()->getVectors().size(); ++i) {
-//        printVector(client.getUnClassified()->getVectors().at(i).getVector());
-//        cout << "This is it's type: " << client.getUnClassified()->getVectors().at(i).getType() << endl;
-//    }
 }
 
 fourth_command::fourth_command() : Command("display result") {}
 
-void fourth_command::Execute(Server & s, ActiveClient &client) {
-//    cout << "In 4 command, this unclassified before the func: ";
-//    for (int i = 0; i < client.getUnClassified()->getVectors().size(); ++i) {
-//        printVector(client.getUnClassified()->getVectors().at(i).getVector());
-//        cout << "This is it's type: " << client.getUnClassified()->getVectors()[i].getType() << endl;
-//    }
+void fourth_command::Execute(Server &s, ActiveClient &client) {
     int size = client.getUnClassified()->getVectors().size();
     string temp_output;
+    cout << "This is the size: " << size << endl;
     for (int i = 0; i < size; ++i) {
-        cout << "Tis is the type: " << client.getUnClassified()->getVectors().at(i).getType() << endl;
-        temp_output = to_string(i) + "\t" + client.getUnClassified()->getVectors().at(i).getType();
+        temp_output = to_string(i + 1) + "\t" + client.getUnClassified()->getVectors().at(i).getType();
         s.sendServer(temp_output, client);
     }
     s.sendServer("Done", client);
