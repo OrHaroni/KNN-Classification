@@ -8,7 +8,7 @@
 using namespace std;
 class Server;
 class FileVector;
-class ActiveClient;
+class CLI;
 
 class Command {
 private:
@@ -16,7 +16,7 @@ private:
 public:
     Command(string);
     virtual string get_desc() const;
-    virtual void Execute(Server& , ActiveClient&) = 0;
+    virtual void Execute() = 0;
     virtual ~Command() { };
 };
 

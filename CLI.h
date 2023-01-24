@@ -1,5 +1,5 @@
-#ifndef CLIONPROJECTS_ACTIVECLIENT_H
-#define CLIONPROJECTS_ACTIVECLIENT_H
+#ifndef CLIONPROJECTS_CLI_H
+#define CLIONPROJECTS_CLI_H
 
 
 #include "tableVec.h"
@@ -14,7 +14,7 @@ using namespace std;
 class Server;
 class FileVector;
 
-class ActiveClient {
+class CLI {
 private:
     int choiceNum = -1;
     int k;
@@ -25,10 +25,11 @@ private:
     struct sockaddr_in sockStruct;
     int serverPort;
     int indexInServerMap;
+    bool isClassified;
 
 public:
     //C'tor
-    ActiveClient(FileVector*, FileVector*, int, int);
+    CLI(FileVector*, FileVector*, int, int);
 
     //Getters
     int getChoiceNumber();
@@ -47,9 +48,9 @@ public:
     void setClientSocket(int);
     void setSockStruct(sockaddr_in);
     void setDisType(distanceType);
-
-
+    void classifyTheData();
+    bool isClassifiedTheData();
 };
 
 
-#endif //CLIONPROJECTS_ACTIVECLIENT_H
+#endif //CLIONPROJECTS_CLI_H

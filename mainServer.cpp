@@ -1,4 +1,5 @@
 #include <iostream>
+#include <pthread.h>
 #include "Server.h"
 #include "tableVec.h"
 #include "FileVector.h"
@@ -7,6 +8,8 @@
 using namespace std;
 
 int mainValidation(int, string);
+
+void* handleClient(Server &);
 
 int main(int argc, char *argv[]) {
     int portNumber = 0;
@@ -17,49 +20,16 @@ int main(int argc, char *argv[]) {
         cout << e.what() << endl;
         return 1;
     }
-    //Creating a vector of table vectors for future compares.
-    FileVector classified_db = FileVector();
-    FileVector unclassified_db = FileVector();
-    ActiveClient client = ActiveClient(&classified_db, &unclassified_db, portNumber, 1);
+    //Opening a server.
     Server server = Server(portNumber);
-    first_command c1 = first_command();
-    second_command c2 = second_command();
-    third_command c3 = third_command();
-    fourth_command c4 = fourth_command();
-    fifth_command c5 = fifth_command();
-    Command *commands[5] = {&c1, &c2, &c3, &c4, &c5};
-    try {
-        server.bindServer();
-        server.listenServer();
-        server.acceptServer(client);
-        server.sendMenu(client);
-    } catch (invalid_argument e) {
-        server.sendServer("Invalid input", client);
-    }
-    string choice;
+    server.bindServer();
+    server.listenServer();
     while (true) {
-        try {
-            choice = server.receive(client); //Getting the number of choice from menu from the user.
-        } catch (invalid_argument e) {
-            //Not receiving so client disconnected
-            //so listen to the next client
-            server.listenServer();
-            server.acceptServer(client);
-            server.receive(client);
-        }
-        int choice_number = 0;
-        try {
-            choice_number = stoi(choice);
-        } catch(invalid_argument e){
-            server.sendServer("Invalid Choice number, please try again.", client);
-        }
-        if (0 < choice_number && choice_number < 6) {
-            commands[choice_number - 1]->Execute(server, client);
-        } else {
-            server.sendServer("Invalid choice", client);
-        }
-        server.sendMenu(client);
+        pthread_t ptid;
+        pthread_create(&ptid, NULL , reinterpret_cast<void *(*)(void *)>(handleClient), NULL);
+        handleClient(server);
     }
+
 }
 
 int mainValidation(int numArguments, string s_Port) {
@@ -84,3 +54,40 @@ int mainValidation(int numArguments, string s_Port) {
     return numPort;
 }
 
+void* handleClient(Server &server) {
+    //Creating a vector of table vectors for future compares.
+    FileVector classified_db = FileVector();
+    FileVector unclassified_db = FileVector();
+    CLI client = CLI(&classified_db, &unclassified_db, server.getPortNumber(), 1);
+    first_command c1 = first_command(server, client);
+    second_command c2 = second_command(server, client);
+    third_command c3 = third_command(server, client);
+    fourth_command c4 = fourth_command(server, client);
+    fifth_command c5 = fifth_command(server, client);
+    Command *commands[5] = {&c1, &c2, &c3, &c4, &c5};
+    try {
+        server.acceptServer(client);
+        server.sendMenu(client);
+    } catch (invalid_argument e) {
+        server.sendServer("Invalid input", client);
+    }
+    string choice;
+    int choice_number;
+    while (true) {
+        try {
+            choice = server.receive(client); //Getting the number of choice from menu from the user.
+            choice_number = stoi(choice);
+        } catch (invalid_argument e) {
+            choice_number = -1;
+        }
+        if (choice_number == 8) {
+            server.closeClient();
+        } else if (0 < choice_number && choice_number < 6) {
+            commands[choice_number - 1]->Execute();
+
+        } else if(choice_number != -1){
+            server.sendServer("Invalid choice, please try again", client);
+        }
+        server.sendMenu(client);
+    }
+}

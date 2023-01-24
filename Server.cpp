@@ -46,7 +46,7 @@ void Server::listenServer() throw() {
 }
 
 //Accepting a client and saving the client's socket id
-void Server::acceptServer(ActiveClient &client) throw() {
+void Server::acceptServer(CLI &client) throw() {
     cout << "Entered accept func" << endl;
     //Adding new active client and adding 1 to the last index
     //Giving the client the same index to know how to reach him.
@@ -63,7 +63,7 @@ void Server::acceptServer(ActiveClient &client) throw() {
     cout << "Accepted the client" << endl;
 }
 
-void Server::sendServer(string answer, ActiveClient &C) throw() {
+void Server::sendServer(string answer, CLI &C) throw() {
     char *send_text = new char[answer.length() + 1];
     ::strcpy(send_text, answer.c_str());
     int send_bytes = send(C.getClientSocket(), (void *) send_text, 200, 0);
@@ -78,7 +78,7 @@ void Server::closeServer() throw() {
     close(m_socket);
 }
 
-string Server::receive(ActiveClient &client) {
+string Server::receive(CLI &client) {
     char buffer[200];
     ::memset(buffer, 0, 200);
     unsigned int buffer_length = 200;
@@ -217,18 +217,19 @@ void Server::closeClient() {
     //Delete and Exit this thread
 }
 
-void Server::sendMenu(ActiveClient &client) {
-    first_command c1 = first_command();
-    second_command c2 = second_command();
-    third_command c3 = third_command();
-    fourth_command c4 = fourth_command();
-    fifth_command c5 = fifth_command();
-    Command *arr[5] = {&c1, &c2, &c3, &c4, &c5};
-    string menu = "";
-    for (int i = 0; i < 5; ++i) {
-        menu += to_string(i + 1) + ") " + arr[i]->get_desc() + "\n";
-    }
+void Server::sendMenu(CLI &client) {
+string menu = "welcome to KNN Classifier Server. Please choose an option:\n"
+              "1. upload an unclassified csv data file\n"
+              "2. algorithm settings\n"
+              "3. classify data\n"
+              "4. display results\n"
+              "5. download results\n"
+              "8. exit\n";
     char *buffer = new char[menu.length() + 1];
     strcpy(buffer, menu.c_str());
     sendServer(buffer, client);
+}
+
+int Server::getPortNumber() {
+    return this->m_server_port;
 }

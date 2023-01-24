@@ -143,6 +143,7 @@ bool FileVector::isFileEmpty(){
 
 void FileVector::upload_complete(){
     this->isEmpty = false;
+    cout << "Now we got data" << endl;
 }
 
 void FileVector::InitializeByReadingFileNoType(string path) {
