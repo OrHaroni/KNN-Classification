@@ -82,7 +82,7 @@ static bool compareDistance(tableVec t1, tableVec t2) {
 //Adding to the map. (Iterator template)
 //If the type is not in the map, add it with 1 appearance.
 //else, add 1 to the value (add 1 appearance)
-static void addToMap(map<string, int> neighbours, tableVec v1) {
+static void addToMap(map<string, int>& neighbours, tableVec v1) {
     //first one with this type
     if (neighbours.find(v1.getType()) == neighbours.end()) {
         neighbours.insert({v1.getType(), 1});

@@ -23,16 +23,16 @@ class tableVec {
 private:
     vector <double>m_vector;
     double m_distance;
-    string m_type;
     void setDistance(double distance);
 public:
+    string m_type;
     tableVec(vector<double> vector, string type);
     void calcDis(vector<double> vector, distanceType distanceType);
     vector<double> getVector ();
     string getType();
     double getDistance();
     string to_string();
-    void setStringType(string name);
+    void setStringTypeSign(const std::string&);
 };
 
 

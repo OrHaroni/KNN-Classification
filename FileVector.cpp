@@ -9,10 +9,8 @@ FileVector::FileVector(const FileVector&  cpy) {
     }
 }
 
-void FileVector::Add(tableVec tableVector) {
+void FileVector::Add(tableVec& tableVector) {
     this->vectors.push_back(tableVector);
-    this->distanceType = AUC;
-    this->k = 5;
     this->isEmpty = true;
 }
 

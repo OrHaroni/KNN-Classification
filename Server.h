@@ -39,7 +39,8 @@ public:
     string receive(ActiveClient&);
     void sendServer(string, ActiveClient&) throw();
     void closeServer() throw();
-    vector<double> manipulateMSG(string) throw();
+    vector<double> manipulateMSGWIthType(string) throw();
+    vector<double> manipulateMSGWithoutType(string) throw();
     distanceType getDisType(string) ;
     string getDisTypeString(distanceType);
     int getNumNeighbours() throw();
