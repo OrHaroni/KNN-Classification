@@ -53,10 +53,12 @@ void tableVec::calcDis(vector<double> vector, distanceType distanceType) {
 string tableVec::to_string() {
     //int size = m_vector.size();
     string name_of_vec;
-    for (int j = 0; j < this->m_vector.size(); j++) {
-        name_of_vec += " " + std::to_string(this->m_vector.at(j));
+    std::stringstream stream;
+    for (int  j = 0; j < this->m_vector.size();j++) {
+        stream << fixed << setprecision(2) << this->m_vector.at(j) << " ";
+        //name_of_vec += " " + std::to_string(this->m_vector.at(j));
     }
-    return name_of_vec;
+    return stream.str();
 }
 
 void tableVec::setStringTypeSign(const std::string& name) {

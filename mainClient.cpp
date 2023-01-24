@@ -63,6 +63,12 @@ int main(int argc, char *argv[]) {
     cout << "connect " << endl;
     c.clientConnect();
     cout << "connected " << endl;
+    c.sendString("1");
+    c.receive();
+    firstOption(c);
+    c.sendString("3");
+    c.receive();
+    thirdOption(c);
     while (true) {
         //Get the menu.
         cout << c.receive() << endl;
@@ -107,18 +113,18 @@ void firstOption(Client& c){
     cout << "begin of 1" << endl;
     //Get the classifieds file from the user.
     string local_file_train;
-    cout << "Please upload your local train CSV file." << endl;
-    cin >> local_file_train;
+//    cout << "Please upload your local train CSV file." << endl;
+//    cin >> local_file_train;
+    local_file_train = "datasets/iris/iris_classified.csv";
     sendVectorsFromFileAndType(c, local_file_train);
     //Doing the same process for the unclassified.
     string local_file;
-    cout << "Please upload your local test CSV file." << endl;
-    cin >> local_file;
+//    cout << "Please upload your local test CSV file." << endl;
+//    cin >> local_file;
+    local_file = "datasets/iris/iris_Unclassified.csv";
     sendVectorsFromFile(c, local_file);
     cout << c.receive() << endl;
     cout << c.receive() << endl;
-
-
 }
 
 void secondOption(Client& c){
@@ -192,7 +198,6 @@ void sendVectorsFromFile(Client& c, string path){
         string vec_to_send;
         vec_to_send = fileVector_train.getVectors().at(i).to_string();
         c.sendString(vec_to_send);
-        usleep(200000);
         string str1 = c.receive();
         cout  << " i sent " << vec_to_send << endl;
     }
@@ -208,25 +213,24 @@ void sendVectorsFromFileAndType(Client& c , string path){
         string vec_to_send;
         vec_to_send = fileVector_train.getVectors().at(i).to_string();
         c.sendString(vec_to_send);
-        usleep(200000);
         string str1 = c.receive();
         cout  << " i sent " << vec_to_send << endl;
         string vec_to_send_type;
         vec_to_send_type = fileVector_train.getVectors().at(i).getType();
         c.sendString(vec_to_send_type);
-        usleep(200000);
         string str2 = c.receive();
-
         cout  << " i sent " << vec_to_send_type << endl;
     }
     //Sending -1 to say rhe server we're done uploading.
     c.sendString("adarkatz");
 }
+
 void test(){
     FileVector fileVector_train = FileVector();
     fileVector_train.InitializeByReadingFile("datasets/iris/iris_classified.csv");
     int size = fileVector_train.getVectors().size();
-    for (int i = 0; i < size; ++i) {
+    int i;
+    for (i = 0; i < size; ++i) {
         string vec_to_send;
         vec_to_send = fileVector_train.getVectors().at(i).to_string();
 

@@ -29,6 +29,9 @@ void Client::clientConnect() throw(){
 
 void Client::sendString(string string1) throw() {
     //Sending the vector to the server.
+    for (int i = 0; i < 200 - string1.length(); ++i) {
+        string1 += "$";
+    }
     const int len = string1.length();
     char *temp = new char[len + 1];
     strcpy(temp, string1.c_str());
@@ -43,18 +46,19 @@ void Client::sendString(string string1) throw() {
 }
 
 string Client::receive() throw(){
-    char buffer[4096];
-    ::memset(buffer,0,4096);
-    unsigned int buffer_len = 4096;
-    usleep(30000);
+
+    char buffer[200];
+    ::memset(buffer,0,200);
+    unsigned int buffer_len = 200;
     int read_bytes = recv(m_socket, buffer, buffer_len, 0);
     if (strlen(buffer) == 0){
-        usleep(30000);
         read_bytes = recv(m_socket, buffer, buffer_len, 0);
     }
     if (strlen(buffer) == 0){
-        usleep(30000);
         read_bytes = recv(m_socket, buffer, buffer_len, 0);
+    }
+    while(!strcmp(&buffer[strlen(buffer) - 1],"$")){
+        buffer[strlen(buffer) - 1] = 0;
     }
     //If the size is zero we need to close.
     if (read_bytes == 0) {
