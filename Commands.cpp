@@ -6,7 +6,7 @@ class Server;
 
 class FileVector;
 
-void sendVectorsFromFileAndType(Server &, ActiveClient &);
+void sendClassificationToClient(Server &, ActiveClient &);
 
 first_command::first_command() : Command("upload an unclassified csv data file") {}
 
@@ -135,6 +135,17 @@ void third_command::Execute(Server &s, ActiveClient &client) {
 fourth_command::fourth_command() : Command("display result") {}
 
 void fourth_command::Execute(Server &s, ActiveClient &client) {
+    sendClassificationToClient(s, client);
+}
+
+fifth_command::fifth_command() : Command("download results") {}
+
+void fifth_command::Execute(Server &s, ActiveClient &client) {
+    string StartUpload = s.receive(client);
+    sendClassificationToClient(s, client);
+}
+
+void sendClassificationToClient(Server &s, ActiveClient &client) {
     int size = client.getUnClassified()->getVectors().size();
     string temp_output;
     cout << "This is the size: " << size << endl;
@@ -145,30 +156,4 @@ void fourth_command::Execute(Server &s, ActiveClient &client) {
     }
     s.sendServer("Done.", client);
     s.receive(client);
-}
-
-fifth_command::fifth_command() : Command("download results") {}
-
-void fifth_command::Execute(Server &s, ActiveClient &client) {
-    string StartUpload = s.receive(client);
-    sendVectorsFromFileAndType(s, client);
-}
-
-void sendVectorsFromFileAndType(Server &s, ActiveClient &client) {
-
-    int size = client.getUnClassified()->getVectors().size();
-    for (int i = 0; i < size; ++i) {
-        string vec_to_send;
-        vec_to_send = client.getUnClassified()->getVectors().at(i).to_string();
-        s.sendServer(vec_to_send, client);
-        s.receive(client);
-        string str1 = s.receive(client);
-        string vec_to_send_type;
-        vec_to_send_type = client.getUnClassified()->getVectors().at(i).getType();
-        s.sendServer(vec_to_send_type, client);
-        s.receive(client);
-        string str2 = s.receive(client);
-    }
-    //Sending -1 to say rhe server we're done uploading.
-    s.sendServer("adarkatz", client);
 }
