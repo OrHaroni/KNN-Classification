@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
                 break;
             case 5:
                 fifthOption(c);
-                return 0;
+                break;
             default:
                 //The option is a number but not from the options.
                 cout << "Invalid option please try again.";
@@ -170,24 +170,22 @@ void fourthOption(Client& c){
 }
 void fifthOption(Client& c){
     cout << "begin of 5" << endl;
-    string local_file_train;
+    string local_file_path;
     cout << "Please upload your path to the file." << endl;
-    cin >> local_file_train;
-    c.sendString(local_file_train);
+    cin >> local_file_path;
     // Create and open a text file
     try {
-        ofstream MyFile(local_file_train);
-        cout << c.receive() << endl;
+        ofstream myFile(local_file_path);
+        c.sendString("ready");
+       // cout << c.receive() << endl;
         string input;
-        do {
+        while (input.compare("Done.") && myFile.is_open()) {
             input = c.receive();
-            // Write to the file
-            if (input.compare("-1")){
-                MyFile << input << endl;
-            }
-        } while (!input.compare("-1"));
+            myFile << input << endl;
+            c.sendString(input);
+        }
         // Close the file
-        MyFile.close();
+        myFile.close();
     }
     catch(exception const& e){
         cout << "Problem opening and writhing the file." << endl;
