@@ -24,8 +24,8 @@ private:
     vector <double>m_vector;
     double m_distance;
     void setDistance(double distance);
-public:
     string m_type;
+public:
     tableVec(vector<double> vector, string type);
     void calcDis(vector<double> vector, distanceType distanceType);
     vector<double> getVector ();

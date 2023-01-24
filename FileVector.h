@@ -28,8 +28,10 @@ public:
     void setDistanceType(enum distanceType);
     bool isFileEmpty();
     void upload_complete();
+    void setName (string name, int i) ;
 
-};
+
+    };
 
 
 #endif //CLIONPROJECTS_FILEVECTOR_H

@@ -52,6 +52,9 @@ string FileVector::CalcTypeName(int k, vector<double> vec, enum distanceType dis
 vector<tableVec> FileVector::getVectors() {
     return this->vectors;
 }
+void FileVector::setName (string name, int i) {
+    this->vectors[i].setStringTypeSign (name);
+}
 
 int FileVector::SizeOfVectors() {
     int size = this->vectors.at(0).getVector().size();

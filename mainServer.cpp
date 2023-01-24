@@ -9,12 +9,6 @@ using namespace std;
 int mainValidation(int, string);
 
 int main(int argc, char *argv[]) {
-    first_command c1 = first_command();
-    second_command c2 = second_command();
-    third_command c3 = third_command();
-    fourth_command c4 = fourth_command();
-    fifth_command c5 = fifth_command();
-    Command *commands[5] = {&c1, &c2, &c3, &c4, &c5};
     int portNumber = 0;
     //Checking validation of the arguments.
     try {
@@ -28,6 +22,12 @@ int main(int argc, char *argv[]) {
     FileVector unclassified_db = FileVector();
     ActiveClient client = ActiveClient(&classified_db, &unclassified_db, portNumber, 1);
     Server server = Server(portNumber);
+    first_command c1 = first_command();
+    second_command c2 = second_command();
+    third_command c3 = third_command();
+    fourth_command c4 = fourth_command();
+    fifth_command c5 = fifth_command();
+    Command *commands[5] = {&c1, &c2, &c3, &c4, &c5};
     try {
         server.bindServer();
         server.listenServer();
