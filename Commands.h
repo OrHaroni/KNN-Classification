@@ -10,33 +10,48 @@ using namespace std;
 class Server;
 
 class first_command : public Command{
+private:
+    Server& server;
+    CLI& client;
 public:
-    first_command();
-    void Execute(Server& , ActiveClient&);
+    first_command(Server& , CLI&);
+    void Execute();
 };
 
 class second_command : public Command{
+private:
+    Server& server;
+    CLI& client;
 public:
-    second_command();
-    void Execute(Server& , ActiveClient&);
+    second_command(Server& , CLI&);
+    void Execute();
 };
 
 class third_command : public Command{
+private:
+    Server& server;
+    CLI& client;
 public:
-    third_command();
-    void Execute(Server& , ActiveClient&);
+    third_command(Server& , CLI&);
+    void Execute();
 };
 
 class fourth_command : public Command{
+private:
+    Server& server;
+    CLI& client;
 public:
-    fourth_command();
-    void Execute(Server& , ActiveClient&);
+    fourth_command(Server& , CLI&);
+    void Execute();
 };
 
 class fifth_command : public Command{
+private:
+    Server& server;
+    CLI& client;
 public:
-    fifth_command();
-    void Execute(Server& , ActiveClient&);
+    fifth_command(Server& , CLI&);
+    void Execute();
 };
 
 #endif //ADVANCEDPROGPROJECT_COMMANDS_H

@@ -6,58 +6,59 @@ class Server;
 
 class FileVector;
 
-void sendClassificationToClient(Server &, ActiveClient &);
+void sendClassificationToClient(Server &, CLI &);
 
-first_command::first_command() : Command("upload an unclassified csv data file") {}
+first_command::first_command(Server &s, CLI &client) : Command("upload an unclassified csv data file"), server(s),
+                                                       client(client) {}
 
-void first_command::Execute(Server &s, ActiveClient &client) {
+void first_command::Execute() {
     vector<double> temp_vec;
-    string s_vector = s.receive(client);
-    s.sendServer(s_vector,client);
-    string type_name = s.receive(client);
-    s.sendServer(type_name,client);
+    string s_vector = server.receive(client);
+    server.sendServer(s_vector, client);
+    string type_name = server.receive(client);
+    server.sendServer(type_name, client);
     char *temp = new char[s_vector.length() + 1];
     strcpy(temp, s_vector.c_str());
     while (s_vector.compare("adarkatz")) {
-        temp_vec = s.manipulateMSGWIthType(temp);
+        temp_vec = server.manipulateMSGWIthType(temp);
         tableVec temp_tablevec = tableVec(temp_vec, type_name);
         client.getClassified()->Add(temp_tablevec);
-        s_vector = s.receive(client);
-        s.sendServer(s_vector,client);
-        type_name = s.receive(client);
-        s.sendServer(type_name,client);
+        s_vector = server.receive(client);
+        server.sendServer(s_vector, client);
+        type_name = server.receive(client);
+        server.sendServer(type_name, client);
         strcpy(temp, s_vector.c_str());
     }
     client.getClassified()->upload_complete();
-    s_vector = s.receive(client);
-    s.sendServer(s_vector, client);
+    s_vector = server.receive(client);
+    server.sendServer(s_vector, client);
     strcpy(temp, s_vector.c_str());
     while (s_vector.compare("adarkatz")) {
-        temp_vec = s.manipulateMSGWithoutType(temp);
+        temp_vec = server.manipulateMSGWithoutType(temp);
         tableVec temp_tablevec = tableVec(temp_vec, " ");
         client.getUnClassified()->Add(temp_tablevec);
-        s_vector = s.receive(client);
+        s_vector = server.receive(client);
         strcpy(temp, s_vector.c_str());
         if (s_vector.compare("adarkatz")) {
-            s.sendServer(s_vector, client);
+            server.sendServer(s_vector, client);
         }
     }
     client.getUnClassified()->upload_complete();
-    s.sendServer("Upload complete.", client);
+    server.sendServer("Upload complete.", client);
 }
 
-second_command::second_command() : Command("algorithm settings") {}
+second_command::second_command(Server &s, CLI &client) : server(s), client(client), Command("algorithm settings") {}
 
-void second_command::Execute(Server &s, ActiveClient &client) {
+void second_command::Execute() {
     string send_s = "The current KNN parameters: K = " + to_string(client.getKNumber()) + ", distance metric = " +
-                    s.getDisTypeString(client.getDisType()) + "\n";
+                    server.getDisTypeString(client.getDisType()) + "\n";
     char *temp_send = new char[send_s.length() + 1];
     ::strcpy(temp_send, send_s.c_str());
-    s.sendServer(temp_send, client); //Sending the data
+    server.sendServer(temp_send, client); //Sending the data
     string MinusOne = "-1";
-    string temp_s = s.receive(client); // Getting the value for k and Distance Type
+    string temp_s = server.receive(client); // Getting the value for k and Distance Type
     if (!temp_s.compare(MinusOne)) {
-        s.sendServer("0", client);
+        server.sendServer("0", client);
         return;
     } else {
         char *word;
@@ -68,36 +69,37 @@ void second_command::Execute(Server &s, ActiveClient &client) {
             //Update the new K, if invalid - throw.
             int numk = stoi(word);
             if (numk < 1) {
-                s.sendServer("Invalid value for k", client);
+                server.sendServer("Invalid value for k", client);
             } else {
                 client.setKNumber(numk);
             }
         } catch (invalid_argument e) {
-            s.sendServer("Invalid value for k", client);
+            server.sendServer("Invalid value for k", client);
         }
         try {
             if (word != NULL) {
                 word = strtok(NULL, " ");
                 if (word != NULL) {
                     //Getting the new type, if invalid - throw.
-                    distanceType new_DisType = s.getDisType(word);
+                    distanceType new_DisType = server.getDisType(word);
                     client.setDisType(new_DisType);
                 }
             }
 
         } catch (invalid_argument e) {
-            s.sendServer("Invalid value for metric", client);
+            server.sendServer("Invalid value for metric", client);
         }
     }
     //Client receive until gets 0.
-    s.sendServer("0", client);
+    server.sendServer("0", client);
 }
 
-third_command::third_command() : Command("classify data") {}
+third_command::third_command(Server &s, CLI &client) : server(s), client(client), Command("classify data") {}
 
-void third_command::Execute(Server &s, ActiveClient &client) {
+void third_command::Execute() {
+    //If there is not any data
     if (client.getClassified()->isFileEmpty() || client.getUnClassified()->isFileEmpty()) {
-        s.sendServer("please upload data", client);
+        server.sendServer("please upload data", client);
         return;
     }
     const vector<tableVec> temp_tableVec = client.getUnClassified()->getVectors();
@@ -126,26 +128,35 @@ void third_command::Execute(Server &s, ActiveClient &client) {
                 maxTypeName = sorter.at(j).getType();
             }
         }
-        client.getUnClassified()->setName(maxTypeName,i);
+        client.getUnClassified()->setName(maxTypeName, i);
     }
-    s.sendServer("classifying data complete", client);
-
+    server.sendServer("classifying data complete", client);
+    client.classifyTheData();
 }
 
-fourth_command::fourth_command() : Command("display result") {}
+fourth_command::fourth_command(Server &s, CLI &client) : server(s), client(client), Command("display result") {}
 
-void fourth_command::Execute(Server &s, ActiveClient &client) {
-    sendClassificationToClient(s, client);
+void fourth_command::Execute() {
+    sendClassificationToClient(server, client);
 }
 
-fifth_command::fifth_command() : Command("download results") {}
+fifth_command::fifth_command(Server &s, CLI &client) : server(s), client(client), Command("download results") {}
 
-void fifth_command::Execute(Server &s, ActiveClient &client) {
-    string StartUpload = s.receive(client);
-    sendClassificationToClient(s, client);
+void fifth_command::Execute() {
+    string StartUpload = server.receive(client);
+    sendClassificationToClient(server, client);
 }
 
-void sendClassificationToClient(Server &s, ActiveClient &client) {
+void sendClassificationToClient(Server &s, CLI &client) {
+    //If there is not any data
+    if (client.getClassified()->isFileEmpty() || client.getUnClassified()->isFileEmpty()) {
+        s.sendServer("please upload data", client);
+        return;
+    }
+    if (!client.isClassifiedTheData()) {
+        s.sendServer(("please classify the data"), client);
+        return;
+    }
     int size = client.getUnClassified()->getVectors().size();
     string temp_output;
     cout << "This is the size: " << size << endl;

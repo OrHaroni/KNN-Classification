@@ -1,7 +1,7 @@
 CC = g++ -std=c++11
 
 
-OBJS = ExtraFunc.o tableVec.o distance.o Client.o Server.o ActiveClient.o Command.o Commands.o FileVector.o
+OBJS = ExtraFunc.o tableVec.o distance.o Client.o Server.o CLI.o Command.o Commands.o FileVector.o
 
 
 

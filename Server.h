@@ -8,12 +8,12 @@
 #include <unistd.h>
 #include "tableVec.h"
 #include "ExtraFunc.cpp"
-#include "ActiveClient.h"
+#include "CLI.h"
 #include <string.h>
 
 
 using namespace std;
-class ActiveClient;
+class CLI;
 
 
 class Server {
@@ -25,7 +25,7 @@ private:
     int m_client_socket;
     char msg[4096];
     int lastIndexInMap;
-    map<int, ActiveClient> clients;
+    map<int, CLI> clients;
     int currentThreadIndex;
     Command* commands[5];
 
@@ -35,17 +35,18 @@ public:
     int getSocket() throw();
     void bindServer() throw();
     void listenServer() throw();
-    void acceptServer(ActiveClient&) throw();
-    string receive(ActiveClient&);
-    void sendServer(string, ActiveClient&) throw();
+    void acceptServer(CLI&) throw();
+    string receive(CLI&);
+    void sendServer(string, CLI&) throw();
     void closeServer() throw();
     vector<double> manipulateMSGWIthType(string) throw();
     vector<double> manipulateMSGWithoutType(string) throw();
     distanceType getDisType(string) ;
     string getDisTypeString(distanceType);
     int getNumNeighbours() throw();
+    int getPortNumber();
     void closeClient();
-    void sendMenu(ActiveClient&);
+    void sendMenu(CLI&);
 };
 
 

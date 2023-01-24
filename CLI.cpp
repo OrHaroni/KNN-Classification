@@ -1,9 +1,9 @@
 //
 // Created by or on 1/10/23.
 //
-#include "ActiveClient.h"
+#include "CLI.h"
 /*C'tor*/
-ActiveClient::ActiveClient(FileVector* classified, FileVector* unClassified, int serverPorts, int indexInServerMap) : serverPort(serverPorts), indexInServerMap(indexInServerMap) {
+CLI::CLI(FileVector* classified, FileVector* unClassified, int serverPorts, int indexInServerMap) : serverPort(serverPorts), indexInServerMap(indexInServerMap), isClassified(false) {
     this->choiceNum = -1; //Initialize with invalid.
     this->k = 5; //Initialize with the value from the instructions.
     this->typeOfCalc = AUC; //Initialize with the value from the instructions.
@@ -17,52 +17,59 @@ ActiveClient::ActiveClient(FileVector* classified, FileVector* unClassified, int
     memset(&this->sockStruct, 0, sizeof(this->sockStruct));//Initializing the struct
 }
 
-
 /*Getters */
-int ActiveClient::getChoiceNumber(){
+int CLI::getChoiceNumber(){
     return this->choiceNum;
 }
-int ActiveClient::getKNumber(){
+int CLI::getKNumber(){
     return this->k;
 }
-FileVector* ActiveClient::getClassified(){
+FileVector* CLI::getClassified(){
     return this->classified;
 }
-FileVector* ActiveClient::getUnClassified(){
+FileVector* CLI::getUnClassified(){
     return this->unclassified;
 }
-int ActiveClient::getClientSocket() {
+int CLI::getClientSocket() {
     return this->socket;
 }
-struct sockaddr_in ActiveClient::getSockStruct() {
+struct sockaddr_in CLI::getSockStruct() {
     return this->sockStruct;
 }
 
-distanceType ActiveClient::getDisType() {
+distanceType CLI::getDisType() {
     return this->typeOfCalc;
 }
 
-
 /*Setters */
-void ActiveClient::setChoiceNumber(int num) {
+void CLI::setChoiceNumber(int num) {
     this->choiceNum = num;
 }
-void ActiveClient::setKNumber(int newK) {
+void CLI::setKNumber(int newK) {
     this->k = newK;
 }
-void ActiveClient::setClassifiedPath(FileVector* path) {
+void CLI::setClassifiedPath(FileVector* path) {
     this->classified = path;
 }
-void ActiveClient::setUnClassifiedPath(FileVector* path) {
+void CLI::setUnClassifiedPath(FileVector* path) {
     this->unclassified = path;
 }
-void ActiveClient::setClientSocket(int sock) {
+void CLI::setClientSocket(int sock) {
     this->socket = sock;
 }
-void ActiveClient::setSockStruct(sockaddr_in structSock) {
+void CLI::setSockStruct(sockaddr_in structSock) {
     this->sockStruct = structSock;
 }
 
-void ActiveClient::setDisType(distanceType type) {
+void CLI::setDisType(distanceType type) {
     this->typeOfCalc = type;
+}
+
+void CLI::classifyTheData() {
+    this->isClassified = true;
+    cout << " Now the data is classified" << endl;
+}
+
+bool CLI::isClassifiedTheData() {
+    return this->isClassified;
 }
