@@ -53,7 +53,7 @@ void Client::sendString(string string1) throw() {
 string Client::receive() throw(){
 
     char buffer[200];
-    ::memset(buffer,'$',200);
+    ::memset(buffer,0,200);
     unsigned int buffer_len = 200;
     int read_bytes = recv(m_socket, buffer, buffer_len, 0);
     if (strlen(buffer) == 0){

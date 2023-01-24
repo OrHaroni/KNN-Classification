@@ -63,21 +63,22 @@ int main(int argc, char *argv[]) {
     cout << "connect " << endl;
     c.clientConnect();
     cout << "connected " << endl;
-    c.sendString("1");
-    c.receive();
-    firstOption(c);
-    c.sendString("3");
-    c.receive();
-    thirdOption(c);
-    c.sendString("4");
-    c.receive();
-    fourthOption(c);
+//    c.sendString("1");
+//    c.receive();
+//    firstOption(c);
+//    c.sendString("3");
+//    c.receive();
+//    thirdOption(c);
+//    c.sendString("4");
+//    c.receive();
+//    fourthOption(c);
     while (true) {
+        cin.clear();
         //Get the menu.
         cout << c.receive() << endl;
         string input_option;
         //Clear the buffer.
-        cin.clear();
+
         cin >> input_option;
         //Send the selected option.
         c.sendString(input_option);
@@ -116,16 +117,17 @@ void firstOption(Client& c){
     cout << "begin of 1" << endl;
     //Get the classifieds file from the user.
     string local_file_train;
-//    cout << "Please upload your local train CSV file." << endl;
-//    cin >> local_file_train;
-    local_file_train = "datasets/iris/iris_classified.csv";
+    cout << "Please upload your local train CSV file." << endl;
+    cin >> local_file_train;
+    //local_file_train = "datasets/iris/iris_classified.csv";
     sendVectorsFromFileAndType(c, local_file_train);
     //Doing the same process for the unclassified.
     string local_file;
-//    cout << "Please upload your local test CSV file." << endl;
-//    cin >> local_file;
-    local_file = "datasets/iris/iris_Unclassified.csv";
+   cout << "Please upload your local test CSV file." << endl;
+    cin >> local_file;
+    //local_file = "datasets/iris/iris_Unclassified.csv";
     sendVectorsFromFile(c, local_file);
+
     cout << c.receive() << endl;
 }
 
@@ -157,13 +159,13 @@ void thirdOption(Client& c){
 void fourthOption(Client& c){
     cout << "begin of 4" << endl;
     //Print the info from the server.
-string input;
-    do {
+    string input = "0";
+    while (input.compare("Done.")) {
         input = c.receive();
-        if (input.compare("-1")){
-            cout << input << endl;
-        }
-    } while (input.compare("-1"));
+        c.sendString(input);
+    }
+    cout << "Done." << endl;
+    cout << " exit 4" << endl;
 }
 void fifthOption(Client& c){
     cout << "begin of 5" << endl;
