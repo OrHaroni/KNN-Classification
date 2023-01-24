@@ -106,6 +106,9 @@ int main(int argc, char *argv[]) {
             case 5:
                 fifthOption(c);
                 break;
+            case 8:
+                c.disconnect();
+                return 0;
             default:
                 //The option is a number but not from the options.
                 cout << "Invalid option please try again.";
@@ -160,8 +163,17 @@ void fourthOption(Client& c){
     cout << "begin of 4" << endl;
     //Print the info from the server.
     string input = "0";
+
     while (input.compare("Done.")) {
         input = c.receive();
+        if(!input.compare("please upload data")){
+            cout << "please upload data" << endl;
+            return;
+        }
+        if(!input.compare("please classify the data")){
+            cout << "please upload data" << endl;
+            return;
+        }
         cout << input << endl;
         c.sendString(input);
     }
@@ -181,6 +193,16 @@ void fifthOption(Client& c){
         string input;
         while (input.compare("Done.") && myFile.is_open()) {
             input = c.receive();
+            if(!input.compare("please upload data")){
+                cout << "please upload data" << endl;
+                myFile.close();
+                return;
+            }
+            if(!input.compare("please classify the data")){
+                cout << "please upload data" << endl;
+                myFile.close();
+                return;
+            }
             myFile << input << endl;
             c.sendString(input);
         }
@@ -239,7 +261,7 @@ void test(){
     int i;
     for (i = 0; i < size; ++i) {
         string vec_to_send;
-        vec_to_send = fileVector_train.getVectors().at(i).to_string();
+        //vec_to_send = fileVector_train.getVectors().at(i).to_string();
 
         //cout  << " i sent " << vec_to_send << endl;
         string vec_to_send_type;
