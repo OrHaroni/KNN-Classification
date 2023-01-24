@@ -69,6 +69,9 @@ int main(int argc, char *argv[]) {
     c.sendString("3");
     c.receive();
     thirdOption(c);
+    c.sendString("4");
+    c.receive();
+    fourthOption(c);
     while (true) {
         //Get the menu.
         cout << c.receive() << endl;
@@ -124,7 +127,6 @@ void firstOption(Client& c){
     local_file = "datasets/iris/iris_Unclassified.csv";
     sendVectorsFromFile(c, local_file);
     cout << c.receive() << endl;
-    cout << c.receive() << endl;
 }
 
 void secondOption(Client& c){
@@ -161,7 +163,7 @@ string input;
         if (input.compare("-1")){
             cout << input << endl;
         }
-    } while (!input.compare("-1"));
+    } while (input.compare("-1"));
 }
 void fifthOption(Client& c){
     cout << "begin of 5" << endl;
@@ -198,8 +200,9 @@ void sendVectorsFromFile(Client& c, string path){
         string vec_to_send;
         vec_to_send = fileVector_train.getVectors().at(i).to_string();
         c.sendString(vec_to_send);
-        string str1 = c.receive();
-        cout  << " i sent " << vec_to_send << endl;
+        c.receive();
+        //string str1 = c.receive();
+       // cout  << " i sent " << vec_to_send << endl;
     }
     //Sending -1 to say rhe server we're done uploading.
     c.sendString("adarkatz");
@@ -213,13 +216,15 @@ void sendVectorsFromFileAndType(Client& c , string path){
         string vec_to_send;
         vec_to_send = fileVector_train.getVectors().at(i).to_string();
         c.sendString(vec_to_send);
-        string str1 = c.receive();
-        cout  << " i sent " << vec_to_send << endl;
+        c.receive();
+        //string str1 = c.receive();
+        //cout  << " i sent " << vec_to_send << endl;
         string vec_to_send_type;
         vec_to_send_type = fileVector_train.getVectors().at(i).getType();
         c.sendString(vec_to_send_type);
-        string str2 = c.receive();
-        cout  << " i sent " << vec_to_send_type << endl;
+        c.receive();
+        //string str2 = c.receive();
+       // cout  << " i sent " << vec_to_send_type << endl;
     }
     //Sending -1 to say rhe server we're done uploading.
     c.sendString("adarkatz");
@@ -234,7 +239,7 @@ void test(){
         string vec_to_send;
         vec_to_send = fileVector_train.getVectors().at(i).to_string();
 
-        cout  << " i sent " << vec_to_send << endl;
+        //cout  << " i sent " << vec_to_send << endl;
         string vec_to_send_type;
         vec_to_send_type = fileVector_train.getVectors().at(i).getType();
 

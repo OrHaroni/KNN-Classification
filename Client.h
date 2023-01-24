@@ -26,7 +26,6 @@ public:
     void sendString(string) throw();
     string receive() throw();
     void disconnect();
-
 };
 
 
