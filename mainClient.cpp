@@ -127,7 +127,7 @@ void firstOption(Client& c){
     cin >> local_file;
     //local_file = "datasets/iris/iris_Unclassified.csv";
     sendVectorsFromFile(c, local_file);
-
+    c.receive();
     cout << c.receive() << endl;
 }
 
@@ -162,6 +162,7 @@ void fourthOption(Client& c){
     string input = "0";
     while (input.compare("Done.")) {
         input = c.receive();
+        cout << input << endl;
         c.sendString(input);
     }
     cout << "Done." << endl;
@@ -172,6 +173,7 @@ void fifthOption(Client& c){
     string local_file_train;
     cout << "Please upload your path to the file." << endl;
     cin >> local_file_train;
+    c.sendString(local_file_train);
     // Create and open a text file
     try {
         ofstream MyFile(local_file_train);
@@ -248,6 +250,5 @@ void test(){
         cout  << " i sent " << vec_to_send_type << endl;
     }
     //Sending -1 to say rhe server we're done uploading.
-
 }
 
