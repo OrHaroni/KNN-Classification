@@ -47,7 +47,12 @@ int main(int argc, char *argv[]) {
             server.acceptServer(client);
             server.receive(client);
         }
-        int choice_number = stoi(choice);
+        int choice_number = 0;
+        try {
+            choice_number = stoi(choice);
+        } catch(invalid_argument e){
+            server.sendServer("Invalid Choice number, please try again.", client);
+        }
         if (0 < choice_number && choice_number < 6) {
             commands[choice_number - 1]->Execute(server, client);
         } else {

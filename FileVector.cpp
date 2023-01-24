@@ -9,10 +9,8 @@ FileVector::FileVector(const FileVector&  cpy) {
     }
 }
 
-void FileVector::Add(tableVec tableVector) {
+void FileVector::Add(tableVec& tableVector) {
     this->vectors.push_back(tableVector);
-    cout << "Added this table vec: ";
-    printVector(tableVector.getVector());
     this->isEmpty = true;
 }
 
