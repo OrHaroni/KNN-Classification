@@ -32,9 +32,7 @@ void Client::sendString(string string1) throw() {
         return;
     }
 
-//    while (string1.length() <=200){
-//        string1 += "$";
-//    }
+
     //cout << "after dolaes: " << string1 << endl;
     const int len = string1.length();
     char *temp = new char[len + 1];

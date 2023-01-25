@@ -6,10 +6,14 @@ void firstOption(Client&);
 void secondOption(Client&);
 void thirdOption(Client&);
 void fourthOption(Client&);
-void fifthOption(Client&);
+void* fifthOption(void *);
 void getVector(Client&);
 void sendVectorsFromFile(Client&, string);
 void sendVectorsFromFileAndType(Client&, string);
+
+struct StructC {
+    Client &client;
+};
 int main(int argc, char *argv[]) {
     //test();
     //The number of args is 3.
@@ -72,6 +76,7 @@ int main(int argc, char *argv[]) {
 //    c.sendString("4");
 //    c.receive();
 //    fourthOption(c);
+    StructC sc = {c};
     while (true) {
         cin.clear();
         //Get the menu.
@@ -82,6 +87,7 @@ int main(int argc, char *argv[]) {
         cin >> input_option;
         //Send the selected option.
         c.sendString(input_option);
+
         int optionNun;
         try{
             //Make the reception to number.
@@ -104,7 +110,10 @@ int main(int argc, char *argv[]) {
                 fourthOption(c);
                 break;
             case 5:
-                fifthOption(c);
+                pthread_t threads_arr;
+                cout << "creat thread" << endl;
+                pthread_create(&threads_arr, NULL, fifthOption, &sc);
+                pthread_join(threads_arr, NULL);
                 break;
             case 8:
                 c.disconnect();
@@ -180,7 +189,12 @@ void fourthOption(Client& c){
     cout << "Done." << endl;
     cout << " exit 4" << endl;
 }
-void fifthOption(Client& c){
+
+
+void *fifthOption(void * clientStruct){
+    StructC *args = (StructC *) clientStruct;
+    Client c = args->client;
+    cout << "after the cleint" << endl;
     cout << "begin of 5" << endl;
     string local_file_path;
     cout << "Please upload your path to the file." << endl;
@@ -188,7 +202,11 @@ void fifthOption(Client& c){
     // Create and open a text file
     try {
         ofstream myFile(local_file_path);
-        c.sendString("ready");
+        cout << "after oprn file" << endl;
+        if (local_file_path[local_file_path.length()-1] == '/'){
+            local_file_path += "testFile.txt";
+        }
+            c.sendString("ready");
        // cout << c.receive() << endl;
         string input;
         while (input.compare("Done.") && myFile.is_open()) {
@@ -196,12 +214,12 @@ void fifthOption(Client& c){
             if(!input.compare("please upload data")){
                 cout << "please upload data" << endl;
                 myFile.close();
-                return;
+                pthread_exit(NULL);
             }
             if(!input.compare("please classify the data")){
                 cout << "please upload data" << endl;
                 myFile.close();
-                return;
+                pthread_exit(NULL);
             }
             myFile << input << endl;
             c.sendString(input);
@@ -212,6 +230,7 @@ void fifthOption(Client& c){
     catch(exception const& e){
         cout << "Problem opening and writhing the file." << endl;
     }
+    pthread_exit(NULL);
 }
 
 void sendVectorsFromFile(Client& c, string path){
