@@ -1,5 +1,5 @@
 #include <iostream>
-#include <pthread.h>
+
 #include "Server.h"
 #include "tableVec.h"
 #include "FileVector.h"
