@@ -71,6 +71,10 @@ void second_command::Execute() {
             if (numk < 1) {
                 server.sendServer("Invalid value for k", client);
             } else {
+                //If the max size is lesser than k, it will be the k
+                if(numk > client.getClassified()->getVectors().size()){
+                    numk = client.getClassified()->getVectors().size();
+                }
                 client.setKNumber(numk);
             }
         } catch (invalid_argument e) {
