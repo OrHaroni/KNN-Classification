@@ -8,8 +8,8 @@
 using namespace std;
 
 struct server_struct {
-    Server s;
-    CLI client;
+    Server& s;
+    CLI& client;
 };
 
 int mainValidation(int, string);
@@ -65,7 +65,8 @@ int mainValidation(int numArguments, string s_Port) {
 }
 
 void *handleClient(void *serverStruct) {
-    server_struct *args = (server_struct *) serverStruct;
+    //We used auto but it will be server_strcut*
+    auto *args = (server_struct *) serverStruct;
     Server server = args->s;
     CLI client = args->client;
     //Creating a vector of table vectors for future compares.
