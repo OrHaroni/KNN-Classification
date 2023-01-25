@@ -23,7 +23,7 @@ static int numberOfValues(vector<tableVec> fileVectors) {
         //If we found empty vector, the file is invalid
         if (checkVecSize != fileVectors.at(i).getVector().size() && fileVectors.at(i).getVector().size() != 0) {
 
-            throw invalid_argument("The file is invalid for not all the vectors are not in the same length");
+            throw exception();
 
         }
     }
@@ -49,7 +49,7 @@ static distanceType numberOfCalculation(string distance) {
         return MIN;
     }
     //throws if the name of the type invalid
-    throw invalid_argument("Invalid name of calculation.");
+    throw exception();
 
 }
 

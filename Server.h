@@ -10,7 +10,7 @@
 #include "ExtraFunc.cpp"
 #include "CLI.h"
 #include <string.h>
-
+#include <exception>
 
 using namespace std;
 class CLI;
@@ -32,18 +32,18 @@ private:
 
 public:
     Server(int);
-    int getSocket() throw();
-    void bindServer() throw();
-    void listenServer() throw();
-    void acceptServer(CLI&) throw();
+    int getSocket();
+    void bindServer();
+    void listenServer();
+    void acceptServer(CLI&);
     string receive(CLI&);
-    void sendServer(string, CLI&) throw();
-    void closeServer() throw();
-    vector<double> manipulateMSGWIthType(string) throw();
-    vector<double> manipulateMSGWithoutType(string) throw();
+    void sendServer(string, CLI&);
+    void closeServer();
+    vector<double> manipulateMSGWIthType(string);
+    vector<double> manipulateMSGWithoutType(string);
     distanceType getDisType(string) ;
     string getDisTypeString(distanceType);
-    int getNumNeighbours() throw();
+    int getNumNeighbours();
     int getPortNumber();
     void closeClient();
     void sendMenu(CLI&);

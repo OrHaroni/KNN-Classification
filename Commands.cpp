@@ -73,7 +73,7 @@ void second_command::Execute() {
             } else {
                 client.setKNumber(numk);
             }
-        } catch (invalid_argument e) {
+        } catch (exception e) {
             server.sendServer("Invalid value for k", client);
         }
         try {
@@ -86,7 +86,7 @@ void second_command::Execute() {
                 }
             }
 
-        } catch (invalid_argument e) {
+        } catch (exception e) {
             server.sendServer("Invalid value for metric", client);
         }
     }

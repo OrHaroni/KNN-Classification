@@ -1,11 +1,11 @@
 #include "Client.h"
 Client::Client(const char * ip_address,int port_no):m_ip_address(ip_address),m_port_no(port_no) {}
 
-void Client::getNewSocket() throw(){
+void Client::getNewSocket() {
     //Get a new socket from the system.
     m_socket = socket(AF_INET, SOCK_STREAM, 0);
     if(m_socket < 0){
-        throw invalid_argument("error creating socket");
+        throw exception();
     }
 }
 
@@ -19,15 +19,15 @@ void Client::startSin(){
     m_sin.sin_port = htons(m_port_no);
 }
 
-void Client::clientConnect() throw(){
+void Client::clientConnect() {
     //Connect to the server.
     int connect_num = connect(m_socket, (struct sockaddr *) &m_sin, sizeof(m_sin));
     if(connect_num < 0){
-        throw invalid_argument("error in connect procces");
+        throw exception();
     }
 }
 
-void Client::sendString(string string1) throw() {
+void Client::sendString(string string1)  {
     if(string1.length() == 0){
         return;
     }
@@ -41,14 +41,14 @@ void Client::sendString(string string1) throw() {
     cout << " i send : " << string1 << endl;
     int sent_num = send(m_socket, (void *) temp, 200, 0);
     if (sent_num < 0) {
-        throw invalid_argument("error in sending");
+        throw(exception());
     }
     if (sent_num == 0) {
         cout << "i send empy" << endl;
     }
 }
 
-string Client::receive() throw(){
+string Client::receive() {
 
     char buffer[200];
     ::memset(buffer,0,200);
@@ -65,11 +65,11 @@ string Client::receive() throw(){
 //    }
     //If the size is zero we need to close.
     if (read_bytes == 0) {
-        throw invalid_argument("close");
+        throw(exception());
     }
     //If it's less than zero there is a problem.
     else if (read_bytes < 0){
-        throw invalid_argument("error in receive");
+        throw(exception());
     }
     else{
         //cout << "I received:" << buffer << "end of receive" << endl;

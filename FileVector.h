@@ -21,7 +21,7 @@ public:
     int SizeOfVectors();
     void InitializeByReadingFile(string path);
     void InitializeByReadingFileNoType(string path);
-    vector<double> manipulateMSG(char*) throw();
+    vector<double> manipulateMSG(char*);
     enum distanceType getDistanceType();
     int getK();
     void setK(int k);

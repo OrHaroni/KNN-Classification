@@ -1,6 +1,4 @@
-//
-// Created by or on 1/10/23.
-//
+
 #include "CLI.h"
 /*C'tor*/
 CLI::CLI(FileVector* classified, FileVector* unClassified, int serverPorts, int indexInServerMap) : serverPort(serverPorts), indexInServerMap(indexInServerMap), isClassified(false) {

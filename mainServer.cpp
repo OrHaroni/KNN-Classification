@@ -3,7 +3,7 @@
 #include "Server.h"
 #include "tableVec.h"
 #include "FileVector.h"
-
+#include <exception>
 
 using namespace std;
 
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     //Checking validation of the arguments.
     try {
         portNumber = mainValidation(argc, argv[1]);
-    } catch (invalid_argument e) {
+    } catch (exception e) {
         cout << e.what() << endl;
         return 1;
     }
@@ -46,20 +46,20 @@ int mainValidation(int numArguments, string s_Port) {
     int numPort = 0;
     //Validation of number of arguments
     if (numArguments != 2) {
-        throw invalid_argument("Got invalid number of arguments");
+        throw exception();
     }
     try {
         //Validation of the port
         numPort = stoi(s_Port);
     }
-    catch (invalid_argument e) {
+    catch (exception e) {
         cout << "invalid number of port" << endl;
-        throw invalid_argument("invalid number of port");
+        throw exception();
     }
     //If we got here stoi worked and portNumber != 0
     if (numPort < 1024 || numPort > 65535) {
         cout << "invalid size of port" << endl;
-        throw invalid_argument("invalid number of port");
+        throw exception();
     }
     return numPort;
 }
@@ -77,7 +77,7 @@ void *handleClient(void *serverStruct) {
     Command *commands[5] = {&c1, &c2, &c3, &c4, &c5};
     try {
         server.sendMenu(client);
-    } catch (invalid_argument e) {
+    } catch (exception e) {
         server.sendServer("Invalid input", client);
     }
     string choice;
@@ -86,7 +86,7 @@ void *handleClient(void *serverStruct) {
         try {
             choice = server.receive(client); //Getting the number of choice from menu from the user.
             choice_number = stoi(choice);
-        } catch (invalid_argument e) {
+        } catch (exception e) {
             choice_number = -1;
         }
         if (choice_number == 8) {

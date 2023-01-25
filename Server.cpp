@@ -17,36 +17,36 @@ Server::Server(int serverPort) : m_client_socket(0) {
 }
 
 //Creating and getting a socket.
-int Server::getSocket() throw() {
+int Server::getSocket(){
     //Creating new socket
     int s = socket(AF_INET, SOCK_STREAM, 0);
 
     //Checking if the socket is not valid
     if (s < 0) {
         this->closeServer();
-        throw invalid_argument("error creating socket");
+        throw exception();
     }
     return s;
 }
 
 //Binding the socket
-void Server::bindServer() throw() {
+void Server::bindServer() {
     if (bind(m_socket, (struct sockaddr *) &m_sin, sizeof(m_sin)) < 0) {
         this->closeServer();
-        throw invalid_argument("error binding socket");
+        throw exception();
     }
 }
 
 //Listen to a socket
-void Server::listenServer() throw() {
+void Server::listenServer()  {
     if (listen(m_socket, 5) < 0) {
         this->closeServer();
-        throw invalid_argument("error listening to a socket");
+        throw exception();
     }
 }
 
 //Accepting a client and saving the client's socket id
-void Server::acceptServer(CLI &client) throw() {
+void Server::acceptServer(CLI &client)  {
     cout << "Entered accept func" << endl;
     //Adding new active client and adding 1 to the last index
     //Giving the client the same index to know how to reach him.
@@ -57,24 +57,24 @@ void Server::acceptServer(CLI &client) throw() {
     int client_socket = accept(m_socket, (struct sockaddr *) &temp, &addr_len);
     if (client_socket < 0) {
         this->closeServer();
-        throw invalid_argument("error accepting client");
+        throw exception();
     }
     client.setClientSocket(client_socket);
     cout << "Accepted the client" << endl;
 }
 
-void Server::sendServer(string answer, CLI &C) throw() {
+void Server::sendServer(string answer, CLI &C) {
     char *send_text = new char[answer.length() + 1];
     ::strcpy(send_text, answer.c_str());
     int send_bytes = send(C.getClientSocket(), (void *) send_text, 200, 0);
     if (send_bytes < 0) {
         this->closeServer();
-        throw invalid_argument("Could not send msg");
+        throw exception();
     }
     cout << "This is what i sent: " << send_text << endl;
 }
 
-void Server::closeServer() throw() {
+void Server::closeServer() {
     close(m_socket);
 }
 
@@ -88,14 +88,14 @@ string Server::receive(CLI &client) {
         exit(1);
     } else if (read_bytes < 0) {
         this->closeServer();
-        throw invalid_argument("error with the receiving");
+        throw exception();
     }
 
     cout << "i got: " << buffer << endl;
     return buffer;
 }
 
-vector<double> Server::manipulateMSGWIthType(string msg) throw() {
+vector<double> Server::manipulateMSGWIthType(string msg){
     char temp[msg.length() + 1];
     strcpy(temp, msg.c_str());
     vector<double> row;
@@ -111,7 +111,7 @@ vector<double> Server::manipulateMSGWIthType(string msg) throw() {
             // add all the column data
             // of a row to a vector
             row.push_back(stod(word));
-        } catch (invalid_argument e) {
+        } catch (exception e) {
             //we got to letter
             return row; //might be invalid, will crash in numberOfCalculation.
         }
@@ -119,7 +119,7 @@ vector<double> Server::manipulateMSGWIthType(string msg) throw() {
     return row;
 }
 
-vector<double> Server::manipulateMSGWithoutType(string msg) throw() {
+vector<double> Server::manipulateMSGWithoutType(string msg) {
     char temp[msg.length() + 1];
     strcpy(temp, msg.c_str());
     vector<double> row;
@@ -132,7 +132,7 @@ vector<double> Server::manipulateMSGWithoutType(string msg) throw() {
             // add all the column data
             // of a row to a vector
             row.push_back(stod(word));
-        } catch (invalid_argument e) {
+        } catch (exception e) {
             //we got to letter
             return row; //might be invalid, will crash in numberOfCalculation.
         }
@@ -162,8 +162,8 @@ distanceType Server::getDisType(string msg) {
     }
     try {
         return numberOfCalculation(token);
-    } catch (invalid_argument e) {
-        throw invalid_argument("invalid input");
+    } catch (exception e) {
+        throw exception();
     }
 }
 
@@ -182,14 +182,14 @@ string Server::getDisTypeString(distanceType d) {
                 return "CAN";
         }
         //because did not return at all
-        throw invalid_argument("Invalid distanceType");
-    } catch (invalid_argument e) {
-        throw invalid_argument("Invalid distanceType");
+        throw exception();
+    } catch (exception e) {
+        throw exception();
     }
 }
 
 //Returning the number of neighbours
-int Server::getNumNeighbours() throw() {
+int Server::getNumNeighbours(){
     char temp[4096];
     strcpy(temp, msg);
     //getting the number of words in the message.

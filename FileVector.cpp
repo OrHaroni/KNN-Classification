@@ -16,7 +16,7 @@ void FileVector::Add(tableVec& tableVector) {
 
 string FileVector::CalcTypeName(int k, vector<double> vec, enum distanceType disType) {
     if (k < 1) {
-        throw invalid_argument("k cannot be lower than 1");
+        throw exception();
     }
     //cant be with k greater than the number of the vectors.
     if (k > this->vectors.size()) {
@@ -60,7 +60,7 @@ int FileVector::SizeOfVectors() {
     int size = this->vectors.at(0).getVector().size();
     for (int i = 1; i < this->vectors.size(); ++i) {
         if (size != this->vectors.at(0).getVector().size()) {//so the file is not valid
-            throw invalid_argument("The file has vectors with different lengths");
+            throw exception();
         }
     }
     return size;
@@ -76,7 +76,7 @@ void FileVector::InitializeByReadingFile(string path) {
     //Exiting if the file cant open.
     if (!fin.is_open()) {
         cout << "The program failed to open the file (invalid path)" << endl;
-        throw invalid_argument("could not open the file");
+        throw exception();
     }
     //Reading the file.
     try {
@@ -95,12 +95,12 @@ void FileVector::InitializeByReadingFile(string path) {
             tableVec tempRow = tableVec(doubles, row.at(row.size() - 1));
             this->Add(tempRow);
         }
-    }catch (invalid_argument e){
-    throw invalid_argument("");}
+    }catch (exception e){
+        throw exception();}
     this->isEmpty = false;
 }
 
-vector<double> FileVector::manipulateMSG(char* msg) throw() {
+vector<double> FileVector::manipulateMSG(char* msg)  {
     char temp[strlen(msg)];
     strcpy(temp, msg);
     vector<double> row;
@@ -116,7 +116,7 @@ vector<double> FileVector::manipulateMSG(char* msg) throw() {
             // add all the column data
             // of a row to a vector
             row.push_back(stod(word));
-        } catch (invalid_argument e) {
+        } catch (exception e) {
             //we got to letter
             return row; //might be invalid, will crash in numberOfCalculation.
         }
@@ -156,7 +156,7 @@ void FileVector::InitializeByReadingFileNoType(string path) {
     //Exiting if the file cant open.
     if (!fin.is_open()) {
         cout << "The program failed to open the file (invalid path)" << endl;
-        throw invalid_argument("could not open the file");
+        throw exception();
     }
     //Reading the file.
     try {
@@ -175,7 +175,7 @@ void FileVector::InitializeByReadingFileNoType(string path) {
             tableVec tempRow = tableVec(doubles, row.at(row.size() - 1));
             this->Add(tempRow);
         }
-    }catch (invalid_argument e){
-        throw invalid_argument("");}
+    }catch (exception e){
+        throw exception();}
     this->isEmpty = false;
 }
