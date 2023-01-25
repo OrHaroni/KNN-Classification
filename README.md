@@ -40,6 +40,9 @@ The program will set K to be the max number of vectors in the train file.
 The program will prints error message and will shut down.
 in any other event, the program will not shut down, just write a message and returns to the menu.
 
+##How many clients can connect to the server parallely?
+5 client can work with the server parallely.
+
 #### What did you learned from this project?
 
 We learned more about mechine lerning and c++ OOP.
