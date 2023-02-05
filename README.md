@@ -1,6 +1,6 @@
 # Advanced Program Project Exercise #3
 
-**THIS EX3 WAS OVERWRITTEN APPROVED BY EREL AND YOAV (MAILED THE COURSE E-MAIL).
+**THIS EX3 WAS OVERWRITTEN APPROVED BY EREL AND YOAV (MAILED THE COURSE E-MAIL).**
 
 The next program is Server\Client based.
 The client should connect to the server with ip number and port number, then send the server valid length vector, type of distance calculation and an integer.
