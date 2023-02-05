@@ -54,7 +54,7 @@ void Server::acceptServer() {
     if (m_client_socket < 0) {
         this->closeServer();
         cout << "error accepting client" << endl;
-        throw exception()
+        throw exception();
     }
 }
 
