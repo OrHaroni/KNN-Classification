@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     //Validation of the port
     portNumber = stoi(argv[2]);
     }
-    catch(invalid_argument e)
+    catch(exception e)
     {
         cout << "invalid number of port" << endl;
         return 1;
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
         server.bindServer();
         server.listenServer();
         server.acceptServer();
-    } catch (invalid_argument e) {
+    } catch (exception e) {
         string invalid = "Invalid input";
         const int len = invalid.length();
         char *temp = new char[len + 1];
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
         try {
             try {
                 server.receive();
-            } catch (invalid_argument e){
+            } catch (exception e){
                 //Not receiving so client disconnected
                 //so listen to the next client
                 server.listenServer();
@@ -88,16 +88,13 @@ int main(int argc, char *argv[]) {
             try {
                 int sizeOfVectors = numberOfValues(fileVectors);
                 if(vec.size() != sizeOfVectors){
-                    throw out_of_range("Invalid input");
+                    cout << "invalid argument" << endl;
+                    throw exception();
                 }
-            }catch (invalid_argument e){
+            }catch (exception e) {
                 cout << "not all the vectors in the file are in the same length so exiting" << endl;
                 return 1;
-            } catch(out_of_range e){
-                throw invalid_argument("invalid input");
             }
-
-
             //getting the number of neighbours
             int k = server.getNumNeighbours();
 
@@ -111,7 +108,8 @@ int main(int argc, char *argv[]) {
 
 
             if (k < 0) {
-                throw invalid_argument("cant have negative number of neighbours");
+                cout << "cant have negative number of neighbours." << endl;
+                throw exception();
             }
             //if K is greater than the number of vectors we have,
             //so, all of the vectors are his neighbours, and we
@@ -143,20 +141,7 @@ int main(int argc, char *argv[]) {
             server.sendServer(temp);
 
             //catches if getting invalid input.
-        } catch (invalid_argument e) {
-            string invalid = "Invalid input";
-            const int len = invalid.length();
-            char *temp = new char[len + 1];
-            strcpy(temp, invalid.c_str());
-            server.sendServer(temp);
-        } catch (out_of_range e1) {
-            string invalid = "Invalid input";
-            const int len = invalid.length();
-            char *temp = new char[len + 1];
-            strcpy(temp, invalid.c_str());
-            server.sendServer(temp);
-        }
-        catch(logic_error e) {
+        } catch (exception e) {
             string invalid = "Invalid input";
             const int len = invalid.length();
             char *temp = new char[len + 1];
@@ -164,11 +149,12 @@ int main(int argc, char *argv[]) {
             try {
                 server.sendServer(temp);
             }
-            catch(invalid_argument e){
+            catch(exception e){
                 server.listenServer();
                 server.acceptServer();
             }
         }
+
     }
 }
 

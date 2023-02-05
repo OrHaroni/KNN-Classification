@@ -10,7 +10,7 @@
 #include <string.h>
 #include "tableVec.h"
 #include "ExtraFunc.cpp"
-
+#include <exception>
 using namespace std;
 
 
@@ -25,16 +25,16 @@ private:
 
 public:
     Server(int);
-    int getSocket() throw();
-    void bindServer() throw();
-    void listenServer() throw();
-    void acceptServer() throw();
+    int getSocket();
+    void bindServer();
+    void listenServer();
+    void acceptServer();
     void receive();
-    void sendServer(char*) throw();
-    void closeServer() throw();
-    vector<double> manipulateMSG() throw();
+    void sendServer(char*);
+    void closeServer();
+    vector<double> manipulateMSG();
     distanceType getDisType() ;
-    int getNumNeighbours() throw();
+    int getNumNeighbours();
 };
 
 

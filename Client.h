@@ -7,7 +7,9 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
+#include <exception>
 #include "tableVec.h"
+
 using namespace std;
 
 class Client {
@@ -20,11 +22,11 @@ private:
 
 public:
     Client(const char*, int);
-    void getNewSocket() throw();
+    void getNewSocket();
     void startSin();
-    void clientConnect() throw();
-    void sendVector(char*) throw();
-    string receive() throw();
+    void clientConnect();
+    void sendVector(char*);
+    string receive();
     void disconnect();
 
 };

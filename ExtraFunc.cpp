@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 #include <algorithm>
 #include "tableVec.h"
+#include <exception>
 
 #define COMMA ','
 
@@ -49,7 +50,8 @@ static distanceType numberOfCalculation(string distance) {
         return MIN;
     }
     //throws if the name of the type invalid
-    throw invalid_argument("Invalid name of calculation.");
+    cout << "Invalid name of calculation." << endl;
+    throw exception();
 
 }
 

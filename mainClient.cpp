@@ -1,4 +1,5 @@
 #include "Client.h"
+
 using namespace std;
 
 int main(int argc, char *argv[]){
@@ -18,7 +19,7 @@ int main(int argc, char *argv[]){
             //Make it a number.
             number = stoi(token);
         }
-        catch(invalid_argument e) {
+        catch(exception e) {
             cout << "Invalid ip" << endl;
             return 0;
         }
@@ -37,7 +38,7 @@ int main(int argc, char *argv[]){
     int port_number = 0;
     try{
         port_number = stoi(argv[2]);
-    }catch(invalid_argument e){
+    }catch(exception e){
         cout << "invalid size of port" << endl;
     }
     //If we got here it's a number.
