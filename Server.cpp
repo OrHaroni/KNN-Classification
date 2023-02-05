@@ -90,7 +90,6 @@ void Server::receive() {
     }
     strcpy(msg, buffer);
     if(msg[0] == '-' && msg[1] == '1'){
-        cout << "client exiting" << endl;
         throw exception();
     }
 }
